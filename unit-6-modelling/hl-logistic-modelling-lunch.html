@@ -1,0 +1,32 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>HL Logistic Modelling — Lunch</title><style>html,body,iframe{margin:0;width:100%;height:100%;border:0;overflow:hidden;background:#f6f7f9}</style></head><body><iframe id="deck" src="./hl-logistic-modelling-preview.html" title="HL Logistic Modelling"></iframe><script>
+const frame=document.getElementById('deck');
+frame.addEventListener('load',()=>{
+ const d=frame.contentDocument,w=frame.contentWindow;
+ if(!d)return;
+ // Fix the equal-increment reasoning slide.
+ [...d.querySelectorAll('.slide')].forEach(slide=>{
+  const eye=slide.querySelector('.eyebrow');
+  if(eye&&eye.textContent.trim()==='Reason from the shape'){
+   const inner=slide.querySelector('.slide-inner');
+   inner.innerHTML=`<div class="ref-formula"><math><mi>N</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo>=</mo><mfrac><mn>12000</mn><mrow><mn>1</mn><mo>+</mo><mn>23</mn><msup><mi>e</mi><mrow><mo>−</mo><mn>0.42</mn><mi>t</mi></mrow></msup></mrow></mfrac></math></div><div class="eyebrow">Reason from the shape</div><h2 class="center">Same increase. Same time?</h2><div class="prompt">Compare <b>8,000 → 9,000</b> with <b>10,000 → 11,000</b>.<br>Both changes are +1000. Which should take longer?</div><div class="grid2" style="margin-top:22px"><div class="graph-shell"><div class="graph-toolbar"><span class="graph-dot"></span> threshold view</div><div class="graph-wrap"><svg id="thresholdGraphFixed" viewBox="0 0 850 470"></svg></div></div><div class="card med"><div><span class="think">Think first</span> The later interval is closer to the limiting value 12,000, where the curve is flattening.</div><div class="reveal" data-reveal style="margin-top:22px">8,000 → 9,000: about <b>0.97 months</b><br><br>10,000 → 11,000: about <b>2.12 months</b><br><br>The same increase takes longer when the curve is flatter.</div></div></div>`;
+   const s=inner.querySelector('#thresholdGraphFixed'),NS='http://www.w3.org/2000/svg';
+   const E=(n,a={})=>{const x=d.createElementNS(NS,n);Object.entries(a).forEach(([k,v])=>x.setAttribute(k,v));return x};
+   const T=(x,y,str,anchor='end')=>{const t=E('text',{x,y,class:'svgtext','text-anchor':anchor});t.textContent=str;s.appendChild(t)};
+   const x0=55,y0=415,x1=800,y1=35;
+   s.append(E('line',{x1:x0,y1:y0,x2:x1,y2:y0,class:'axis'}),E('line',{x1:x0,y1:y0,x2:x0,y2:y1,class:'axis'}));
+   let path='';for(let i=0;i<=260;i++){const t=16*i/260,y=12000/(1+23*Math.exp(-.42*t)),sx=x0+t/16*(x1-x0),sy=y0-y/12500*(y0-y1);path+=(i?'L':'M')+sx+','+sy} s.appendChild(E('path',{d:path,class:'curve a'}));
+   [8000,9000,10000,11000].forEach(v=>{const y=y0-v/12500*(y0-y1);s.appendChild(E('line',{x1:x0,y1:y,x2:x1,y2:y,class:'guide'}));T(790,y-6,String(v))});
+  }
+ });
+ // Make the TI-84 GRAPH and TRACE buttons actually show a graph/cursor.
+ [...d.querySelectorAll('.slide')].forEach(slide=>{
+  const eye=slide.querySelector('.eyebrow');
+  if(!(eye&&eye.textContent.includes('Use the model')))return;
+  const calc=slide.querySelector('.ti'); if(!calc)return;
+  const screen=calc.querySelector('.ti-screen'); if(!screen)return;
+  let traceX=4;
+  function graph(trace=false){screen.innerHTML='<canvas id="tiLiveGraph" width="500" height="220" style="width:100%;height:220px;display:block"></canvas>';const c=screen.querySelector('canvas'),ctx=c.getContext('2d');ctx.fillStyle='#b9b9bb';ctx.fillRect(0,0,500,220);ctx.fillStyle='#111';ctx.font='12px Courier New';ctx.fillText('NORMAL FLOAT AUTO REAL RADIAN MP',7,14);ctx.setLineDash([2,3]);ctx.beginPath();ctx.moveTo(0,20);ctx.lineTo(500,20);ctx.stroke();ctx.setLineDash([]);const x0=28,y0=198,x1=470,y1=32;ctx.strokeStyle='#555';ctx.beginPath();ctx.moveTo(x0,y0);ctx.lineTo(x1,y0);ctx.moveTo(x0,y0);ctx.lineTo(x0,y1);ctx.stroke();ctx.strokeStyle='#111';ctx.lineWidth=2;ctx.beginPath();for(let i=0;i<=200;i++){let x=16*i/200,y=12000/(1+23*Math.exp(-.42*x)),sx=x0+x/16*(x1-x0),sy=y0-y/12500*(y0-y1);i?ctx.lineTo(sx,sy):ctx.moveTo(sx,sy)}ctx.stroke();if(trace){let y=12000/(1+23*Math.exp(-.42*traceX)),sx=x0+traceX/16*(x1-x0),sy=y0-y/12500*(y0-y1);ctx.fillStyle='#111';ctx.beginPath();ctx.arc(sx,sy,3,0,Math.PI*2);ctx.fill();ctx.font='13px Courier New';ctx.fillText('X='+traceX.toFixed(1),325,38);ctx.fillText('Y='+y.toFixed(1),325,54)}}
+  calc.querySelectorAll('[data-ti]').forEach(btn=>{const action=btn.dataset.ti;if(action==='GRAPH')btn.onclick=e=>{e.stopPropagation();graph(false)};if(action==='TRACE')btn.onclick=e=>{e.stopPropagation();traceX=4;graph(true)};});
+ });
+});
+</script></body></html>
