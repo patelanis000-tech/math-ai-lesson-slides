@@ -1,0 +1,32 @@
+name: Clarify logistic midpoint
+on:
+  push:
+    paths:
+      - '.github/workflows/clarify-logistic-midpoint.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Clarify midpoint wording
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('unit-6-modelling/hl-logistic-modelling-preview.html')
+          s = p.read_text()
+          old = '<div class="live-readout"><div class="readout">P(0) = 50</div><div class="readout">midpoint: P = 400</div></div>'
+          new = '<div class="live-readout"><div class="readout">P(0) = 50</div><div class="readout">logistic midpoint: P = L/2 = 400<br><span style="font-size:.72em;font-weight:500;color:var(--muted)">half of the limiting value — not halfway from 50 to 800</span></div></div>'
+          if old not in s:
+              raise SystemExit('Target text not found')
+          p.write_text(s.replace(old,new,1))
+          PY
+          rm .github/workflows/clarify-logistic-midpoint.yml
+      - name: Commit clarification
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'Clarify logistic midpoint wording'
+          git push
