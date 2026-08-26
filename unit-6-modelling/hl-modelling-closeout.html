@@ -19,30 +19,12 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
 </style>
 </head>
 <body>
-<nav class="session-bar" aria-label="Session menu">
-  <button data-jump="0">Home</button><button data-jump="2" data-session="Lesson 1">Lesson 1</button><button data-jump="29" data-session="Lesson 2">Lesson 2</button><button data-jump="45" data-session="Final Check">Final Check</button>
-</nav>
 <div class="section-chip" id="sectionChip" aria-live="polite"></div>
 <main id="deck">
 <section class="slide active" data-section="Home"><div class="slide-inner center">
-  <div class="ahl">HL modelling closeout</div><h1 style="margin-top:16px">Represent · transform<br>interpret · decide</h1>
-  <p class="med" style="margin-top:18px">Two 90-minute learning experiences for DP Mathematics: Applications and Interpretation HL</p>
+  <div class="ahl">Unit 6 · HL</div><h1 style="margin-top:16px">Modelling closeout</h1>
+  <p class="med" style="margin-top:18px">Half-life · logarithmic models and scales · phase shift · piecewise models</p>
   <p class="enrich">SL students: enrichment only — these are not SL requirements.</p>
-</div></section>
-
-<section class="slide" data-section="Home"><div class="slide-inner">
-  <div class="eyebrow">Choose a starting point</div><h2>Session menu</h2>
-  <div class="grid3" style="margin-top:22px">
-    <button class="card menu-card" data-jump="2"><div class="num">01</div><h3>Lesson 1</h3><p class="small">Half-life · natural-logarithmic models · semi-log linearisation</p></button>
-    <button class="card menu-card" data-jump="29"><div class="num">02</div><h3>Lesson 2</h3><p class="small">Log-log as needed · phase shift · piecewise models</p></button>
-    <button class="card menu-card" data-jump="45"><div class="num">✓</div><h3>Final Check</h3><p class="small">Mixed HL modelling synthesis and evidence</p></button>
-  </div>
-</div></section>
-
-<section class="slide" data-section="Lesson 1 · Route"><div class="slide-inner">
-  <div class="eyebrow">Thursday 27 August 2026 · 90 minutes</div><h2>Lesson 1 route</h2>
-  <div class="timeline"><div class="time"><b>10</b>Retrieval</div><div class="time"><b>20</b>Half-life</div><div class="time"><b>20</b>Natural log</div><div class="time"><b>30</b>Log scales</div><div class="time stop"><b>10</b>Checkpoint<br><span class="tiny">No new content</span></div></div>
-  <div class="callout med" style="margin-top:22px"><b>Stopping promise:</b> the final ten minutes are independent consolidation only.</div>
 </div></section>
 
 <section class="slide" data-section="Lesson 1 · Retrieval"><div class="slide-inner">
@@ -50,11 +32,9 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
   <div class="grid2" style="margin-top:20px"><div class="card"><h3>1</h3><p class="med">For \(A(t)=A_0b^t\), which values of \(b\) produce growth or decay?</p></div><div class="card"><h3>2</h3><p class="med">What operation reverses exponentiation?</p></div><div class="card"><h3>3</h3><p class="med">What do \(A_0\) and \(b\) mean in context?</p></div><div class="card"><h3>4</h3><p class="med">Predict the shape and long-term behaviour of exponential decay.</p></div></div>
 </div></section>
 
-<section class="slide" data-section="Lesson 1 · Retrieval"><div class="slide-inner center">
-  <div class="eyebrow">Commit before checking</div><h2>How confident are you?</h2>
-  <div class="row" data-choice-group="retrieval" style="justify-content:center;margin:22px 0"><button class="choice">1 · Guessing</button><button class="choice">2 · Developing</button><button class="choice">3 · Can explain</button></div>
-  <div class="reveal answer" style="width:min(1050px,100%);text-align:left"><p class="med"><b>Growth:</b> \(b&gt;1\). <b>Decay:</b> \(0&lt;b&lt;1\). Logarithms reverse exponentiation. \(A_0\) is the initial amount; \(b\) is the multiplier per time unit. Exponential decay approaches 0 without reaching it in the model.</p></div>
-  <p class="footer-note">Next reveals · Back hides again</p>
+<section class="slide" data-section="Lesson 1 · Retrieval"><div class="slide-inner">
+  <div class="eyebrow">Retrieval answers</div><h2>Exponential growth and decay</h2>
+  <div class="answer" style="margin-top:20px"><p class="med"><b>Growth:</b> \(b&gt;1\). <b>Decay:</b> \(0&lt;b&lt;1\). Logarithms reverse exponentiation. \(A_0\) is the initial amount; \(b\) is the multiplier per time unit. Exponential decay approaches 0 without reaching it in the model.</p></div>
 </div></section>
 
 <section class="slide" data-section="Lesson 1 · Half-life"><div class="slide-inner center">
@@ -113,11 +93,6 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
   <div class="grid2" style="margin-top:22px"><div class="card blue"><h3>Natural-logarithmic model</h3><div class="display small">\[y=a+b\ln(x)\]</div><p class="med">The logarithm is part of the model itself. The original \(y\) changes slowly as \(x\) grows.</p></div><div class="card green"><h3>Logarithmic transformation</h3><div class="display small">\[y=ab^x\Rightarrow \ln y=\ln a+x\ln b\]</div><p class="med">We transform another model to reveal a linear relationship and estimate its parameters.</p></div></div>
 </div></section>
 
-<section class="slide" data-section="Lesson 1 · Log scales"><div class="slide-inner">
-  <div class="eyebrow">Adaptive progression · visible gates</div><h2>Logarithmic representations</h2>
-  <div class="grid3" style="margin-top:22px"><div class="card blue"><div class="num">1</div><h3>Read a log axis</h3><p class="small">Equal ratios · powers of ten</p></div><div class="card green"><div class="num">2</div><h3>Semi-log</h3><p class="small">Exponential model becomes linear</p></div><div class="card amber"><div class="num">3</div><h3>Log-log</h3><p class="small">Optional introduction if secure</p></div></div>
-</div></section>
-
 <section class="slide" data-section="Lesson 1 · Gate 1"><div class="slide-inner">
   <span class="think">Gate 1 · predict first</span><h2 style="margin-top:12px">Where does 50 belong?</h2>
   <div class="graph-shell" style="margin-top:18px"><div class="graph-title"><span>Ordinary logarithmic axis</span><span>base 10 · positive values only</span></div><div class="graph-wrap compact"><svg id="logAxisGraph" role="img" aria-label="Base ten logarithmic axis from 1 to 10000 with 50 marked"></svg></div><div class="axis-note">Horizontal axis: quantity (log scale), domain \(1\le x\le10000\)</div></div>
@@ -151,19 +126,10 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
   <div class="grid2" style="margin-top:20px"><div class="card blue"><h3>Mathematical evidence</h3><p class="med">The transformed points are approximately linear, with gradient \(0.438\) and intercept \(3.178\).</p><div class="reveal display small">\[a=e^{3.178}\approx24.0,\qquad b=e^{0.438}\approx1.55\]</div></div><div class="reveal card amber"><h3>Contextual judgement</h3><p class="med">A possible model is \(y=24(1.55)^x\), but straightness alone does not prove unlimited growth, causal validity, or safe extrapolation.</p></div></div>
 </div></section>
 
-<section class="slide" data-section="Lesson 1 · Teacher gate"><div class="slide-inner center">
-  <div class="gate" style="width:min(1100px,100%)"><div class="eyebrow">Teacher choice before optional Gate 3</div><h2>Stop and consolidate — or continue?</h2><p class="med" style="margin:16px 0">Continue only if students can read the log axis and explain the semi-log gradient and intercept.</p><div class="row" style="justify-content:center"><button class="jump stop" data-jump="24">Stop and consolidate</button><button class="jump primary" data-jump="23">Continue to Gate 3</button></div></div>
-</div></section>
-
 <section class="slide" data-section="Lesson 1 · Optional Gate 3"><div class="slide-inner">
   <div class="eyebrow">Optional introduction · no independent mastery yet</div><h2>Log-log linearisation</h2>
   <div class="formula-panel display">\[y=ax^n\quad\Rightarrow\quad \ln(y)=\ln(a)+n\ln(x)\]</div>
   <div class="grid2" style="margin-top:18px"><div class="card blue"><h3>Plot</h3><p class="med">\(\ln(y)\) against \(\ln(x)\)</p></div><div class="reveal card green"><h3>Read</h3><p class="med">gradient \(=n\), intercept \(=\ln a\), so \(a=e^{\text{intercept}}\)</p></div></div>
-  <div class="row" style="justify-content:flex-end;margin-top:18px"><button class="jump primary" data-jump="24">Begin Lesson 1 checkpoint</button></div>
-</div></section>
-
-<section class="slide checkpoint" data-section="Lesson 1 · Checkpoint"><div class="slide-inner center">
-  <div class="ahl">Independent checkpoint</div><h2 style="margin-top:14px">Last 10 minutes</h2><p class="prompt">No new content. Work independently, then check and self-report.</p><p class="med muted">Questions 1–4 · calculator where useful · explanations in complete sentences</p>
 </div></section>
 
 <section class="slide checkpoint" data-section="Lesson 1 · Checkpoint"><div class="slide-inner">
@@ -181,22 +147,11 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
   <div class="grid2" style="margin-top:18px"><div class="card green"><p class="small"><b>1.</b> \(t_{1/2}=\ln2/0.18\approx3.85\) time units; the modelled quantity halves every 3.85 time units.</p><p class="small" style="margin-top:12px"><b>2.</b> \(y(0)=4\). The model grows without bound but at a decreasing rate.</p></div><div class="card green"><p class="small"><b>3.</b> 50 is farther right. Position depends on the logarithm; the log-midpoint is \(\sqrt{1000}\approx31.6\).</p><p class="small" style="margin-top:12px"><b>4.</b> It suggests a possible exponential relationship. Check residuals, domain, mechanism and whether extrapolation is sensible.</p></div></div>
 </div></section>
 
-<section class="slide checkpoint" data-section="Lesson 1 · Stop"><div class="slide-inner center">
-  <div class="eyebrow">Clean stopping point</div><h2>Lesson 1 evidence</h2><p class="prompt">Choose the statement that best matches your evidence.</p>
-  <div class="row" data-choice-group="lesson1" style="justify-content:center;margin:22px 0"><button class="choice">Secure</button><button class="choice">Developing</button><button class="choice">Need another example</button></div>
-  <p class="med muted">Next lesson can resume directly from Lesson 2 in the session menu.</p>
-</div></section>
-
-<section class="slide" data-section="Lesson 2 · Route"><div class="slide-inner">
-  <div class="eyebrow">Tuesday 1 September 2026 · 90 minutes</div><h2>Lesson 2 route</h2>
-  <div class="timeline"><div class="time"><b>10</b>Retrieval</div><div class="time amber"><b>≤20</b>Log-log<br><span class="tiny">optional</span></div><div class="time"><b>30</b>Phase shift</div><div class="time"><b>15</b>Piecewise</div><div class="time stop"><b>15</b>Synthesis + evidence</div></div>
-  <div class="gate" style="margin-top:20px"><p class="med"><b>Choose the resume path:</b></p><div class="row" style="margin-top:12px"><button class="jump primary" data-jump="30">Retrieve, then decide</button><button class="jump" data-jump="31">Use optional log-log</button><button class="jump" data-jump="34">Start sinusoidal phase shift</button></div></div>
-</div></section>
-
-<section class="slide" data-section="Lesson 2 · Retrieval"><div class="slide-inner">
+<section class="slide" id="lesson2-retrieval" data-section="Lesson 2 · Retrieval"><div class="slide-inner">
   <div class="eyebrow">Lesson 1 retrieval · 10 minutes</div><h2>Four connections</h2>
   <div class="grid2" style="margin-top:20px"><div class="card"><p class="med">1. Explain why half-life does not depend on \(A_0\).</p><p class="med" style="margin-top:13px">2. Compare logarithmic growth with exponential growth.</p></div><div class="card"><p class="med">3. In \(\ln y=c+mx\), recover \(a\) and \(b\) for \(y=ab^x\).</p><p class="med" style="margin-top:13px">4. What can a straight transformed plot support — and what can it not prove?</p></div></div>
   <div class="reveal answer med" style="margin-top:16px">Ratios drive half-life; logarithmic growth slows; \(a=e^c\), \(b=e^m\); transformed linearity is model evidence, not contextual proof.</div>
+  <div class="row" style="justify-content:flex-end;margin-top:14px"><button class="jump" data-target="sinusoidal-start">Log-log already secure? Continue to phase shift</button></div>
 </div></section>
 
 <section class="slide" data-section="Lesson 2 · Optional log-log"><div class="slide-inner">
@@ -210,14 +165,10 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
   <div class="eyebrow">Recover the power model</div><h2>Gradient gives the exponent</h2>
   <div class="formula-panel display">\[\ln M\approx1.163+1.500\ln r\]</div>
   <div class="grid2" style="margin-top:18px"><div class="card blue"><h3>Exponent</h3><div class="display small">\[n=1.500\]</div></div><div class="reveal card green"><h3>Coefficient</h3><div class="display small">\[a=e^{1.163}\approx3.20\]</div></div></div>
-  <div class="reveal answer med" style="margin-top:16px">A possible model is \(M=3.20r^{1.50}\).</div>
+  <div class="reveal answer med" style="margin-top:16px">A possible model is \(M=3.20r^{1.50}\). The transformed line is mathematical evidence for a power model; it does not automatically validate the material mechanism, measurement range or extrapolation.</div>
 </div></section>
 
-<section class="slide" data-section="Lesson 2 · Optional log-log"><div class="slide-inner center">
-  <div class="gate" style="width:min(1100px,100%)"><div class="eyebrow">Log-log stopping gate</div><h2>What has the line established?</h2><p class="med" style="margin:14px 0">It is mathematical evidence for a possible power model. It does not automatically validate the material mechanism, measurement range or extrapolation.</p><div class="row" style="justify-content:center"><button class="jump primary" data-jump="34">Continue to phase shift</button></div></div>
-</div></section>
-
-<section class="slide" data-section="Lesson 2 · Sinusoidal"><div class="slide-inner">
+<section class="slide" id="sinusoidal-start" data-section="Lesson 2 · Sinusoidal"><div class="slide-inner">
   <span class="think">Retrieve what is known</span><h2 style="margin-top:12px">Start without phase shift</h2>
   <div class="formula-panel display">\[f(t)=a\sin(bt)+d\]</div>
   <div class="grid3" style="margin-top:18px"><div class="card"><h3>Amplitude</h3><p class="med">\(|a|\)</p></div><div class="card"><h3>Principal axis</h3><p class="med">\(y=d\)</p></div><div class="card"><h3>Period</h3><p class="med">\(\frac{2\pi}{|b|}\) radians or \(\frac{360^\circ}{|b|}\) degrees</p></div></div>
@@ -283,10 +234,6 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
   <div class="grid3" style="margin-top:20px"><div class="card blue"><h3>Different mechanisms</h3><p class="med">A flat base charge and a distance charge describe different regimes.</p></div><div class="card amber"><h3>Contextual domain</h3><p class="med">Use \(0&lt;d\le d_{\max}\), where \(d_{\max}\) is the service boundary.</p></div><div class="card red"><h3>Possible jumps</h3><p class="med">Tiered prices or entry fees may create discontinuities. That can be contextually correct.</p></div></div>
 </div></section>
 
-<section class="slide" data-section="Final Check"><div class="slide-inner center">
-  <div class="ahl">Mixed HL modelling synthesis</div><h2 style="margin-top:14px">Six outcomes · one modelling habit</h2><p class="prompt">Use mathematics and context together. A fitted pattern is never the whole decision.</p>
-</div></section>
-
 <section class="slide" data-section="Final Check"><div class="slide-inner">
   <div class="eyebrow">Final check · 1 and 2</div><h2>Decay and slow growth</h2>
   <div class="grid2" style="margin-top:20px"><div class="card"><h3>1 · Half-life</h3><div class="display small">\[M(t)=940(0.87)^t\]</div><p class="med">Find and interpret the half-life.</p></div><div class="card"><h3>2 · Natural logarithm</h3><div class="display small">\[R(t)=9+4\ln(t+1)\]</div><p class="med">Find \(R(8)\), then describe what the model says about future growth.</p></div></div>
@@ -312,13 +259,6 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
   <div class="stack" style="margin-top:18px"><div class="card green"><p class="med"><b>4.</b> At \(t=4\), \(H=7\) and the model crosses the principal axis upward. Period \(=2\pi/(\pi/6)=12\) time units.</p></div><div class="reveal card green"><p class="med"><b>5.</b> \(F(8)=6+2(5)=16\). Both pieces give 6 at the switch, so the model is continuous at \(d=3\).</p></div><div class="reveal card amber"><p class="med"><b>6.</b> Do not extrapolate far. Increasing residuals weaken the fit, while the saturation mechanism contradicts unlimited continuation of the transformed linear pattern.</p></div></div>
 </div></section>
 
-<section class="slide" data-section="Final Check · Evidence"><div class="slide-inner center">
-  <div class="eyebrow">Final evidence</div><h2>What can you now defend?</h2>
-  <div class="row" data-choice-group="final" style="justify-content:center;margin:20px 0"><button class="choice">Secure</button><button class="choice">Developing</button><button class="choice">Need another example</button></div>
-  <p class="med" style="margin-bottom:18px">Name one representation you can interpret and one modelling decision you can justify.</p>
-  <a class="toddle" href="#" aria-disabled="true" title="Insert the verified Toddle formative assessment URL here">Toddle formative assessment · verified link to be inserted</a>
-  <p class="footer-note">No URL has been invented. Replace the placeholder only with the verified Toddle link.</p>
-</div></section>
 </main>
 
 <div id="controls" aria-label="Slide navigation"><button class="ctrl" id="resetBtn" title="Reset reveals on this slide">Reset</button><button class="ctrl" id="prevBtn" aria-label="Previous slide">Back</button><span class="counter" id="counter"></span><button class="ctrl primary" id="nextBtn" aria-label="Next slide or reveal">Next</button><button class="ctrl" id="fsBtn" aria-label="Toggle fullscreen" title="Fullscreen">⛶</button></div>
@@ -326,14 +266,11 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
 <script>
 const slides=[...document.querySelectorAll('.slide')],counter=document.getElementById('counter'),progress=document.getElementById('progress'),sectionChip=document.getElementById('sectionChip'),live=document.getElementById('live');let index=0;
 function currentReveals(){return [...slides[index].querySelectorAll('.reveal')]}
-function setSession(section){document.querySelectorAll('.session-bar [data-session]').forEach(b=>b.classList.toggle('active-session',section.startsWith(b.dataset.session)));}
-function show(i,{preserve=false}={}){i=Math.max(0,Math.min(slides.length-1,i));if(!preserve)slides[index].querySelectorAll('.reveal.shown').forEach(x=>x.classList.remove('shown'));slides[index].classList.remove('active');index=i;slides[index].classList.add('active');slides[index].scrollTop=0;const section=slides[index].dataset.section||'';counter.textContent=`${index+1} / ${slides.length}`;progress.style.width=`${((index+1)/slides.length)*100}%`;sectionChip.textContent=section;setSession(section);live.textContent=`Slide ${index+1} of ${slides.length}: ${section}`;history.replaceState(null,'',`#slide-${index+1}`)}
+function show(i,{preserve=false}={}){i=Math.max(0,Math.min(slides.length-1,i));if(!preserve)slides[index].querySelectorAll('.reveal.shown').forEach(x=>x.classList.remove('shown'));slides[index].classList.remove('active');index=i;slides[index].classList.add('active');slides[index].scrollTop=0;const section=slides[index].dataset.section||'';counter.textContent=`${index+1} / ${slides.length}`;progress.style.width=`${((index+1)/slides.length)*100}%`;sectionChip.textContent=section;live.textContent=`Slide ${index+1} of ${slides.length}: ${section}`;history.replaceState(null,'',`#slide-${index+1}`)}
 function next(){const r=currentReveals().find(x=>!x.classList.contains('shown'));if(r){r.classList.add('shown');return}show(index+1)}
 function prev(){const shown=currentReveals().filter(x=>x.classList.contains('shown'));if(shown.length){shown.at(-1).classList.remove('shown');return}show(index-1)}
 document.getElementById('nextBtn').onclick=next;document.getElementById('prevBtn').onclick=prev;document.getElementById('resetBtn').onclick=()=>currentReveals().forEach(x=>x.classList.remove('shown'));document.getElementById('fsBtn').onclick=()=>document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();
-document.querySelectorAll('[data-jump]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();show(+b.dataset.jump)}));
-document.querySelectorAll('[data-choice-group]').forEach(g=>g.querySelectorAll('.choice').forEach(b=>b.addEventListener('click',()=>{g.querySelectorAll('.choice').forEach(x=>x.classList.remove('selected'));b.classList.add('selected')})));
-document.querySelector('.toddle').addEventListener('click',e=>e.preventDefault());
+document.querySelectorAll('[data-target]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();const target=document.getElementById(b.dataset.target);if(target)show(slides.indexOf(target))}));
 document.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName))return;if(['ArrowRight',' ','Enter','PageDown'].includes(e.key)){e.preventDefault();next()}else if(['ArrowLeft','Backspace','PageUp'].includes(e.key)){e.preventDefault();prev()}else if(e.key==='Home'){e.preventDefault();show(0)}else if(e.key==='End'){e.preventDefault();show(slides.length-1)}else if(e.key.toLowerCase()==='f')document.getElementById('fsBtn').click()});
 const NS='http://www.w3.org/2000/svg';function el(n,a={}){const x=document.createElementNS(NS,n);Object.entries(a).forEach(([k,v])=>x.setAttribute(k,v));return x}function txt(s,x,y,t,cls='svgtext',anchor='middle'){const z=el('text',{x,y,class:cls,'text-anchor':anchor});z.textContent=t;s.appendChild(z)}
 function chart(svg,{xmin,xmax,ymin,ymax,xLabel,yLabel,xticks=6,yticks=5,logX=false}){const W=760,H=380,L=64,R=22,T=24,B=55;svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.replaceChildren();const sx=x=>L+((logX?Math.log10(x):x)-(logX?Math.log10(xmin):xmin))/((logX?Math.log10(xmax):xmax)-(logX?Math.log10(xmin):xmin))*(W-L-R),sy=y=>H-B-(y-ymin)/(ymax-ymin)*(H-T-B);for(let i=0;i<=yticks;i++){let y=ymin+(ymax-ymin)*i/yticks,py=sy(y);svg.appendChild(el('line',{x1:L,y1:py,x2:W-R,y2:py,class:'gridline'}));txt(svg,L-8,py+5,Number.isInteger(y)?y:y.toFixed(1),'svgtext','end')}if(logX){[1,10,100,1000,10000].filter(v=>v>=xmin&&v<=xmax).forEach(v=>{let x=sx(v);svg.appendChild(el('line',{x1:x,y1:T,x2:x,y2:H-B,class:'gridline'}));txt(svg,x,H-B+22,String(v))})}else for(let i=0;i<=xticks;i++){let x=xmin+(xmax-xmin)*i/xticks,px=sx(x);svg.appendChild(el('line',{x1:px,y1:T,x2:px,y2:H-B,class:'gridline'}));txt(svg,px,H-B+22,Number.isInteger(x)?x:x.toFixed(1))}svg.append(el('line',{x1:L,y1:H-B,x2:W-R,y2:H-B,class:'axis'}),el('line',{x1:L,y1:H-B,x2:L,y2:T,class:'axis'}));txt(svg,(L+W-R)/2,H-10,xLabel,'svglabel');const yl=el('text',{x:16,y:(T+H-B)/2,class:'svglabel','text-anchor':'middle',transform:`rotate(-90 16 ${(T+H-B)/2})`});yl.textContent=yLabel;svg.appendChild(yl);return{sx,sy,W,H,L,R,T,B}}
