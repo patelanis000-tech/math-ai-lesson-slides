@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Two student-facing DP Mathematics: Applications and Interpretation HL lessons closing Unit 6 mathematical modelling.">
+<title>Unit 6 · HL Modelling Closeout</title>
+<script>
+window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg:{fontCache:'global'},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+:root{--bg:#f6f7f9;--ink:#17191c;--muted:#65707b;--line:#d5dae0;--blue:#2d70b3;--red:#c74440;--green:#388c46;--amber:#b36b00;--panel:#fff;--grid:#e8ebef;--soft:#eef5fb;--shadow:0 10px 28px rgba(30,40,50,.09)}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif}button,a{font:inherit}.slide{position:absolute;inset:0;display:none;padding:54px 46px 54px;overflow:auto}.slide.active{display:flex}.slide-inner{width:min(1480px,100%);min-height:100%;margin:auto;display:flex;flex-direction:column;justify-content:center}.center{text-align:center;align-items:center}.eyebrow{font-size:14px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:9px}.ahl{display:inline-flex;align-items:center;gap:8px;background:#17202a;color:#fff;border-radius:999px;padding:7px 12px;font-size:13px;font-weight:900;letter-spacing:.07em;text-transform:uppercase}.ahl::before{content:"AHL";background:var(--blue);border-radius:999px;padding:3px 7px}.enrich{color:var(--muted);font-size:15px;margin-top:8px}h1,h2,h3,p{margin:0}h1{font-size:clamp(42px,5.4vw,82px);line-height:1.02;letter-spacing:-.035em}h2{font-size:clamp(31px,3.8vw,58px);line-height:1.08;letter-spacing:-.025em}h3{font-size:clamp(21px,2.2vw,34px);line-height:1.15}.med{font-size:clamp(21px,2.05vw,32px);line-height:1.35}.small{font-size:clamp(16px,1.42vw,22px);line-height:1.4}.tiny{font-size:clamp(13px,1.05vw,17px);line-height:1.35;color:var(--muted)}.muted{color:var(--muted)}.prompt{font-size:clamp(25px,2.65vw,41px);line-height:1.22;font-weight:780;text-align:center;margin-top:18px}.math{font-family:"STIX Two Math","Cambria Math","Times New Roman",serif}.display{font-size:clamp(28px,3.5vw,54px);text-align:center;margin:10px auto}.display.small{font-size:clamp(22px,2.35vw,36px)}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:stretch}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.stack{display:flex;flex-direction:column;gap:14px}.row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:19px;box-shadow:var(--shadow)}.card.blue{border-left:6px solid var(--blue)}.card.green{border-left:6px solid var(--green)}.card.amber{border-left:6px solid var(--amber)}.card.red{border-left:6px solid var(--red)}.think{display:inline-block;background:#fff3d2;border:1px solid #e7cf8e;border-radius:999px;padding:7px 13px;font-weight:900;color:#6b5312}.callout{border-left:5px solid var(--blue);background:var(--soft);padding:14px 18px;border-radius:0 12px 12px 0}.list{display:grid;gap:10px}.list-item{display:flex;gap:11px;align-items:flex-start;font-size:clamp(19px,1.85vw,28px);line-height:1.3}.bullet{width:10px;height:10px;border-radius:50%;background:var(--blue);margin-top:.55em;flex:none}.reveal{opacity:0;transform:translateY(8px);max-height:0;overflow:hidden;pointer-events:none;transition:opacity .22s,transform .22s,max-height .28s}.reveal.shown{opacity:1;transform:none;max-height:900px;pointer-events:auto}.answer{border-left:5px solid var(--green);background:#edf8f0;padding:14px 17px;border-radius:0 12px 12px 0}.choice,.jump,.reset{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:999px;padding:10px 15px;font-weight:850;cursor:pointer;box-shadow:0 5px 15px rgba(20,30,40,.08)}.choice:hover,.jump:hover,.reset:hover{border-color:var(--blue)}.choice.selected{background:var(--soft);border:2px solid var(--blue);color:#174a7c}.jump.primary{background:var(--blue);color:#fff;border-color:var(--blue)}.jump.stop{background:#7f1d1d;color:#fff;border-color:#7f1d1d}.menu-card{cursor:pointer;text-align:left;min-height:190px;transition:.15s transform,.15s box-shadow}.menu-card:hover{transform:translateY(-3px);box-shadow:0 18px 36px rgba(30,40,50,.14)}.num{font-size:clamp(43px,6.4vw,88px);line-height:.9;font-weight:900;color:var(--blue)}.timeline{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:20px}.time{background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px;text-align:center}.time b{display:block;color:var(--blue);font-size:clamp(20px,2vw,30px)}.time.stop{border:2px solid var(--green);background:#edf8f0}.gate{border:2px dashed var(--blue);background:#f8fbff;border-radius:20px;padding:22px}.dataset{width:100%;border-collapse:collapse;font-size:clamp(15px,1.3vw,20px)}.dataset th,.dataset td{padding:8px 9px;border:1px solid var(--line);text-align:center}.dataset th{background:#f1f4f7}.graph-shell{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}.graph-title{display:flex;justify-content:space-between;gap:10px;padding:9px 13px;border-bottom:1px solid var(--line);font-size:13px;font-weight:800;color:var(--muted);background:#fafbfc}.graph-wrap{height:min(43vh,390px);min-height:240px}.graph-wrap.compact{height:min(35vh,310px);min-height:210px}.graph-wrap svg{width:100%;height:100%;display:block;background:#fff}.axis{stroke:#66717b;stroke-width:1.6}.gridline{stroke:var(--grid);stroke-width:1}.curve{fill:none;stroke:var(--blue);stroke-width:4;stroke-linecap:round;stroke-linejoin:round}.point{fill:#fff;stroke:var(--red);stroke-width:3}.guide{stroke:#8a939c;stroke-width:1.4;stroke-dasharray:6 6}.svgtext{fill:#42484f;font:650 14px Inter,system-ui,sans-serif}.svglabel{fill:#20262c;font:800 15px Inter,system-ui,sans-serif}.axis-note{font-size:13px;color:var(--muted);padding:6px 12px 10px}.formula-panel{background:#fff;border:1px solid var(--line);border-radius:15px;padding:13px 17px;text-align:center;font-size:clamp(22px,2.2vw,34px)}.tech{background:#17202a;color:#fff;border-radius:16px;padding:15px 17px}.tech strong{color:#9fd3ff}.checkpoint{border-top:8px solid var(--green)}.session-bar{position:fixed;top:10px;left:12px;z-index:50;display:flex;gap:6px;align-items:center;background:rgba(246,247,249,.91);border:1px solid rgba(213,218,224,.9);border-radius:999px;padding:5px;backdrop-filter:blur(8px)}.session-bar button{border:0;background:transparent;border-radius:999px;padding:7px 10px;font-size:12px;font-weight:850;color:#56616c;cursor:pointer}.session-bar button:hover,.session-bar button.active-session{background:#fff;color:var(--blue);box-shadow:0 3px 10px rgba(20,30,40,.08)}#controls{position:fixed;right:12px;bottom:10px;z-index:60;display:flex;gap:7px;align-items:center}.ctrl{border:1px solid #cbd1d7;background:#fff;color:#17202a;border-radius:10px;min-width:42px;height:40px;padding:0 12px;cursor:pointer;font-weight:850}.ctrl.primary{background:#17202a;color:#fff;border-color:#17202a}.counter{font-size:12px;color:#68737d;background:rgba(255,255,255,.9);border:1px solid var(--line);border-radius:999px;padding:7px 10px;font-weight:800}.section-chip{position:fixed;right:14px;top:12px;z-index:45;background:rgba(255,255,255,.9);border:1px solid var(--line);border-radius:999px;padding:7px 11px;font-size:12px;font-weight:850;color:var(--blue)}.progress-track{position:fixed;bottom:0;left:0;right:0;height:5px;background:#e2e5e8;z-index:61}.progress{height:100%;width:0;background:var(--blue);transition:width .2s}.status{min-height:24px;color:var(--green);font-weight:850}.footer-note{margin-top:12px;color:var(--muted);font-size:14px}.toddle{display:inline-flex;align-items:center;gap:10px;border:2px dashed var(--blue);border-radius:16px;padding:15px 20px;color:var(--blue);font-weight:900;text-decoration:none;background:#fff}.toddle[aria-disabled="true"]{cursor:not-allowed}.screen-reader{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:900px){.slide{padding:62px 18px 62px}.grid2,.grid3,.grid4,.timeline{grid-template-columns:1fr}.slide-inner{justify-content:flex-start}.center{justify-content:center}.graph-wrap,.graph-wrap.compact{height:300px;min-height:260px}.session-bar{left:8px;right:8px;overflow-x:auto;border-radius:15px}.section-chip{display:none}.menu-card{min-height:auto}.timeline{margin-bottom:20px}.dataset{font-size:11px;table-layout:fixed}.dataset th,.dataset td{padding:4px 2px;overflow-wrap:anywhere}.ctrl{height:42px;min-width:44px;padding:0 10px}#controls{right:8px}.display{font-size:clamp(26px,8vw,44px)}}
+@media(max-height:690px) and (min-width:901px){.slide{padding-top:46px;padding-bottom:46px}.card{padding:14px}.graph-wrap{height:300px;min-height:220px}.med{font-size:clamp(19px,1.8vw,28px)}.small{font-size:clamp(15px,1.2vw,19px)}.timeline{margin-top:12px}.time{padding:9px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+@media print{html,body{height:auto;overflow:visible;background:#fff}.slide{position:relative;display:flex!important;min-height:100vh;page-break-after:always}.session-bar,#controls,.progress-track,.section-chip{display:none!important}.reveal{opacity:1;transform:none;max-height:none;overflow:visible}}
+</style>
+</head>
+<body>
+<nav class="session-bar" aria-label="Session menu">
+  <button data-jump="0">Home</button><button data-jump="2" data-session="Lesson 1">Lesson 1</button><button data-jump="29" data-session="Lesson 2">Lesson 2</button><button data-jump="45" data-session="Final Check">Final Check</button>
+</nav>
+<div class="section-chip" id="sectionChip" aria-live="polite"></div>
+<main id="deck">
+<section class="slide active" data-section="Home"><div class="slide-inner center">
+  <div class="ahl">HL modelling closeout</div><h1 style="margin-top:16px">Represent · transform<br>interpret · decide</h1>
+  <p class="med" style="margin-top:18px">Two 90-minute learning experiences for DP Mathematics: Applications and Interpretation HL</p>
+  <p class="enrich">SL students: enrichment only — these are not SL requirements.</p>
+</div></section>
+
+<section class="slide" data-section="Home"><div class="slide-inner">
+  <div class="eyebrow">Choose a starting point</div><h2>Session menu</h2>
+  <div class="grid3" style="margin-top:22px">
+    <button class="card menu-card" data-jump="2"><div class="num">01</div><h3>Lesson 1</h3><p class="small">Half-life · natural-logarithmic models · semi-log linearisation</p></button>
+    <button class="card menu-card" data-jump="29"><div class="num">02</div><h3>Lesson 2</h3><p class="small">Log-log as needed · phase shift · piecewise models</p></button>
+    <button class="card menu-card" data-jump="45"><div class="num">✓</div><h3>Final Check</h3><p class="small">Mixed HL modelling synthesis and evidence</p></button>
+  </div>
+</div></section>
+
+<section class="slide" data-section="Lesson 1 · Route"><div class="slide-inner">
+  <div class="eyebrow">Thursday 27 August 2026 · 90 minutes</div><h2>Lesson 1 route</h2>
+  <div class="timeline"><div class="time"><b>10</b>Retrieval</div><div class="time"><b>20</b>Half-life</div><div class="time"><b>20</b>Natural log</div><div class="time"><b>30</b>Log scales</div><div class="time stop"><b>10</b>Checkpoint<br><span class="tiny">No new content</span></div></div>
+  <div class="callout med" style="margin-top:22px"><b>Stopping promise:</b> the final ten minutes are independent consolidation only.</div>
+</div></section>
+
+<section class="slide" data-section="Lesson 1 · Retrieval"><div class="slide-inner">
+  <div class="eyebrow">Retrieval · 4 quick prompts</div><h2>Bring the model back</h2>
+  <div class="grid2" style="margin-top:20px"><div class="card"><h3>1</h3><p class="med">For \(A(t)=A_0b^t\), which values of \(b\) produce growth or decay?</p></div><div class="card"><h3>2</h3><p class="med">What operation reverses exponentiation?</p></div><div class="card"><h3>3</h3><p class="med">What do \(A_0\) and \(b\) mean in context?</p></div><div class="card"><h3>4</h3><p class="med">Predict the shape and long-term behaviour of exponential decay.</p></div></div>
+</div></section>
+
+<section class="slide" data-section="Lesson 1 · Retrieval"><div class="slide-inner center">
+  <div class="eyebrow">Commit before checking</div><h2>How confident are you?</h2>
+  <div class="row" data-choice-group="retrieval" style="justify-content:center;margin:22px 0"><button class="choice">1 · Guessing</button><button class="choice">2 · Developing</button><button class="choice">3 · Can explain</button></div>
+  <div class="reveal answer" style="width:min(1050px,100%);text-align:left"><p class="med"><b>Growth:</b> \(b&gt;1\). <b>Decay:</b> \(0&lt;b&lt;1\). Logarithms reverse exponentiation. \(A_0\) is the initial amount; \(b\) is the multiplier per time unit. Exponential decay approaches 0 without reaching it in the model.</p></div>
+  <p class="footer-note">Next reveals · Back hides again</p>
+</div></section>
+
+<section class="slide" data-section="Lesson 1 · Half-life"><div class="slide-inner center">
+  <span class="think">Predict first</span><h2 style="margin-top:14px">A half-life is six hours</h2>
+  <p class="prompt">What fraction remains after 6, 12, 18 and 24 hours?</p>
+  <div class="grid4" style="width:min(1050px,100%);margin-top:24px"><div class="card"><div class="num">6</div><p>hours</p></div><div class="card"><div class="num">12</div><p>hours</p></div><div class="card"><div class="num">18</div><p>hours</p></div><div class="card"><div class="num">24</div><p>hours</p></div></div>
+</div></section>
+
+<section class="slide" data-section="Lesson 1 · Half-life"><div class="slide-inner">
+  <div class="eyebrow">Repeated multiplicative decay</div><h2>Each interval keeps one half</h2>
+  <div class="formula-panel display">\(1\;\to\;\frac12\;\to\;\frac14\;\to\;\frac18\;\to\;\frac1{16}\)</div>
+  <div class="grid2" style="margin-top:20px"><div class="card blue"><h3>Meaning</h3><p class="med">Equal time intervals create equal <b>ratios</b>, not equal decreases.</p></div><div class="reveal card green"><h3>Invariant</h3><p class="med">For exponential decay, half-life is constant and does <b>not</b> depend on the initial amount.</p></div></div>
+</div></section>
+
+<section class="slide" data-section="Lesson 1 · Half-life"><div class="slide-inner">
+  <div class="eyebrow">Two equivalent forms</div><h2>Choose the form that fits the information</h2>
+  <div class="grid2" style="margin-top:22px"><div class="card blue center"><h3>Multiplier form</h3><div class="display small">\[A(t)=A_0b^t\]</div><p class="med">For \(0&lt;b&lt;1\):</p><div class="formula-panel">\[t_{1/2}=\frac{\ln(0.5)}{\ln(b)}\]</div></div><div class="card green center"><h3>Continuous-rate form</h3><div class="display small">\[A(t)=A_0e^{-kt}\]</div><p class="med">For \(k&gt;0\):</p><div class="formula-panel">\[t_{1/2}=\frac{\ln 2}{k}\]</div></div></div>
+</div></section>
+
+<section class="slide" data-section="Lesson 1 · Half-life"><div class="slide-inner center">
+  <span class="think">Predict before calculating</span><h2 style="margin-top:14px">When will half remain?</h2>
+  <div class="display">\[A(t)=800(0.92)^t\]</div>
+  <p class="prompt">Will the half-life be closer to 5, 10 or 20 time units? Explain your estimate.</p>
+</div></section>
+
+<section class="slide" data-section="Lesson 1 · Half-life"><div class="slide-inner">
+  <div class="eyebrow">Worked example</div><h2>Make “half” an equation</h2>
+  <div class="grid2" style="margin-top:20px"><div class="card"><p class="med">Half of 800 is 400:</p><div class="display small">\[800(0.92)^t=400\]</div><div class="reveal"><div class="display small">\[(0.92)^t=0.5\]</div></div></div><div class="reveal answer"><div class="display small">\[t=\frac{\ln(0.5)}{\ln(0.92)}\approx 8.31\]</div><p class="med"><b>Interpretation:</b> the modelled amount halves every 8.31 time units, regardless of the starting amount.</p></div></div>
+</div></section>
+
+<section class="slide" data-section="Lesson 1 · Half-life"><div class="slide-inner">
+  <span class="think">Unfamiliar attempt · predict first</span><h2 style="margin-top:12px">Write the model in \(e^{-kt}\) form</h2>
+  <div class="card" style="margin-top:18px"><p class="med">A tracer begins at 450 mg and has a half-life of 11 days.</p><p class="prompt">Find \(k\), write a model, then explain what the model predicts after 22 days.</p></div>
+  <div class="reveal answer" style="margin-top:16px"><div class="display small">\[k=\frac{\ln2}{11}\approx0.0630,\qquad A(t)=450e^{-0.0630t}\]</div><p class="med">After 22 days, two half-lives have passed, so about \(450(\tfrac12)^2=112.5\) mg remains.</p></div>
+</div></section>
+
+<section class="slide" data-section="Lesson 1 · Natural log"><div class="slide-inner">
+  <span class="think">Predict the pattern</span><h2 style="margin-top:12px">A slow-growth model</h2>
+  <div class="grid2" style="margin-top:20px"><div class="card blue"><p class="med">A skill score is modelled by</p><div class="display small">\[S(t)=12+5\ln(t+1),\qquad t\ge0\]</div><p class="small">\(t\): weeks of practice · \(S\): score points</p></div><div class="card"><h3>Before calculating</h3><p class="med">Will equal increases in \(t\) create equal increases in \(S\)?</p><p class="med" style="margin-top:12px">Estimate \(S(0)\), \(S(4)\), \(S(20)\).</p></div></div>
+</div></section>
+
+<section class="slide" data-section="Lesson 1 · Natural log"><div class="slide-inner">
+  <div class="eyebrow">Calculate · then interpret</div><h2>Growth continues, but slows</h2>
+  <div class="grid3" style="margin-top:20px"><div class="card center"><h3>\(t=0\)</h3><div class="display small">\(S(0)=12\)</div></div><div class="reveal card center"><h3>\(t=4\)</h3><div class="display small">\(S(4)=12+5\ln5\approx20.0\)</div></div><div class="reveal card center"><h3>\(t=20\)</h3><div class="display small">\(S(20)=12+5\ln21\approx27.2\)</div></div></div>
+  <div class="reveal callout med" style="margin-top:18px">The score keeps increasing, but the same additional practice produces smaller and smaller gains.</div>
+</div></section>
+
+<section class="slide" data-section="Lesson 1 · Natural log"><div class="slide-inner">
+  <span class="think">Solve and defend the domain</span><h2 style="margin-top:12px">When does the model reach 25?</h2>
+  <div class="grid2" style="margin-top:20px"><div class="card"><div class="display small">\[12+5\ln(t+1)=25\]</div><p class="prompt">Undo each operation. Then state both mathematical and contextual domains.</p></div><div class="reveal answer"><div class="display small">\[\ln(t+1)=2.6\]</div><div class="display small">\[t=e^{2.6}-1\approx12.5\]</div><p class="small"><b>Mathematical domain:</b> \(t&gt;-1\). <b>Contextual domain:</b> \(t\ge0\), restricted further to the period for which practice data make the model credible.</p></div></div>
+  <div class="reveal card amber" style="margin-top:16px"><p class="med"><b>Long term:</b> logarithmic growth is unbounded but progressively slower; exponential growth accelerates and eventually dominates.</p></div>
+</div></section>
+
+<section class="slide" data-section="Lesson 1 · Natural log"><div class="slide-inner">
+  <div class="eyebrow">Do not confuse these</div><h2>Model family vs transformation</h2>
+  <div class="grid2" style="margin-top:22px"><div class="card blue"><h3>Natural-logarithmic model</h3><div class="display small">\[y=a+b\ln(x)\]</div><p class="med">The logarithm is part of the model itself. The original \(y\) changes slowly as \(x\) grows.</p></div><div class="card green"><h3>Logarithmic transformation</h3><div class="display small">\[y=ab^x\Rightarrow \ln y=\ln a+x\ln b\]</div><p class="med">We transform another model to reveal a linear relationship and estimate its parameters.</p></div></div>
+</div></section>
+
+<section class="slide" data-section="Lesson 1 · Log scales"><div class="slide-inner">
+  <div class="eyebrow">Adaptive progression · visible gates</div><h2>Logarithmic representations</h2>
+  <div class="grid3" style="margin-top:22px"><div class="card blue"><div class="num">1</div><h3>Read a log axis</h3><p class="small">Equal ratios · powers of ten</p></div><div class="card green"><div class="num">2</div><h3>Semi-log</h3><p class="small">Exponential model becomes linear</p></div><div class="card amber"><div class="num">3</div><h3>Log-log</h3><p class="small">Optional introduction if secure</p></div></div>
+</div></section>
+
+<section class="slide" data-section="Lesson 1 · Gate 1"><div class="slide-inner">
+  <span class="think">Gate 1 · predict first</span><h2 style="margin-top:12px">Where does 50 belong?</h2>
+  <div class="graph-shell" style="margin-top:18px"><div class="graph-title"><span>Ordinary logarithmic axis</span><span>base 10 · positive values only</span></div><div class="graph-wrap compact"><svg id="logAxisGraph" role="img" aria-label="Base ten logarithmic axis from 1 to 10000 with 50 marked"></svg></div><div class="axis-note">Horizontal axis: quantity (log scale), domain \(1\le x\le10000\)</div></div>
+  <p class="prompt">Is 50 halfway between 10 and 100? What does equal spacing mean here?</p>
+</div></section>
+
+<section class="slide" data-section="Lesson 1 · Gate 1"><div class="slide-inner">
+  <div class="eyebrow">Gate 1 · interpretation</div><h2>Equal distances represent equal ratios</h2>
+  <div class="grid3" style="margin-top:20px"><div class="card blue"><h3>Spacing</h3><p class="med">\(1,10,100,1000,10000\) are equally spaced because each step multiplies by 10.</p></div><div class="reveal card green"><h3>50 is not halfway</h3><p class="med">The midpoint between 10 and 100 on a log axis is \(\sqrt{10\cdot100}\approx31.6\).</p></div><div class="reveal card red"><h3>Restriction</h3><p class="med">Zero and negative values cannot appear on an ordinary logarithmic axis.</p></div></div>
+</div></section>
+
+<section class="slide" data-section="Lesson 1 · Gate 2"><div class="slide-inner center">
+  <span class="think">Gate 2 · predict the transformation</span><h2 style="margin-top:12px">How can a curve become a line?</h2>
+  <div class="display">\[y=ab^x\]</div><p class="prompt">Take natural logs of both sides. Which parameter will control the gradient?</p>
+</div></section>
+
+<section class="slide" data-section="Lesson 1 · Gate 2"><div class="slide-inner">
+  <div class="eyebrow">Semi-log linearisation</div><h2>Plot \(\ln(y)\) against \(x\)</h2>
+  <div class="formula-panel display">\[\ln(y)=\ln(a)+x\ln(b)\]</div>
+  <div class="grid2" style="margin-top:18px"><div class="card blue"><h3>Straight-line form</h3><div class="display small">\[Y=c+mx\]</div><p class="med">\(Y=\ln y\), \(c=\ln a\), \(m=\ln b\)</p></div><div class="reveal card green"><h3>Recover the model</h3><div class="display small">\[a=e^{\text{intercept}},\qquad b=e^{\text{gradient}}\]</div></div></div>
+</div></section>
+
+<section class="slide" data-section="Lesson 1 · Gate 2"><div class="slide-inner">
+  <span class="think">Predict before viewing the transform</span><h2 style="margin-top:12px">A growing culture</h2>
+  <table class="dataset" aria-label="Culture mass dataset"><thead><tr><th>Time, \(x\) (h)</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr></thead><tbody><tr><th>Mass, \(y\) (mg)</th><td>24.0</td><td>37.2</td><td>57.7</td><td>89.4</td><td>138.5</td><td>214.7</td><td>332.8</td></tr></tbody></table>
+  <div class="grid2" style="margin-top:16px"><div class="graph-shell"><div class="graph-title"><span>Original representation</span><span>linear–linear</span></div><div class="graph-wrap compact"><svg id="semiOriginal" role="img" aria-label="Culture mass against time on linear axes"></svg></div><div class="axis-note">\(x\): time (h), linear, \(0\le x\le6\) · \(y\): mass (mg), linear</div></div><div class="graph-shell"><div class="graph-title"><span>Transformed representation</span><span>semi-log linearisation</span></div><div class="graph-wrap compact"><svg id="semiTransformed" role="img" aria-label="Natural logarithm of culture mass against time"></svg></div><div class="axis-note">\(x\): time (h), linear · vertical: \(\ln(y/\mathrm{mg})\), \(3.0\le\ln y\le6.0\)</div></div></div>
+</div></section>
+
+<section class="slide" data-section="Lesson 1 · Gate 2"><div class="slide-inner">
+  <div class="eyebrow">What does straightness suggest?</div><h2>Evidence, not automatic validity</h2>
+  <div class="grid2" style="margin-top:20px"><div class="card blue"><h3>Mathematical evidence</h3><p class="med">The transformed points are approximately linear, with gradient \(0.438\) and intercept \(3.178\).</p><div class="reveal display small">\[a=e^{3.178}\approx24.0,\qquad b=e^{0.438}\approx1.55\]</div></div><div class="reveal card amber"><h3>Contextual judgement</h3><p class="med">A possible model is \(y=24(1.55)^x\), but straightness alone does not prove unlimited growth, causal validity, or safe extrapolation.</p></div></div>
+</div></section>
+
+<section class="slide" data-section="Lesson 1 · Teacher gate"><div class="slide-inner center">
+  <div class="gate" style="width:min(1100px,100%)"><div class="eyebrow">Teacher choice before optional Gate 3</div><h2>Stop and consolidate — or continue?</h2><p class="med" style="margin:16px 0">Continue only if students can read the log axis and explain the semi-log gradient and intercept.</p><div class="row" style="justify-content:center"><button class="jump stop" data-jump="24">Stop and consolidate</button><button class="jump primary" data-jump="23">Continue to Gate 3</button></div></div>
+</div></section>
+
+<section class="slide" data-section="Lesson 1 · Optional Gate 3"><div class="slide-inner">
+  <div class="eyebrow">Optional introduction · no independent mastery yet</div><h2>Log-log linearisation</h2>
+  <div class="formula-panel display">\[y=ax^n\quad\Rightarrow\quad \ln(y)=\ln(a)+n\ln(x)\]</div>
+  <div class="grid2" style="margin-top:18px"><div class="card blue"><h3>Plot</h3><p class="med">\(\ln(y)\) against \(\ln(x)\)</p></div><div class="reveal card green"><h3>Read</h3><p class="med">gradient \(=n\), intercept \(=\ln a\), so \(a=e^{\text{intercept}}\)</p></div></div>
+  <div class="row" style="justify-content:flex-end;margin-top:18px"><button class="jump primary" data-jump="24">Begin Lesson 1 checkpoint</button></div>
+</div></section>
+
+<section class="slide checkpoint" data-section="Lesson 1 · Checkpoint"><div class="slide-inner center">
+  <div class="ahl">Independent checkpoint</div><h2 style="margin-top:14px">Last 10 minutes</h2><p class="prompt">No new content. Work independently, then check and self-report.</p><p class="med muted">Questions 1–4 · calculator where useful · explanations in complete sentences</p>
+</div></section>
+
+<section class="slide checkpoint" data-section="Lesson 1 · Checkpoint"><div class="slide-inner">
+  <div class="eyebrow">Checkpoint · 1 and 2</div><h2>Calculate and interpret</h2>
+  <div class="grid2" style="margin-top:20px"><div class="card"><h3>1 · Half-life</h3><div class="display small">\[P(t)=600e^{-0.18t}\]</div><p class="med">Find the half-life and interpret it.</p></div><div class="card"><h3>2 · Natural log</h3><div class="display small">\[y=4+7\ln(x+1)\]</div><p class="med">Interpret the initial value and describe the long-term behaviour for \(x\ge0\).</p></div></div>
+</div></section>
+
+<section class="slide checkpoint" data-section="Lesson 1 · Checkpoint"><div class="slide-inner">
+  <div class="eyebrow">Checkpoint · 3 and 4</div><h2>Represent and explain</h2>
+  <div class="grid2" style="margin-top:20px"><div class="card"><h3>3 · Log axis</h3><p class="med">On a base-10 log axis, which is farther right: 20 or 50? Explain why 50 is not halfway from 10 to 100.</p></div><div class="card"><h3>4 · Semi-log evidence</h3><p class="med">A graph of \(\ln(y)\) against \(x\) is approximately straight. What does this suggest? Why is contextual evidence still needed?</p></div></div>
+</div></section>
+
+<section class="slide checkpoint" data-section="Lesson 1 · Checkpoint"><div class="slide-inner">
+  <div class="eyebrow">Checkpoint answers</div><h2>Check, correct, explain</h2>
+  <div class="grid2" style="margin-top:18px"><div class="card green"><p class="small"><b>1.</b> \(t_{1/2}=\ln2/0.18\approx3.85\) time units; the modelled quantity halves every 3.85 time units.</p><p class="small" style="margin-top:12px"><b>2.</b> \(y(0)=4\). The model grows without bound but at a decreasing rate.</p></div><div class="card green"><p class="small"><b>3.</b> 50 is farther right. Position depends on the logarithm; the log-midpoint is \(\sqrt{1000}\approx31.6\).</p><p class="small" style="margin-top:12px"><b>4.</b> It suggests a possible exponential relationship. Check residuals, domain, mechanism and whether extrapolation is sensible.</p></div></div>
+</div></section>
+
+<section class="slide checkpoint" data-section="Lesson 1 · Stop"><div class="slide-inner center">
+  <div class="eyebrow">Clean stopping point</div><h2>Lesson 1 evidence</h2><p class="prompt">Choose the statement that best matches your evidence.</p>
+  <div class="row" data-choice-group="lesson1" style="justify-content:center;margin:22px 0"><button class="choice">Secure</button><button class="choice">Developing</button><button class="choice">Need another example</button></div>
+  <p class="med muted">Next lesson can resume directly from Lesson 2 in the session menu.</p>
+</div></section>
+
+<section class="slide" data-section="Lesson 2 · Route"><div class="slide-inner">
+  <div class="eyebrow">Tuesday 1 September 2026 · 90 minutes</div><h2>Lesson 2 route</h2>
+  <div class="timeline"><div class="time"><b>10</b>Retrieval</div><div class="time amber"><b>≤20</b>Log-log<br><span class="tiny">optional</span></div><div class="time"><b>30</b>Phase shift</div><div class="time"><b>15</b>Piecewise</div><div class="time stop"><b>15</b>Synthesis + evidence</div></div>
+  <div class="gate" style="margin-top:20px"><p class="med"><b>Choose the resume path:</b></p><div class="row" style="margin-top:12px"><button class="jump primary" data-jump="30">Retrieve, then decide</button><button class="jump" data-jump="31">Use optional log-log</button><button class="jump" data-jump="34">Start sinusoidal phase shift</button></div></div>
+</div></section>
+
+<section class="slide" data-section="Lesson 2 · Retrieval"><div class="slide-inner">
+  <div class="eyebrow">Lesson 1 retrieval · 10 minutes</div><h2>Four connections</h2>
+  <div class="grid2" style="margin-top:20px"><div class="card"><p class="med">1. Explain why half-life does not depend on \(A_0\).</p><p class="med" style="margin-top:13px">2. Compare logarithmic growth with exponential growth.</p></div><div class="card"><p class="med">3. In \(\ln y=c+mx\), recover \(a\) and \(b\) for \(y=ab^x\).</p><p class="med" style="margin-top:13px">4. What can a straight transformed plot support — and what can it not prove?</p></div></div>
+  <div class="reveal answer med" style="margin-top:16px">Ratios drive half-life; logarithmic growth slows; \(a=e^c\), \(b=e^m\); transformed linearity is model evidence, not contextual proof.</div>
+</div></section>
+
+<section class="slide" data-section="Lesson 2 · Optional log-log"><div class="slide-inner">
+  <span class="think">Optional · predict first</span><h2 style="margin-top:12px">A possible power model</h2>
+  <p class="small">A material test records radius \(r\) (mm) and supported mass \(M\) (mg).</p>
+  <table class="dataset" style="margin-top:14px"><thead><tr><th>\(r\) (mm)</th><th>1</th><th>2</th><th>4</th><th>8</th><th>16</th></tr></thead><tbody><tr><th>\(M\) (mg)</th><td>3.20</td><td>9.05</td><td>25.60</td><td>72.41</td><td>204.80</td></tr></tbody></table>
+  <div class="grid2" style="margin-top:16px"><div class="graph-shell"><div class="graph-title"><span>Original data</span><span>linear–linear</span></div><div class="graph-wrap compact"><svg id="powerOriginal" role="img" aria-label="Supported mass against radius on linear axes"></svg></div><div class="axis-note">\(r\): mm, linear, \(1\le r\le16\) · \(M\): mg, linear</div></div><div class="graph-shell"><div class="graph-title"><span>Transformed data</span><span>log–log</span></div><div class="graph-wrap compact"><svg id="powerLog" role="img" aria-label="Natural log supported mass against natural log radius"></svg></div><div class="axis-note">horizontal \(\ln(r/\mathrm{mm})\) · vertical \(\ln(M/\mathrm{mg})\)</div></div></div>
+</div></section>
+
+<section class="slide" data-section="Lesson 2 · Optional log-log"><div class="slide-inner">
+  <div class="eyebrow">Recover the power model</div><h2>Gradient gives the exponent</h2>
+  <div class="formula-panel display">\[\ln M\approx1.163+1.500\ln r\]</div>
+  <div class="grid2" style="margin-top:18px"><div class="card blue"><h3>Exponent</h3><div class="display small">\[n=1.500\]</div></div><div class="reveal card green"><h3>Coefficient</h3><div class="display small">\[a=e^{1.163}\approx3.20\]</div></div></div>
+  <div class="reveal answer med" style="margin-top:16px">A possible model is \(M=3.20r^{1.50}\).</div>
+</div></section>
+
+<section class="slide" data-section="Lesson 2 · Optional log-log"><div class="slide-inner center">
+  <div class="gate" style="width:min(1100px,100%)"><div class="eyebrow">Log-log stopping gate</div><h2>What has the line established?</h2><p class="med" style="margin:14px 0">It is mathematical evidence for a possible power model. It does not automatically validate the material mechanism, measurement range or extrapolation.</p><div class="row" style="justify-content:center"><button class="jump primary" data-jump="34">Continue to phase shift</button></div></div>
+</div></section>
+
+<section class="slide" data-section="Lesson 2 · Sinusoidal"><div class="slide-inner">
+  <span class="think">Retrieve what is known</span><h2 style="margin-top:12px">Start without phase shift</h2>
+  <div class="formula-panel display">\[f(t)=a\sin(bt)+d\]</div>
+  <div class="grid3" style="margin-top:18px"><div class="card"><h3>Amplitude</h3><p class="med">\(|a|\)</p></div><div class="card"><h3>Principal axis</h3><p class="med">\(y=d\)</p></div><div class="card"><h3>Period</h3><p class="med">\(\frac{2\pi}{|b|}\) radians or \(\frac{360^\circ}{|b|}\) degrees</p></div></div>
+</div></section>
+
+<section class="slide" data-section="Lesson 2 · Sinusoidal"><div class="slide-inner">
+  <div class="eyebrow">Add horizontal position</div><h2>Phase shift is a meaningful event</h2>
+  <div class="formula-panel display">\[f(t)=a\sin\bigl(b(t-c)\bigr)+d\]</div>
+  <div class="grid2" style="margin-top:18px"><div class="card blue"><h3>At \(t=c\)</h3><p class="med">The sine input is 0, so \(f(c)=d\).</p></div><div class="reveal card green"><h3>If \(a&gt;0\) and \(b&gt;0\)</h3><p class="med">The graph crosses the principal axis in the <b>positive direction</b>.</p></div></div>
+  <div class="reveal callout med" style="margin-top:16px">“Moves right” is incomplete: state what contextual feature occurs at the shifted time.</div>
+</div></section>
+
+<section class="slide" data-section="Lesson 2 · Sinusoidal"><div class="slide-inner">
+  <span class="think">Predict before graphing</span><h2 style="margin-top:12px">Daylight model</h2>
+  <div class="formula-panel display">\[D(t)=3\sin\!\left(\frac{2\pi}{12}(t-3)\right)+12\]</div>
+  <p class="small center">\(t\): months after the start of a 24-month study · \(D\): daylight hours · \(0\le t\le24\)</p>
+  <div class="grid2" style="margin-top:18px"><div class="card"><p class="med">Predict \(D(3)\) and the direction of crossing.</p></div><div class="card"><p class="med">Identify amplitude, principal axis and period.</p></div></div>
+</div></section>
+
+<section class="slide" data-section="Lesson 2 · Sinusoidal"><div class="slide-inner">
+  <div class="eyebrow">Graph and interpretation</div><h2>At \(t=3\), the cycle is rising through its axis</h2>
+  <div class="grid2" style="margin-top:16px"><div class="graph-shell"><div class="graph-title"><span>Daylight model</span><span>linear axes</span></div><div class="graph-wrap"><svg id="sinGraph" role="img" aria-label="Sinusoidal daylight model from zero to twenty-four months"></svg></div><div class="axis-note">\(t\): months, \(0\le t\le24\) · \(D\): daylight hours, \(8\le D\le16\)</div></div><div class="stack"><div class="card blue"><p class="med">Amplitude \(=3\) h<br>Principal axis \(D=12\) h<br>Period \(=12\) months</p></div><div class="reveal answer"><p class="med">\(D(3)=12\). The model crosses 12 daylight hours in the positive direction at month 3.</p></div></div></div>
+</div></section>
+
+<section class="slide" data-section="Lesson 2 · Sinusoidal"><div class="slide-inner">
+  <div class="eyebrow">Common algebraic trap</div><h2>The written angle is not automatically the shift</h2>
+  <div class="formula-panel display">\[a\sin(bx-\varphi)+d=a\sin\!\left(b\left(x-\frac{\varphi}{b}\right)\right)+d\]</div>
+  <div class="grid2" style="margin-top:18px"><div class="card red"><h3>Do not say</h3><p class="med">“The phase shift is \(\varphi\)” automatically.</p></div><div class="reveal card green"><h3>Instead</h3><p class="med">Factor \(b\). The phase shift is \(\varphi/b\), with units matching \(x\).</p></div></div>
+</div></section>
+
+<section class="slide" data-section="Lesson 2 · Sinusoidal"><div class="slide-inner">
+  <span class="think">Predict the number of solutions</span><h2 style="margin-top:12px">When is daylight 14 hours?</h2>
+  <div class="formula-panel display small">\[3\sin\!\left(\frac{2\pi}{12}(t-3)\right)+12=14,\qquad0\le t\le24\]</div>
+  <p class="prompt">How many solutions should occur in two full periods? Estimate them from the graph before solving.</p>
+  <div class="tech small" style="margin-top:18px"><strong>Technology:</strong> graph \(Y_1=D(t)\) and \(Y_2=14\), use intersections, then verify every result is inside \([0,24]\).</div>
+</div></section>
+
+<section class="slide" data-section="Lesson 2 · Sinusoidal"><div class="slide-inner">
+  <div class="eyebrow">Solve within the contextual domain</div><h2>Four crossings in 24 months</h2>
+  <div class="grid2" style="margin-top:20px"><div class="card"><div class="display small">\[\sin\!\left(\frac{\pi}{6}(t-3)\right)=\frac23\]</div><p class="med">One period gives two angles; the 24-month domain contains two periods.</p></div><div class="reveal answer"><div class="display small">\[t\approx4.39,\;7.61,\;16.39,\;19.61\]</div><p class="med">The model predicts 14 daylight hours at approximately these four months of the study.</p></div></div>
+</div></section>
+
+<section class="slide" data-section="Lesson 2 · Piecewise"><div class="slide-inner">
+  <span class="think">Predict the correct rule</span><h2 style="margin-top:12px">A delivery charge changes after 4 km</h2>
+  <div class="formula-panel display small">\[C(d)=\begin{cases}8,&0&lt;d\le4\\8+1.5(d-4),&d&gt;4\end{cases}\]</div>
+  <p class="small center">\(d\): delivery distance (km) · \(C\): charge (RM)</p><p class="prompt">Which rule applies at \(d=4\)? Why is the second rule written with \((d-4)\)?</p>
+</div></section>
+
+<section class="slide" data-section="Lesson 2 · Piecewise"><div class="slide-inner">
+  <div class="eyebrow">Select · calculate · interpret</div><h2>Evaluate the boundary deliberately</h2>
+  <div class="grid3" style="margin-top:20px"><div class="card center"><h3>\(C(2)\)</h3><p class="med">Which interval?</p></div><div class="card center"><h3>\(C(4)\)</h3><p class="med">Which boundary symbol?</p></div><div class="card center"><h3>\(C(10)\)</h3><p class="med">How many km are charged extra?</p></div></div>
+  <div class="reveal answer" style="margin-top:18px"><div class="grid3"><p class="med center">\(C(2)=8\)</p><p class="med center">\(C(4)=8\)</p><p class="med center">\(C(10)=8+1.5(6)=17\)</p></div></div>
+</div></section>
+
+<section class="slide" data-section="Lesson 2 · Piecewise"><div class="slide-inner">
+  <div class="eyebrow">Boundary and continuity</div><h2>Do the rules meet at the switch?</h2>
+  <div class="grid2" style="margin-top:20px"><div class="card blue"><h3>From the first rule</h3><div class="display small">\[C(4)=8\]</div></div><div class="card green"><h3>From the second expression</h3><div class="display small">\[8+1.5(4-4)=8\]</div></div></div>
+  <div class="reveal answer med" style="margin-top:18px">The pieces meet at \((4,8)\), so this model is continuous at the switch. Continuity is <b>not</b> required for every piecewise model.</div>
+</div></section>
+
+<section class="slide" data-section="Lesson 2 · Piecewise"><div class="slide-inner">
+  <div class="eyebrow">Model judgement</div><h2>Why use more than one rule?</h2>
+  <div class="grid3" style="margin-top:20px"><div class="card blue"><h3>Different mechanisms</h3><p class="med">A flat base charge and a distance charge describe different regimes.</p></div><div class="card amber"><h3>Contextual domain</h3><p class="med">Use \(0&lt;d\le d_{\max}\), where \(d_{\max}\) is the service boundary.</p></div><div class="card red"><h3>Possible jumps</h3><p class="med">Tiered prices or entry fees may create discontinuities. That can be contextually correct.</p></div></div>
+</div></section>
+
+<section class="slide" data-section="Final Check"><div class="slide-inner center">
+  <div class="ahl">Mixed HL modelling synthesis</div><h2 style="margin-top:14px">Six outcomes · one modelling habit</h2><p class="prompt">Use mathematics and context together. A fitted pattern is never the whole decision.</p>
+</div></section>
+
+<section class="slide" data-section="Final Check"><div class="slide-inner">
+  <div class="eyebrow">Final check · 1 and 2</div><h2>Decay and slow growth</h2>
+  <div class="grid2" style="margin-top:20px"><div class="card"><h3>1 · Half-life</h3><div class="display small">\[M(t)=940(0.87)^t\]</div><p class="med">Find and interpret the half-life.</p></div><div class="card"><h3>2 · Natural logarithm</h3><div class="display small">\[R(t)=9+4\ln(t+1)\]</div><p class="med">Find \(R(8)\), then describe what the model says about future growth.</p></div></div>
+</div></section>
+
+<section class="slide" data-section="Final Check"><div class="slide-inner">
+  <div class="eyebrow">Final check · 3 and 4</div><h2>Transform and position</h2>
+  <div class="grid2" style="margin-top:20px"><div class="card"><h3>3 · Semi-log evidence</h3><div class="display small">\[\ln y=2.10+0.27x\]</div><p class="med">Recover \(a\) and \(b\) for \(y=ab^x\). State one limitation.</p></div><div class="card"><h3>4 · Phase shift</h3><div class="display small">\[H(t)=2.5\sin\!\left(\frac{\pi}{6}(t-4)\right)+7\]</div><p class="med">Interpret what happens at \(t=4\), and state the period.</p></div></div>
+</div></section>
+
+<section class="slide" data-section="Final Check"><div class="slide-inner">
+  <div class="eyebrow">Final check · 5 and 6</div><h2>Piecewise evaluation and modelling decision</h2>
+  <div class="grid2" style="margin-top:20px"><div class="card"><h3>5 · Piecewise</h3><div class="display small">\[F(d)=\begin{cases}6,&0&lt;d\le3\\6+2(d-3),&d&gt;3\end{cases}\]</div><p class="med">Find \(F(8)\) and decide whether the model is continuous at \(d=3\).</p></div><div class="card"><h3>6 · Justify a model</h3><p class="med">A transformed plot is nearly straight, but residuals grow at the largest values and the mechanism must eventually saturate.</p><p class="med" style="margin-top:12px">Should you extrapolate far beyond the data? Justify with mathematical and contextual evidence.</p></div></div>
+</div></section>
+
+<section class="slide" data-section="Final Check · Solutions"><div class="slide-inner">
+  <div class="eyebrow">Solutions · 1 to 3</div><h2>Check the mathematics and the sentence</h2>
+  <div class="stack" style="margin-top:18px"><div class="card green"><p class="med"><b>1.</b> \(t_{1/2}=\ln(0.5)/\ln(0.87)\approx4.98\). The modelled mass halves every 4.98 time units.</p></div><div class="reveal card green"><p class="med"><b>2.</b> \(R(8)=9+4\ln9\approx17.8\). Growth continues without bound but slows progressively.</p></div><div class="reveal card green"><p class="med"><b>3.</b> \(a=e^{2.10}\approx8.17\), \(b=e^{0.27}\approx1.31\). The transform supports an exponential model only within a contextually defensible domain.</p></div></div>
+</div></section>
+
+<section class="slide" data-section="Final Check · Solutions"><div class="slide-inner">
+  <div class="eyebrow">Solutions · 4 to 6</div><h2>Interpret the structure</h2>
+  <div class="stack" style="margin-top:18px"><div class="card green"><p class="med"><b>4.</b> At \(t=4\), \(H=7\) and the model crosses the principal axis upward. Period \(=2\pi/(\pi/6)=12\) time units.</p></div><div class="reveal card green"><p class="med"><b>5.</b> \(F(8)=6+2(5)=16\). Both pieces give 6 at the switch, so the model is continuous at \(d=3\).</p></div><div class="reveal card amber"><p class="med"><b>6.</b> Do not extrapolate far. Increasing residuals weaken the fit, while the saturation mechanism contradicts unlimited continuation of the transformed linear pattern.</p></div></div>
+</div></section>
+
+<section class="slide" data-section="Final Check · Evidence"><div class="slide-inner center">
+  <div class="eyebrow">Final evidence</div><h2>What can you now defend?</h2>
+  <div class="row" data-choice-group="final" style="justify-content:center;margin:20px 0"><button class="choice">Secure</button><button class="choice">Developing</button><button class="choice">Need another example</button></div>
+  <p class="med" style="margin-bottom:18px">Name one representation you can interpret and one modelling decision you can justify.</p>
+  <a class="toddle" href="#" aria-disabled="true" title="Insert the verified Toddle formative assessment URL here">Toddle formative assessment · verified link to be inserted</a>
+  <p class="footer-note">No URL has been invented. Replace the placeholder only with the verified Toddle link.</p>
+</div></section>
+</main>
+
+<div id="controls" aria-label="Slide navigation"><button class="ctrl" id="resetBtn" title="Reset reveals on this slide">Reset</button><button class="ctrl" id="prevBtn" aria-label="Previous slide">Back</button><span class="counter" id="counter"></span><button class="ctrl primary" id="nextBtn" aria-label="Next slide or reveal">Next</button><button class="ctrl" id="fsBtn" aria-label="Toggle fullscreen" title="Fullscreen">⛶</button></div>
+<div class="progress-track" aria-hidden="true"><div class="progress" id="progress"></div></div><div class="screen-reader" id="live" aria-live="polite"></div>
+<script>
+const slides=[...document.querySelectorAll('.slide')],counter=document.getElementById('counter'),progress=document.getElementById('progress'),sectionChip=document.getElementById('sectionChip'),live=document.getElementById('live');let index=0;
+function currentReveals(){return [...slides[index].querySelectorAll('.reveal')]}
+function setSession(section){document.querySelectorAll('.session-bar [data-session]').forEach(b=>b.classList.toggle('active-session',section.startsWith(b.dataset.session)));}
+function show(i,{preserve=false}={}){i=Math.max(0,Math.min(slides.length-1,i));if(!preserve)slides[index].querySelectorAll('.reveal.shown').forEach(x=>x.classList.remove('shown'));slides[index].classList.remove('active');index=i;slides[index].classList.add('active');slides[index].scrollTop=0;const section=slides[index].dataset.section||'';counter.textContent=`${index+1} / ${slides.length}`;progress.style.width=`${((index+1)/slides.length)*100}%`;sectionChip.textContent=section;setSession(section);live.textContent=`Slide ${index+1} of ${slides.length}: ${section}`;history.replaceState(null,'',`#slide-${index+1}`)}
+function next(){const r=currentReveals().find(x=>!x.classList.contains('shown'));if(r){r.classList.add('shown');return}show(index+1)}
+function prev(){const shown=currentReveals().filter(x=>x.classList.contains('shown'));if(shown.length){shown.at(-1).classList.remove('shown');return}show(index-1)}
+document.getElementById('nextBtn').onclick=next;document.getElementById('prevBtn').onclick=prev;document.getElementById('resetBtn').onclick=()=>currentReveals().forEach(x=>x.classList.remove('shown'));document.getElementById('fsBtn').onclick=()=>document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();
+document.querySelectorAll('[data-jump]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();show(+b.dataset.jump)}));
+document.querySelectorAll('[data-choice-group]').forEach(g=>g.querySelectorAll('.choice').forEach(b=>b.addEventListener('click',()=>{g.querySelectorAll('.choice').forEach(x=>x.classList.remove('selected'));b.classList.add('selected')})));
+document.querySelector('.toddle').addEventListener('click',e=>e.preventDefault());
+document.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName))return;if(['ArrowRight',' ','Enter','PageDown'].includes(e.key)){e.preventDefault();next()}else if(['ArrowLeft','Backspace','PageUp'].includes(e.key)){e.preventDefault();prev()}else if(e.key==='Home'){e.preventDefault();show(0)}else if(e.key==='End'){e.preventDefault();show(slides.length-1)}else if(e.key.toLowerCase()==='f')document.getElementById('fsBtn').click()});
+const NS='http://www.w3.org/2000/svg';function el(n,a={}){const x=document.createElementNS(NS,n);Object.entries(a).forEach(([k,v])=>x.setAttribute(k,v));return x}function txt(s,x,y,t,cls='svgtext',anchor='middle'){const z=el('text',{x,y,class:cls,'text-anchor':anchor});z.textContent=t;s.appendChild(z)}
+function chart(svg,{xmin,xmax,ymin,ymax,xLabel,yLabel,xticks=6,yticks=5,logX=false}){const W=760,H=380,L=64,R=22,T=24,B=55;svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.replaceChildren();const sx=x=>L+((logX?Math.log10(x):x)-(logX?Math.log10(xmin):xmin))/((logX?Math.log10(xmax):xmax)-(logX?Math.log10(xmin):xmin))*(W-L-R),sy=y=>H-B-(y-ymin)/(ymax-ymin)*(H-T-B);for(let i=0;i<=yticks;i++){let y=ymin+(ymax-ymin)*i/yticks,py=sy(y);svg.appendChild(el('line',{x1:L,y1:py,x2:W-R,y2:py,class:'gridline'}));txt(svg,L-8,py+5,Number.isInteger(y)?y:y.toFixed(1),'svgtext','end')}if(logX){[1,10,100,1000,10000].filter(v=>v>=xmin&&v<=xmax).forEach(v=>{let x=sx(v);svg.appendChild(el('line',{x1:x,y1:T,x2:x,y2:H-B,class:'gridline'}));txt(svg,x,H-B+22,String(v))})}else for(let i=0;i<=xticks;i++){let x=xmin+(xmax-xmin)*i/xticks,px=sx(x);svg.appendChild(el('line',{x1:px,y1:T,x2:px,y2:H-B,class:'gridline'}));txt(svg,px,H-B+22,Number.isInteger(x)?x:x.toFixed(1))}svg.append(el('line',{x1:L,y1:H-B,x2:W-R,y2:H-B,class:'axis'}),el('line',{x1:L,y1:H-B,x2:L,y2:T,class:'axis'}));txt(svg,(L+W-R)/2,H-10,xLabel,'svglabel');const yl=el('text',{x:16,y:(T+H-B)/2,class:'svglabel','text-anchor':'middle',transform:`rotate(-90 16 ${(T+H-B)/2})`});yl.textContent=yLabel;svg.appendChild(yl);return{sx,sy,W,H,L,R,T,B}}
+function plot(svg,pts,opt={}){const c=chart(svg,opt),d=pts.map((p,i)=>(i?'L':'M')+c.sx(p[0])+','+c.sy(p[1])).join(' ');svg.appendChild(el('path',{d,class:'curve'}));pts.forEach(p=>svg.appendChild(el('circle',{cx:c.sx(p[0]),cy:c.sy(p[1]),r:5,class:'point'})));return c}
+(function draw(){let s=document.getElementById('logAxisGraph'),c=chart(s,{xmin:1,xmax:10000,ymin:0,ymax:1,xLabel:'quantity (base-10 logarithmic scale)',yLabel:'',yticks:1,logX:true});s.querySelectorAll('.svgtext').forEach((n,i)=>{if(i<2)n.remove()});let x50=c.sx(50);s.appendChild(el('line',{x1:x50,y1:70,x2:x50,y2:c.H-c.B,class:'guide'}));s.appendChild(el('circle',{cx:x50,cy:120,r:7,class:'point'}));txt(s,x50,98,'50','svglabel');
+const xs=[0,1,2,3,4,5,6],ys=xs.map(x=>24*Math.pow(1.55,x));plot(document.getElementById('semiOriginal'),xs.map((x,i)=>[x,ys[i]]),{xmin:0,xmax:6,ymin:0,ymax:360,xLabel:'time x (h)',yLabel:'mass y (mg)',xticks:6,yticks:6});plot(document.getElementById('semiTransformed'),xs.map((x,i)=>[x,Math.log(ys[i])]),{xmin:0,xmax:6,ymin:3,ymax:6,xLabel:'time x (h)',yLabel:'ln(y / mg)',xticks:6,yticks:6});
+const rs=[1,2,4,8,16],ms=rs.map(r=>3.2*Math.pow(r,1.5));plot(document.getElementById('powerOriginal'),rs.map((r,i)=>[r,ms[i]]),{xmin:0,xmax:16,ymin:0,ymax:220,xLabel:'radius r (mm)',yLabel:'mass M (mg)',xticks:4,yticks:4});plot(document.getElementById('powerLog'),rs.map((r,i)=>[Math.log(r),Math.log(ms[i])]),{xmin:0,xmax:3,ymin:1,ymax:5.5,xLabel:'ln(r / mm)',yLabel:'ln(M / mg)',xticks:6,yticks:5});
+s=document.getElementById('sinGraph');const pts=[];for(let t=0;t<=24;t+=.12)pts.push([t,3*Math.sin(Math.PI/6*(t-3))+12]);c=plot(s,pts,{xmin:0,xmax:24,ymin:8,ymax:16,xLabel:'time t (months)',yLabel:'daylight D (hours)',xticks:8,yticks:4});s.appendChild(el('line',{x1:c.sx(0),y1:c.sy(12),x2:c.sx(24),y2:c.sy(12),class:'guide'}));s.appendChild(el('circle',{cx:c.sx(3),cy:c.sy(12),r:7,class:'point'}));txt(s,c.sx(3)+8,c.sy(12)-12,'(3, 12)','svglabel','start')})();
+const hash=location.hash.match(/slide-(\d+)/);if(hash)index=Math.max(0,Math.min(slides.length-1,+hash[1]-1));slides.forEach((s,i)=>s.classList.toggle('active',i===index));show(index,{preserve:true});
+</script>
+</body>
+</html>
