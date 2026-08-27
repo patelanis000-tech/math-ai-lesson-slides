@@ -93,35 +93,35 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
   <div class="grid2" style="margin-top:22px"><div class="card blue"><h3>Natural-logarithmic model</h3><div class="display small">\[y=a+b\ln(x)\]</div><p class="med">The logarithm is part of the model itself. The original \(y\) changes slowly as \(x\) grows.</p></div><div class="card green"><h3>Logarithmic transformation</h3><div class="display small">\[y=ab^x\Rightarrow \ln y=\ln a+x\ln b\]</div><p class="med">We transform another model to reveal a linear relationship and estimate its parameters.</p></div></div>
 </div></section>
 
-<section class="slide" data-section="Lesson 1 · Gate 1"><div class="slide-inner">
-  <span class="think">Gate 1 · predict first</span><h2 style="margin-top:12px">Where does 50 belong?</h2>
+<section class="slide" data-section="Lesson 1 · Logarithmic axes"><div class="slide-inner">
+  <span class="think">Reading a logarithmic axis</span><h2 style="margin-top:12px">Where does 50 belong?</h2>
   <div class="graph-shell" style="margin-top:18px"><div class="graph-title"><span>Ordinary logarithmic axis</span><span>base 10 · positive values only</span></div><div class="graph-wrap compact"><svg id="logAxisGraph" role="img" aria-label="Base ten logarithmic axis from 1 to 10000 with 50 marked"></svg></div><div class="axis-note">Horizontal axis: quantity (log scale), domain \(1\le x\le10000\)</div></div>
   <p class="prompt">Is 50 halfway between 10 and 100? What does equal spacing mean here?</p>
 </div></section>
 
-<section class="slide" data-section="Lesson 1 · Gate 1"><div class="slide-inner">
-  <div class="eyebrow">Gate 1 · interpretation</div><h2>Equal distances represent equal ratios</h2>
+<section class="slide" data-section="Lesson 1 · Logarithmic axes"><div class="slide-inner">
+  <div class="eyebrow">Reading a logarithmic axis</div><h2>Equal spacing means equal ratios</h2>
   <div class="grid3" style="margin-top:20px"><div class="card blue"><h3>Spacing</h3><p class="med">\(1,10,100,1000,10000\) are equally spaced because each step multiplies by 10.</p></div><div class="reveal card green"><h3>50 is not halfway</h3><p class="med">The midpoint between 10 and 100 on a log axis is \(\sqrt{10\cdot100}\approx31.6\).</p></div><div class="reveal card red"><h3>Restriction</h3><p class="med">Zero and negative values cannot appear on an ordinary logarithmic axis.</p></div></div>
 </div></section>
 
-<section class="slide" data-section="Lesson 1 · Gate 2"><div class="slide-inner center">
-  <span class="think">Gate 2 · predict the transformation</span><h2 style="margin-top:12px">How can a curve become a line?</h2>
+<section class="slide" data-section="Lesson 1 · Linearising exponentials"><div class="slide-inner center">
+  <span class="think">Linearising an exponential model</span><h2 style="margin-top:12px">How can a curve become a line?</h2>
   <div class="display">\[y=ab^x\]</div><p class="prompt">Take natural logs of both sides. Which parameter will control the gradient?</p>
 </div></section>
 
-<section class="slide" data-section="Lesson 1 · Gate 2"><div class="slide-inner">
+<section class="slide" data-section="Lesson 1 · Linearising exponentials"><div class="slide-inner">
   <div class="eyebrow">Semi-log linearisation</div><h2>Plot \(\ln(y)\) against \(x\)</h2>
   <div class="formula-panel display">\[\ln(y)=\ln(a)+x\ln(b)\]</div>
   <div class="grid2" style="margin-top:18px"><div class="card blue"><h3>Straight-line form</h3><div class="display small">\[Y=c+mx\]</div><p class="med">\(Y=\ln y\), \(c=\ln a\), \(m=\ln b\)</p></div><div class="reveal card green"><h3>Recover the model</h3><div class="display small">\[a=e^{\text{intercept}},\qquad b=e^{\text{gradient}}\]</div></div></div>
 </div></section>
 
-<section class="slide" data-section="Lesson 1 · Gate 2"><div class="slide-inner">
+<section class="slide" data-section="Lesson 1 · Linearising exponentials"><div class="slide-inner">
   <span class="think">Predict before viewing the transform</span><h2 style="margin-top:12px">A growing culture</h2>
   <table class="dataset" aria-label="Culture mass dataset"><thead><tr><th>Time, \(x\) (h)</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr></thead><tbody><tr><th>Mass, \(y\) (mg)</th><td>24.0</td><td>37.2</td><td>57.7</td><td>89.4</td><td>138.5</td><td>214.7</td><td>332.8</td></tr></tbody></table>
   <div class="grid2" style="margin-top:16px"><div class="graph-shell"><div class="graph-title"><span>Original representation</span><span>linear–linear</span></div><div class="graph-wrap compact"><svg id="semiOriginal" role="img" aria-label="Culture mass against time on linear axes"></svg></div><div class="axis-note">\(x\): time (h), linear, \(0\le x\le6\) · \(y\): mass (mg), linear</div></div><div class="graph-shell"><div class="graph-title"><span>Transformed representation</span><span>semi-log linearisation</span></div><div class="graph-wrap compact"><svg id="semiTransformed" role="img" aria-label="Natural logarithm of culture mass against time"></svg></div><div class="axis-note">\(x\): time (h), linear · vertical: \(\ln(y/\mathrm{mg})\), \(3.0\le\ln y\le6.0\)</div></div></div>
 </div></section>
 
-<section class="slide" data-section="Lesson 1 · Gate 2"><div class="slide-inner">
+<section class="slide" data-section="Lesson 1 · Linearising exponentials"><div class="slide-inner">
   <div class="eyebrow">What does straightness suggest?</div><h2>Evidence, not automatic validity</h2>
   <div class="grid2" style="margin-top:20px"><div class="card blue"><h3>Mathematical evidence</h3><p class="med">The transformed points are approximately linear, with gradient \(0.438\) and intercept \(3.178\).</p><div class="reveal display small">\[a=e^{3.178}\approx24.0,\qquad b=e^{0.438}\approx1.55\]</div></div><div class="reveal card amber"><h3>Contextual judgement</h3><p class="med">A possible model is \(y=24(1.55)^x\), but straightness alone does not prove unlimited growth, causal validity, or safe extrapolation.</p></div></div>
 </div></section>
