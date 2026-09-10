@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Unit 7 Launch — How high is it?</title>
+  <style>
+    :root {
+      --ink: #18222b;
+      --muted: #5f6c76;
+      --paper: #fbfaf6;
+      --card: #ffffff;
+      --line: #d9e0df;
+      --teal: #087f8c;
+      --teal-dark: #075d68;
+      --yellow: #ffd166;
+      --coral: #ef765b;
+      --blue: #d9f1f3;
+      --lavender: #ebe4fa;
+      --shadow: 0 16px 38px rgba(24, 34, 43, .09);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; background: #e9eeee; color: var(--ink); font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+    body { display: grid; place-items: center; padding: 18px; }
+    .deck { width: min(1280px, 100%); aspect-ratio: 16 / 9; position: relative; overflow: hidden; background: var(--paper); border-radius: 18px; box-shadow: var(--shadow); }
+    .slide { position: absolute; inset: 0; padding: 54px 70px 62px; display: none; overflow: auto; background: var(--paper); }
+    .slide.active { display: block; animation: enter .22s ease-out; }
+    @keyframes enter { from { opacity: .2; transform: translateX(8px); } to { opacity: 1; transform: none; } }
+    .slide::before { content: ""; position: absolute; left: 0; top: 0; width: 100%; height: 9px; background: linear-gradient(90deg, var(--teal) 0 62%, var(--yellow) 62% 82%, var(--coral) 82%); }
+    .eyebrow { font-size: 15px; letter-spacing: .13em; text-transform: uppercase; color: var(--teal-dark); font-weight: 800; margin: 3px 0 18px; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { font-size: clamp(42px, 6vw, 82px); line-height: .97; letter-spacing: -.045em; max-width: 850px; margin-bottom: 24px; }
+    h2 { font-size: clamp(32px, 4.2vw, 58px); line-height: 1; letter-spacing: -.035em; max-width: 950px; margin-bottom: 20px; }
+    h3 { font-size: 25px; margin-bottom: 10px; }
+    .lede { font-size: clamp(21px, 2.2vw, 31px); line-height: 1.22; color: var(--muted); max-width: 780px; }
+    .small { font-size: 17px; color: var(--muted); line-height: 1.4; }
+    .accent { color: var(--teal); }
+    .coral { color: var(--coral); }
+    .yellow { color: #ad7200; }
+    .hero { display: grid; grid-template-columns: 1.15fr .85fr; gap: 36px; align-items: center; height: 100%; }
+    .hero-art { height: 100%; display: grid; place-items: center; }
+    .hero-art svg { width: min(100%, 450px); height: auto; }
+    .pill { display: inline-flex; padding: 9px 14px; border-radius: 999px; background: var(--blue); color: var(--teal-dark); font-size: 16px; font-weight: 800; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 23px 25px; box-shadow: 0 6px 18px rgba(24,34,43,.04); }
+    .card.tint-blue { background: var(--blue); border-color: transparent; }
+    .card.tint-yellow { background: #fff4d6; border-color: transparent; }
+    .card.tint-lavender { background: var(--lavender); border-color: transparent; }
+    .card.tint-coral { background: #ffebe6; border-color: transparent; }
+    .number { width: 39px; height: 39px; display: grid; place-items: center; border-radius: 50%; background: var(--teal); color: white; font-weight: 900; margin-bottom: 14px; }
+    .big-number { font-size: 47px; font-weight: 900; line-height: 1; color: var(--teal); }
+    .sequence { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 32px; }
+    .sequence > div { position: relative; padding: 20px 18px; background: white; border: 1px solid var(--line); min-height: 138px; }
+    .sequence > div + div { border-left: none; }
+    .sequence > div:first-child { border-radius: 14px 0 0 14px; }
+    .sequence > div:last-child { border-radius: 0 14px 14px 0; }
+    .sequence strong { display: block; font-size: 20px; margin: 10px 0 6px; }
+    .sequence span { color: var(--muted); font-size: 16px; line-height: 1.25; }
+    .task { background: #17242b; color: white; border-radius: 18px; padding: 30px 34px; max-width: 1000px; }
+    .task h3 { color: var(--yellow); font-size: 29px; }
+    .task p { font-size: 25px; line-height: 1.25; margin-bottom: 0; }
+    ul { margin: 8px 0 0; padding-left: 1.15em; }
+    li { margin: 10px 0; font-size: 21px; line-height: 1.25; }
+    .rule { height: 1px; background: var(--line); margin: 21px 0; }
+    .diagram-row { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; align-items: center; }
+    .diagram { background: white; border: 1px solid var(--line); border-radius: 16px; padding: 10px; }
+    .diagram svg { display: block; width: 100%; height: auto; }
+    .prompt-list { display: grid; gap: 13px; margin-top: 20px; }
+    .prompt { display: flex; gap: 13px; align-items: flex-start; font-size: 24px; line-height: 1.2; }
+    .prompt::before { content: "?"; flex: 0 0 31px; height: 31px; display: grid; place-items: center; border-radius: 50%; background: var(--yellow); color: #684900; font-weight: 900; font-size: 19px; }
+    table { width: 100%; border-collapse: collapse; background: white; border-radius: 14px; overflow: hidden; font-size: 19px; }
+    th { background: var(--teal); color: white; text-align: left; padding: 15px 14px; font-size: 17px; }
+    td { border: 1px solid var(--line); height: 58px; padding: 11px 14px; color: var(--muted); }
+    .ratio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 25px; }
+    .ratio { text-align: center; padding: 25px 15px; border-radius: 16px; background: white; border: 1px solid var(--line); }
+    .ratio .formula { font-size: 31px; font-weight: 900; color: var(--teal-dark); margin: 8px 0; }
+    .ratio .name { color: var(--muted); font-size: 18px; }
+    .footer { position: absolute; left: 70px; right: 70px; bottom: 20px; display: flex; align-items: center; justify-content: space-between; color: #718087; font-size: 14px; }
+    .footer .section { font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    .controls { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); display: flex; gap: 7px; align-items: center; z-index: 20; }
+    button { border: 1px solid #c9d2d1; background: rgba(255,255,255,.94); color: var(--ink); border-radius: 10px; padding: 9px 13px; font-size: 16px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,.08); }
+    button:hover, button:focus-visible { background: var(--blue); outline: 2px solid var(--teal); outline-offset: 2px; }
+    #progress { width: 110px; height: 6px; background: #d1d9d8; border-radius: 999px; overflow: hidden; margin: 0 5px; }
+    #bar { height: 100%; width: 0; background: var(--teal); transition: width .2s ease; }
+    .note { display: inline-block; margin-top: 20px; padding: 9px 13px; border-radius: 9px; background: #fff4d6; color: #745100; font-size: 17px; font-weight: 700; }
+    .center { display: grid; place-items: center; text-align: center; height: 100%; }
+    .center > div { max-width: 900px; }
+    .exit { display: grid; grid-template-columns: 1fr 1fr; gap: 17px; margin-top: 25px; }
+    .exit div { min-height: 130px; padding: 18px; border-radius: 13px; background: white; border: 1px solid var(--line); font-size: 20px; line-height: 1.25; }
+    .exit b { color: var(--teal-dark); }
+    @media (max-width: 800px) {
+      body { padding: 0; }
+      .deck { border-radius: 0; min-height: 100vh; aspect-ratio: auto; }
+      .slide { padding: 38px 28px 76px; }
+      .hero, .grid-2, .grid-3, .diagram-row { grid-template-columns: 1fr; }
+      .hero-art { display: none; }
+      .sequence, .ratio-grid, .exit { grid-template-columns: 1fr 1fr; }
+      .sequence > div + div { border-left: 1px solid var(--line); border-top: none; }
+      .sequence > div:first-child, .sequence > div:last-child { border-radius: 0; }
+      .sequence > div:first-child { border-radius: 14px 0 0 0; }
+      .sequence > div:nth-child(2) { border-radius: 0 14px 0 0; }
+      .sequence > div:nth-child(3) { border-radius: 0 0 0 14px; }
+      .sequence > div:last-child { border-radius: 0 0 14px 0; }
+      .footer { left: 28px; right: 28px; }
+    }
+    @media print {
+      body { background: white; padding: 0; }
+      .deck { width: 100%; box-shadow: none; border-radius: 0; }
+      .slide { position: relative; display: block !important; page-break-after: always; height: 100vh; }
+      .controls { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="deck" aria-live="polite">
+    <section class="slide active" data-section="Unit 7">
+      <div class="hero">
+        <div>
+          <span class="pill">MATH AI · UNIT 7</span>
+          <h1>How high<br><span class="accent">is it?</span></h1>
+          <p class="lede">Space, measurement and trigonometric reasoning</p>
+          <p class="small" style="margin-top:28px">Today: investigate first. Name the mathematics after you have found something.</p>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <svg viewBox="0 0 430 360" role="img">
+            <rect x="25" y="25" width="380" height="300" rx="24" fill="#d9f1f3"/>
+            <line x1="85" y1="285" x2="350" y2="285" stroke="#18222b" stroke-width="5"/>
+            <line x1="350" y1="285" x2="350" y2="80" stroke="#087f8c" stroke-width="9"/>
+            <line x1="85" y1="285" x2="350" y2="80" stroke="#ef765b" stroke-width="6" stroke-dasharray="10 9"/>
+            <path d="M125 285 A40 40 0 0 0 117 256" fill="none" stroke="#ad7200" stroke-width="5"/>
+            <text x="128" y="270" font-size="22" font-weight="800" fill="#745100">θ</text>
+            <text x="255" y="307" font-size="19" fill="#18222b">horizontal distance</text>
+            <text x="360" y="190" font-size="19" fill="#075d68" transform="rotate(-90 360 190)">height</text>
+            <circle cx="85" cy="285" r="8" fill="#18222b"/>
+            <circle cx="350" cy="80" r="8" fill="#ef765b"/>
+          </svg>
+        </div>
+      </div>
+      <div class="footer"><span class="section">Launch investigation</span><span>Use the arrows or buttons to move</span></div>
+    </section>
+
+    <section class="slide" data-section="Today">
+      <div class="eyebrow">Today · 135 minutes</div>
+      <h2>Investigate → make sense of it → use it</h2>
+      <div class="sequence">
+        <div><div class="big-number">01</div><strong>Investigate</strong><span>Same angle, different-sized right triangles</span></div>
+        <div><div class="big-number">02</div><strong>Organise</strong><span>Make your own map of the ideas</span></div>
+        <div><div class="big-number">03</div><strong>Apply</strong><span>Measure a height you cannot reach</span></div>
+        <div><div class="big-number">04</div><strong>Evaluate</strong><span>Compare estimates and assumptions</span></div>
+      </div>
+      <p class="note">Do not look for a formula yet.</p>
+      <div class="footer"><span class="section">Unit 7</span><span>Keep your evidence</span></div>
+    </section>
+
+    <section class="slide" data-section="Investigation 1">
+      <div class="eyebrow">Investigation 1 · group work</div>
+      <h2>Same angle.<br><span class="accent">Different triangles.</span></h2>
+      <div class="diagram-row">
+        <div class="diagram">
+          <svg viewBox="0 0 520 250" aria-label="Two right triangles with the same angle theta">
+            <line x1="55" y1="205" x2="240" y2="205" stroke="#18222b" stroke-width="5"/>
+            <line x1="240" y1="205" x2="240" y2="75" stroke="#087f8c" stroke-width="5"/>
+            <line x1="55" y1="205" x2="240" y2="75" stroke="#ef765b" stroke-width="5"/>
+            <path d="M92 205 A37 37 0 0 0 84 179" fill="none" stroke="#ad7200" stroke-width="4"/>
+            <text x="96" y="190" font-size="22" font-weight="800" fill="#745100">θ</text>
+            <line x1="310" y1="205" x2="465" y2="205" stroke="#18222b" stroke-width="5"/>
+            <line x1="465" y1="205" x2="465" y2="135" stroke="#087f8c" stroke-width="5"/>
+            <line x1="310" y1="205" x2="465" y2="135" stroke="#ef765b" stroke-width="5"/>
+            <path d="M340 205 A30 30 0 0 0 334 192" fill="none" stroke="#ad7200" stroke-width="4"/>
+            <text x="345" y="194" font-size="22" font-weight="800" fill="#745100">θ</text>
+            <text x="130" y="238" font-size="18" fill="#5f6c76">larger</text>
+            <text x="365" y="238" font-size="18" fill="#5f6c76">smaller</text>
+          </svg>
+        </div>
+        <div class="task">
+          <h3>Your question</h3>
+          <p>What can stay the same when the triangle gets bigger or smaller?</p>
+        </div>
+      </div>
+      <div class="footer"><span class="section">Investigation 1</span><span>Work without named trig ratios</span></div>
+    </section>
+
+    <section class="slide" data-section="Investigation 1">
+      <div class="eyebrow">Investigation 1 · instructions</div>
+      <h2>Build evidence before explaining it.</h2>
+      <div class="grid-2" style="margin-top:26px">
+        <div class="card tint-blue"><div class="number">1</div><h3>Make two triangles</h3><p class="small">Use the same acute angle, but make the triangles different sizes.</p></div>
+        <div class="card tint-yellow"><div class="number">2</div><h3>Label the sides</h3><p class="small">Choose the angle θ. Name the opposite, adjacent and longest sides relative to θ.</p></div>
+        <div class="card tint-lavender"><div class="number">3</div><h3>Measure and calculate</h3><p class="small">Find O/H, A/H and O/A for each triangle. Keep sensible precision.</p></div>
+        <div class="card tint-coral"><div class="number">4</div><h3>Compare</h3><p class="small">Compare with another group. What pattern can you defend?</p></div>
+      </div>
+      <p class="note">No sine, cosine or tangent names yet.</p>
+      <div class="footer"><span class="section">Investigation 1</span><span>Record measurements, not just conclusions</span></div>
+    </section>
+
+    <section class="slide" data-section="Evidence">
+      <div class="eyebrow">Record your evidence</div>
+      <h2>Make the pattern visible.</h2>
+      <table aria-label="Evidence table for triangle ratios">
+        <thead><tr><th>Triangle</th><th>Angle θ</th><th>O</th><th>A</th><th>H</th><th>O/H</th><th>A/H</th><th>O/A</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>Another group</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+      <div class="prompt-list">
+        <div class="prompt">Which columns seem stable when θ stays fixed?</div>
+        <div class="prompt">What evidence would convince someone else?</div>
+      </div>
+      <div class="footer"><span class="section">Evidence</span><span>Use your own measurements</span></div>
+    </section>
+
+    <section class="slide" data-section="Conjecture">
+      <div class="eyebrow">Discuss before formalising</div>
+      <h2>What stays the same?</h2>
+      <div class="grid-3" style="margin-top:28px">
+        <div class="card tint-blue"><h3>Fixed angle</h3><p class="small">What happens to the ratios when the size changes but θ does not?</p></div>
+        <div class="card tint-yellow"><h3>Changed angle</h3><p class="small">What happens when θ changes?</p></div>
+        <div class="card tint-lavender"><h3>Useful idea</h3><p class="small">How could a stable ratio help us find a length we cannot measure directly?</p></div>
+      </div>
+      <div class="center" style="height:auto; margin-top:35px"><div><p style="font-size:31px; font-weight:850; color:var(--teal-dark)">Make a claim. Show the evidence.</p><p class="small">Be ready to change your claim if a new triangle challenges it.</p></div></div>
+      <div class="footer"><span class="section">Conjecture</span><span>Explain the pattern in words first</span></div>
+    </section>
+
+    <section class="slide" data-section="Mind map">
+      <div class="eyebrow">Your thinking</div>
+      <h2>Now make your own mind map.</h2>
+      <div class="task" style="margin-top:30px; background:#087f8c">
+        <h3 style="color:#fff4d6">No template.</h3>
+        <p>Make your own map of the mathematics from the investigation. Decide what belongs in it and how the ideas connect.</p>
+      </div>
+      <div class="footer"><span class="section">Mind map</span><span>Make it yours</span></div>
+    </section>
+
+    <section class="slide" data-section="Formalise">
+      <div class="eyebrow">From pattern to notation</div>
+      <h2>Three ratios. Three names.</h2>
+      <p class="lede" style="font-size:22px">The reference angle decides which side is opposite and which is adjacent.</p>
+      <div class="ratio-grid">
+        <div class="ratio"><div class="name">sine</div><div class="formula">sin θ = O / H</div><div class="small">opposite ÷ hypotenuse</div></div>
+        <div class="ratio"><div class="name">cosine</div><div class="formula">cos θ = A / H</div><div class="small">adjacent ÷ hypotenuse</div></div>
+        <div class="ratio"><div class="name">tangent</div><div class="formula">tan θ = O / A</div><div class="small">opposite ÷ adjacent</div></div>
+      </div>
+      <div class="grid-2" style="margin-top:26px">
+        <div class="card tint-yellow"><h3>Check</h3><p class="small">Calculator in <b>degree mode</b>. Draw the angle you are using.</p></div>
+        <div class="card tint-blue"><h3>For the height task</h3><p class="small">If you know horizontal distance and angle of elevation, tangent is usually the useful ratio.</p></div>
+      </div>
+      <div class="footer"><span class="section">Formalise</span><span>Now we can name the pattern</span></div>
+    </section>
+
+    <section class="slide" data-section="Investigation 2">
+      <div class="eyebrow">The next question</div>
+      <h2>How could we find this height without measuring it vertically?</h2>
+      <div class="diagram-row" style="margin-top:20px">
+        <div class="diagram">
+          <svg viewBox="0 0 520 280" aria-label="Angle of elevation to a tall object">
+            <line x1="45" y1="230" x2="475" y2="230" stroke="#18222b" stroke-width="5"/>
+            <line x1="400" y1="230" x2="400" y2="55" stroke="#087f8c" stroke-width="10"/>
+            <line x1="45" y1="230" x2="400" y2="55" stroke="#ef765b" stroke-width="6" stroke-dasharray="11 9"/>
+            <path d="M92 230 A47 47 0 0 0 84 207" fill="none" stroke="#ad7200" stroke-width="5"/>
+            <text x="100" y="219" font-size="22" font-weight="800" fill="#745100">angle of elevation</text>
+            <text x="207" y="254" font-size="18" fill="#5f6c76">horizontal distance</text>
+            <text x="414" y="158" font-size="18" fill="#075d68" transform="rotate(-90 414 158)">height</text>
+            <circle cx="45" cy="230" r="8" fill="#18222b"/><circle cx="400" cy="55" r="8" fill="#ef765b"/>
+          </svg>
+        </div>
+        <div>
+          <div class="prompt-list">
+            <div class="prompt">What could we measure directly?</div>
+            <div class="prompt">What would the diagram need to show?</div>
+            <div class="prompt">Which ratio connects the measurements?</div>
+          </div>
+          <p class="note">Work out the model before collecting data.</p>
+        </div>
+      </div>
+      <div class="footer"><span class="section">Investigation 2</span><span>Measure what is accessible</span></div>
+    </section>
+
+    <section class="slide" data-section="Investigation 2">
+      <div class="eyebrow">Investigation 2 · field task</div>
+      <h2>Measure an inaccessible height.</h2>
+      <div class="grid-2" style="margin-top:25px">
+        <div class="card tint-blue"><div class="number">1</div><h3>Choose an object</h3><p class="small">Tree, building, pole or another object with a clear top.</p></div>
+        <div class="card tint-yellow"><div class="number">2</div><h3>Collect data</h3><p class="small">Horizontal distance, angle of elevation and observer eye height.</p></div>
+        <div class="card tint-lavender"><div class="number">3</div><h3>Draw and calculate</h3><p class="small">Label the right triangle. Find the height above eye level, then add eye height.</p></div>
+        <div class="card tint-coral"><div class="number">4</div><h3>Repeat</h3><p class="small">Take measurements from at least two more positions. Keep every estimate.</p></div>
+      </div>
+      <div class="task" style="margin-top:25px; padding:19px 24px"><p style="font-size:22px"><b>Important:</b> round at the end, not during the calculation.</p></div>
+      <div class="footer"><span class="section">Investigation 2</span><span>Work safely and stay with your group</span></div>
+    </section>
+
+    <section class="slide" data-section="Compare">
+      <div class="eyebrow">Compare your estimates</div>
+      <h2>Which answer do you trust?</h2>
+      <table aria-label="Repeated height estimates">
+        <thead><tr><th>Position</th><th>Distance</th><th>Angle</th><th>Estimated height</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>2</td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>3</td><td></td><td></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+      <div class="prompt-list">
+        <div class="prompt">Why are the estimates not identical?</div>
+        <div class="prompt">Does being farther away make the estimate better or worse?</div>
+        <div class="prompt">Which measurement has the biggest effect on the answer?</div>
+      </div>
+      <div class="footer"><span class="section">Interpret</span><span>Numbers need an argument</span></div>
+    </section>
+
+    <section class="slide" data-section="Model">
+      <div class="eyebrow">Check the model</div>
+      <h2>What did we assume?</h2>
+      <div class="grid-3" style="margin-top:28px">
+        <div class="card tint-blue"><h3>Geometry</h3><p class="small">The ground is horizontal and the object is vertical.</p></div>
+        <div class="card tint-yellow"><h3>Measurement</h3><p class="small">The distance and angle readings are close enough to use.</p></div>
+        <div class="card tint-lavender"><h3>Technology</h3><p class="small">The calculator is in degree mode and rounding is delayed.</p></div>
+      </div>
+      <div class="center" style="height:auto; margin-top:46px"><div><p style="font-size:33px; font-weight:850; color:var(--teal-dark)">A model is useful because it simplifies reality.</p><p class="small">It is also responsible for knowing what the simplification leaves out.</p></div></div>
+      <div class="footer"><span class="section">Model</span><span>Use precise language</span></div>
+    </section>
+
+    <section class="slide" data-section="Exit">
+      <div class="eyebrow">Individual exit response</div>
+      <h2>Show what you can now explain.</h2>
+      <div class="exit">
+        <div><b>1.</b> Draw and label the right triangle from your height investigation.</div>
+        <div><b>2.</b> State the ratio you used and explain why it fits.</div>
+        <div><b>3.</b> Give your calculated height, including eye height where needed.</div>
+        <div><b>4.</b> Name one assumption or source of uncertainty.</div>
+      </div>
+      <p class="note">Finish with: “Trigonometry lets us…”</p>
+      <div class="footer"><span class="section">Exit</span><span>Keep this for our next lesson</span></div>
+    </section>
+  </main>
+
+  <nav class="controls" aria-label="Slide controls">
+    <button id="prev" type="button" aria-label="Previous slide">←</button>
+    <span id="count" aria-live="polite">1 / 13</span>
+    <div id="progress" aria-hidden="true"><div id="bar"></div></div>
+    <button id="next" type="button" aria-label="Next slide">→</button>
+  </nav>
+  <script>
+    (() => {
+      const slides = [...document.querySelectorAll('.slide')];
+      const count = document.getElementById('count');
+      const bar = document.getElementById('bar');
+      let index = 0;
+      function show(next) {
+        index = Math.max(0, Math.min(slides.length - 1, next));
+        slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
+        count.textContent = `${index + 1} / ${slides.length}`;
+        bar.style.width = `${((index + 1) / slides.length) * 100}%`;
+        history.replaceState(null, '', `#slide-${index + 1}`);
+      }
+      function fromHash() {
+        const match = location.hash.match(/slide-(\d+)/);
+        return match ? Number(match[1]) - 1 : 0;
+      }
+      document.getElementById('prev').addEventListener('click', () => show(index - 1));
+      document.getElementById('next').addEventListener('click', () => show(index + 1));
+      document.addEventListener('keydown', (event) => {
+        if (['ArrowRight', ' ', 'PageDown'].includes(event.key)) { event.preventDefault(); show(index + 1); }
+        if (['ArrowLeft', 'PageUp'].includes(event.key)) { event.preventDefault(); show(index - 1); }
+        if (event.key === 'Home') { event.preventDefault(); show(0); }
+        if (event.key === 'End') { event.preventDefault(); show(slides.length - 1); }
+      });
+      window.addEventListener('hashchange', () => show(fromHash()));
+      show(fromHash());
+    })();
+  </script>
+</body>
+</html>
+

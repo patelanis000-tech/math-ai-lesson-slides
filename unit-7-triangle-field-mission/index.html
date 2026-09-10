@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#102c3f">
+  <title>Triangle Field Mission</title>
+  <style>
+    :root {
+      --ink: #102c3f;
+      --ink-soft: #28546a;
+      --paper: #f8f4eb;
+      --paper-2: #fffdf8;
+      --sand: #e8dbc3;
+      --sun: #e49b39;
+      --leaf: #28786a;
+      --coral: #d75f4b;
+      --sky: #dceff2;
+      --line: rgba(16, 44, 63, .15);
+      --shadow: 0 18px 45px rgba(16, 44, 63, .13);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      color: #fdf8ed;
+      background: radial-gradient(circle at 84% 4%, #e7a342 0 4%, transparent 4.2%), linear-gradient(135deg, #102c3f, #174f5b);
+      padding: 24px 24px 28px;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 420px;
+      height: 420px;
+      right: -150px;
+      bottom: -255px;
+      border: 1px solid rgba(255,255,255,.28);
+      transform: rotate(26deg);
+      clip-path: polygon(50% 0, 0 100%, 100% 100%);
+    }
+    .wrap { width: min(1120px, 100%); margin: 0 auto; position: relative; z-index: 1; }
+    .eyebrow { margin: 0 0 10px; color: #f3c877; font-weight: 800; font-size: .78rem; letter-spacing: .15em; text-transform: uppercase; }
+    h1 { max-width: 760px; margin: 0; font-family: Georgia, "Times New Roman", serif; font-size: clamp(2.25rem, 5vw, 3.8rem); line-height: .98; letter-spacing: -.045em; }
+    .subtitle { max-width: 720px; margin: 12px 0 0; color: #d6ebea; font-size: clamp(1rem, 2vw, 1.12rem); }
+
+    .mission-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .mission-strip span { border: 1px solid rgba(255,255,255,.25); border-radius: 999px; padding: 7px 11px; font-size: .82rem; font-weight: 700; }
+
+    main { padding: 18px 24px 70px; }
+    .panel { background: var(--paper-2); border: 1px solid var(--line); border-radius: 22px; box-shadow: var(--shadow); padding: clamp(21px, 4vw, 36px); margin: 0 auto 24px; width: min(1120px, 100%); }
+    h2 { font-family: Georgia, "Times New Roman", serif; font-size: clamp(1.65rem, 3vw, 2.2rem); line-height: 1.05; margin: 0 0 10px; letter-spacing: -.025em; }
+    h3 { margin: 0 0 8px; font-size: 1.06rem; }
+    .lede { color: var(--ink-soft); max-width: 780px; margin: 0 0 24px; }
+    .tiny { font-size: .88rem; color: var(--ink-soft); }
+
+    .group-grid, .task-grid, .checkpoint-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .group-btn, .task-card, .checkpoint-card { min-height: 100%; text-align: left; border: 1px solid var(--line); border-radius: 17px; padding: 19px; background: #fff; color: var(--ink); }
+    .group-btn { cursor: pointer; transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+    .group-btn:hover, .group-btn:focus-visible { transform: translateY(-4px); box-shadow: 0 12px 25px rgba(16,44,63,.12); outline: none; }
+    .group-btn.active { border: 3px solid var(--ink); padding: 17px; }
+    .group-icon { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 13px; margin-bottom: 14px; font-size: 1.35rem; }
+    .area .group-icon, .area .tag { background: #fae7bf; color: #8a4e00; }
+    .sine .group-icon, .sine .tag { background: #dff0ed; color: #176457; }
+    .cosine .group-icon, .cosine .tag { background: #f8deda; color: #9c3830; }
+    .group-btn p { margin: 5px 0 0; color: var(--ink-soft); font-size: .93rem; }
+    .tag { display: inline-block; padding: 3px 8px; border-radius: 999px; font-size: .72rem; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; }
+
+    .mission-header { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 18px; margin-bottom: 19px; }
+    .selected-group { font-size: 1.05rem; font-weight: 800; color: var(--leaf); }
+    .hidden { display: none !important; }
+    .task-card { border-top: 6px solid var(--sun); }
+    .task-card.sine-card { border-top-color: var(--leaf); }
+    .task-card.cosine-card { border-top-color: var(--coral); }
+    .context { color: var(--ink-soft); margin: 0 0 16px; }
+    .math { margin: 15px 0; padding: 14px 16px; border-radius: 12px; background: #f4efe5; font-family: "Cambria Math", Cambria, Georgia, serif; font-size: 1.18rem; letter-spacing: .01em; }
+    .steps { margin: 0; padding-left: 20px; }
+    .steps li { margin: 7px 0; }
+    .prompt { margin-top: 17px; padding: 14px 15px; border-left: 4px solid var(--sun); background: #fffbef; border-radius: 0 12px 12px 0; font-weight: 700; }
+
+    .controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 20px; }
+    button.control, .control-link {
+      appearance: none; border: 0; border-radius: 12px; padding: 11px 14px; cursor: pointer; text-decoration: none;
+      background: var(--ink); color: white; font: inherit; font-size: .9rem; font-weight: 800;
+    }
+    button.control.secondary { background: var(--sand); color: var(--ink); }
+    button.control.warn { background: var(--coral); }
+    button.control:focus-visible { outline: 3px solid #f3c877; outline-offset: 2px; }
+    button.control:disabled { cursor: not-allowed; opacity: .48; filter: grayscale(.3); }
+    .answer-box { display: none; margin-top: 17px; padding: 17px; border: 1px dashed var(--leaf); border-radius: 13px; background: #eff8f5; }
+    .answer-box.show { display: block; }
+    .answer-box strong { color: #175e51; }
+
+    .timer { display: flex; align-items: center; gap: 12px; background: #102c3f; color: #fff; border-radius: 16px; padding: 13px 16px; min-width: 230px; }
+    .timer time { font-variant-numeric: tabular-nums; font-size: 1.52rem; font-weight: 900; letter-spacing: .03em; }
+    .timer p { margin: 0; font-size: .77rem; line-height: 1.2; color: #c7e2df; font-weight: 700; }
+
+    .field-manual { background: var(--sky); border-color: #b5dadd; box-shadow: none; }
+    .manual-table { width: 100%; border-collapse: collapse; background: rgba(255,255,255,.55); border-radius: 13px; overflow: hidden; }
+    .manual-table th, .manual-table td { padding: 12px; border-bottom: 1px solid #b8dcdf; text-align: left; vertical-align: top; }
+    .manual-table th { font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
+    .manual-table tr:last-child td { border-bottom: 0; }
+
+    .mixed { background: #faf1e2; }
+    .task-card .rule-line { color: var(--ink-soft); font-size: .87rem; font-weight: 750; }
+    .decision { margin-top: 15px; padding: 12px; border-radius: 11px; border: 1px dashed var(--ink-soft); color: var(--ink-soft); font-weight: 720; }
+
+    .write-prompt { margin: 14px 0 0; padding: 11px 12px; border-radius: 10px; background: #f4efe5; color: var(--ink-soft); font-weight: 750; }
+    .completion-note { margin-top: 18px; border-radius: 13px; padding: 15px; background: #e0f1eb; color: #175e51; font-weight: 750; }
+
+    footer { text-align: center; color: var(--ink-soft); padding: 5px 24px 45px; font-size: .87rem; }
+    @media (max-width: 760px) {
+      .group-grid, .task-grid, .checkpoint-grid { grid-template-columns: 1fr; }
+      .hero { padding-top: 35px; }
+      .panel { border-radius: 17px; }
+      .manual-table { font-size: .9rem; }
+      .manual-table th, .manual-table td { padding: 9px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Math AI · Unit 7 · Field Operations</p>
+      <h1>Triangle Field Mission</h1>
+      <p class="subtitle">Your team has a different specialist tool. Learn it, teach it, then use the right tool to solve the whole mission.</p>
+      <div class="mission-strip" aria-label="Mission stages">
+        <span>01 · Become expert</span><span>02 · Teach team</span><span>03 · Choose & solve</span><span>04 · Prove it alone</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="panel" id="choose-group">
+      <p class="eyebrow" style="color:#28786a">Step 01</p>
+      <h2>Choose your expert field team</h2>
+      <p class="lede">Select the role your teacher assigned. You will start with one applied problem, then carry that expertise into your mixed team.</p>
+      <div class="group-grid" role="group" aria-label="Select expert group">
+        <button class="group-btn area" data-group="area" type="button">
+          <span class="group-icon">△</span><span class="tag">Group A</span>
+          <h3>Area Surveyor</h3>
+          <p>Measure land and fabric from two sides and their included angle.</p>
+        </button>
+        <button class="group-btn sine" data-group="sine" type="button">
+          <span class="group-icon">⌁</span><span class="tag">Group B</span>
+          <h3>Triangulation Specialist</h3>
+          <p>Locate an inaccessible point from a known side and angle information.</p>
+        </button>
+        <button class="group-btn cosine" data-group="cosine" type="button">
+          <span class="group-icon">↗</span><span class="tag">Group C</span>
+          <h3>Route Designer</h3>
+          <p>Find a missing direct route when two paths and their angle are known.</p>
+        </button>
+      </div>
+      <p class="tiny" style="margin:18px 0 0">Your choice is stored on this device. You can change it at any time.</p>
+    </section>
+
+    <section class="panel hidden" id="expert-mission">
+      <div class="mission-header">
+        <div>
+          <p class="eyebrow" style="color:#28786a">Step 02 · Expert work</p>
+          <h2>Your field briefing</h2>
+          <p class="selected-group" id="selected-group"></p>
+        </div>
+        <div class="timer" aria-live="polite">
+          <time id="timer-display">15:00</time>
+          <p>EXPERT TIME<br>Start when your teacher says go.</p>
+        </div>
+      </div>
+
+      <article class="task-card" id="expert-area">
+        <span class="tag">Area Surveyor</span>
+        <h3 style="margin-top:12px">Briefing: shade for the courtyard</h3>
+        <p class="context">A triangular shade structure has side lengths <strong>18 m</strong> and <strong>24 m</strong>, with an included angle of <strong>53°</strong>. The fabric supplier charges <strong>RM36 per m²</strong>.</p>
+        <ol class="steps">
+          <li>Draw and label a triangle. Identify the two known sides and the included angle.</li>
+          <li>Choose the correct rule. Explain why it is more useful than base × height here.</li>
+          <li>Find the area of fabric required, then estimate the cost.</li>
+        </ol>
+        <div class="prompt">Your teach-back: “Use this rule when …”</div>
+        <div class="controls"><button class="control expert-check" data-reveal="answer-area" type="button" disabled>Check unlocks after 7 min</button></div>
+        <div class="answer-box" id="answer-area"><strong>Check:</strong> A = ½(18)(24) sin 53° ≈ 172.5 m². Cost ≈ <strong>RM6,210</strong>. The perpendicular height is unavailable, but two sides and their included angle are known.</div>
+      </article>
+
+      <article class="task-card sine-card hidden" id="expert-sine">
+        <span class="tag">Triangulation Specialist</span>
+        <h3 style="margin-top:12px">Briefing: swimmer safety zone</h3>
+        <p class="context">Lifeguard points <strong>A</strong> and <strong>B</strong> are 120 m apart. A swimmer at <strong>C</strong> is observed at an angle of <strong>58°</strong> from A and <strong>47°</strong> from B. A rescue boat is stationed at B.</p>
+        <ol class="steps">
+          <li>Sketch the situation and find the third angle.</li>
+          <li>How far is the swimmer from B?</li>
+          <li>The rescue-zone radius is 100 m. Is the swimmer inside it?</li>
+        </ol>
+        <div class="prompt">Your teach-back: “Use this rule when …”</div>
+        <div class="controls"><button class="control expert-check" data-reveal="answer-sine" type="button" disabled>Check unlocks after 7 min</button></div>
+        <div class="answer-box" id="answer-sine"><strong>Check:</strong> ∠C = 75°. BC = (120 sin 58°) / sin 75° ≈ 105.3 m. The swimmer is <strong>outside</strong> the rescue zone. A known side and its opposite angle pair unlock the sine rule.</div>
+      </article>
+
+      <article class="task-card cosine-card hidden" id="expert-cosine">
+        <span class="tag">Route Designer</span>
+        <h3 style="margin-top:12px">Briefing: zip-line connection</h3>
+        <p class="context">Two access paths from a starting point are <strong>31 m</strong> and <strong>26 m</strong>, with an included angle of <strong>38°</strong>. A zip line will connect their endpoints.</p>
+        <ol class="steps">
+          <li>Sketch and label the direct zip-line distance.</li>
+          <li>Choose the correct rule and calculate the distance.</li>
+          <li>Cables are supplied only in whole metres. What minimum length should be ordered?</li>
+        </ol>
+        <div class="prompt">Your teach-back: “Use this rule when …”</div>
+        <div class="controls"><button class="control expert-check" data-reveal="answer-cosine" type="button" disabled>Check unlocks after 7 min</button></div>
+        <div class="answer-box" id="answer-cosine"><strong>Check:</strong> c² = 31² + 26² − 2(31)(26) cos 38°, so c ≈ 19.2 m. Order <strong>20 m</strong>. Two sides and their included angle unlock the cosine rule when the missing side is needed.</div>
+      </article>
+
+      <div class="controls">
+        <button class="control" id="start-timer" type="button">Start 15-minute timer</button>
+        <button class="control secondary" id="pause-timer" type="button">Pause</button>
+        <button class="control secondary" id="finish-expert" type="button">I am ready to teach</button>
+      </div>
+      <p class="tiny">The answer check unlocks seven minutes after the timer starts. Use it to verify your expertise, not replace your reasoning.</p>
+    </section>
+
+    <section class="panel field-manual hidden" id="field-manual">
+      <p class="eyebrow" style="color:#176457">Field manual · use after expert work</p>
+      <h2>Rule-selection map</h2>
+      <table class="manual-table">
+        <thead><tr><th>Known information</th><th>What you need</th><th>Tool</th></tr></thead>
+        <tbody>
+          <tr><td>Two sides and the included angle</td><td>Area</td><td>A = ½ab sin C</td></tr>
+          <tr><td>A side and its opposite-angle pair</td><td>A missing side or angle</td><td>a / sin A = b / sin B</td></tr>
+          <tr><td>Two sides and the included angle</td><td>The third side</td><td>c² = a² + b² − 2ab cos C</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="panel mixed hidden" id="mixed-mission">
+      <p class="eyebrow" style="color:#9c3830">Step 03 · Mixed team mission</p>
+      <h2>Three decisions. Three tools.</h2>
+      <p class="lede">Your mixed group should contain one expert from each field team. Before calculating, every question needs a written rule choice and reason.</p>
+      <div class="task-grid">
+        <article class="task-card">
+          <span class="tag">Mission A</span>
+          <h3 style="margin-top:11px">Festival food-truck zone</h3>
+          <p class="context">A triangular zone has sides 14 m and 22 m, with an included angle of 61°. Find its area.</p>
+          <p class="rule-line">First write: Rule: ______ because ______.</p>
+          <div class="decision">Interpretation: How much temporary flooring is required?</div>
+          <button class="control secondary" data-reveal="mixed-a" type="button" style="margin-top:15px">Check</button>
+          <div class="answer-box" id="mixed-a"><strong>Area rule.</strong> A = ½(14)(22) sin 61° ≈ 134.7 m².</div>
+        </article>
+        <article class="task-card sine-card">
+          <span class="tag">Mission B</span>
+          <h3 style="margin-top:11px">Coastal distance check</h3>
+          <p class="context">In triangle ABC, A = 42°, B = 71°, and a = 85 m. Find b.</p>
+          <p class="rule-line">First write: Rule: ______ because ______.</p>
+          <div class="decision">Interpretation: Which side is opposite the 71° angle?</div>
+          <button class="control secondary" data-reveal="mixed-b" type="button" style="margin-top:15px">Check</button>
+          <div class="answer-box" id="mixed-b"><strong>Sine rule.</strong> b = (85 sin 71°) / sin 42° ≈ 120.1 m.</div>
+        </article>
+        <article class="task-card cosine-card">
+          <span class="tag">Mission C</span>
+          <h3 style="margin-top:11px">Roof-truss connection</h3>
+          <p class="context">Two roof beams are 17 m and 24 m, meeting at an angle of 68°. Find the third side of the truss.</p>
+          <p class="rule-line">First write: Rule: ______ because ______.</p>
+          <div class="decision">Interpretation: Explain why the cosine rule fits this triangle.</div>
+          <button class="control secondary" data-reveal="mixed-c" type="button" style="margin-top:15px">Check</button>
+          <div class="answer-box" id="mixed-c"><strong>Cosine rule.</strong> c = √[17² + 24² − 2(17)(24) cos 68°] ≈ 23.6 m.</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel hidden" id="exit-ticket">
+      <p class="eyebrow" style="color:#d75f4b">Step 04 · Individual checkpoint</p>
+      <h2>Prove you can choose the tool</h2>
+      <p class="lede">Complete these independently in your notebook or on paper. Write the rule first, then your reason and calculation.</p>
+      <div class="checkpoint-grid">
+        <article class="checkpoint-card">
+          <span class="tag">1</span><h3 style="margin-top:11px">Area</h3>
+          <p>A triangular banner has sides 11 cm and 16 cm with included angle 42°. Which rule? Find its area.</p>
+          <p class="write-prompt">Write: rule → reason → calculation → units</p>
+        </article>
+        <article class="checkpoint-card">
+          <span class="tag">2</span><h3 style="margin-top:11px">Choose only</h3>
+          <p>You know two sides and a non-included angle. Can you use the area rule immediately? Explain.</p>
+          <p class="write-prompt">Write: yes or no → explain using “included angle”</p>
+        </article>
+        <article class="checkpoint-card">
+          <span class="tag">3</span><h3 style="margin-top:11px">Missing side</h3>
+          <p>Two sides are 8 m and 13 m, with an included angle of 57°. Which rule finds the third side?</p>
+          <p class="write-prompt">Write: rule → reason; calculate if your teacher asks</p>
+        </article>
+      </div>
+      <div class="completion-note"><strong>Finish:</strong> Show your three written responses to your teacher for feedback.</div>
+    </section>
+  </main>
+  <footer>Math AI · Triangle Field Mission · The question is always: what do I know, what do I need, and which relationship connects them?</footer>
+
+  <script>
+    const groups = {
+      area: { name: 'Group A · Area Surveyor', card: 'expert-area' },
+      sine: { name: 'Group B · Triangulation Specialist', card: 'expert-sine' },
+      cosine: { name: 'Group C · Route Designer', card: 'expert-cosine' }
+    };
+    const state = JSON.parse(localStorage.getItem('triangleFieldMission') || '{}');
+    let selected = state.group || null;
+    let remaining = 15 * 60;
+    let interval = null;
+
+    const selectGroup = (key) => {
+      selected = key;
+      state.group = key;
+      localStorage.setItem('triangleFieldMission', JSON.stringify(state));
+      document.querySelectorAll('.group-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.group === key));
+      document.getElementById('expert-mission').classList.remove('hidden');
+      document.getElementById('selected-group').textContent = groups[key].name;
+      Object.values(groups).forEach(group => document.getElementById(group.card).classList.toggle('hidden', group.card !== groups[key].card));
+      document.getElementById('expert-mission').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+
+    document.querySelectorAll('.group-btn').forEach(btn => btn.addEventListener('click', () => selectGroup(btn.dataset.group)));
+    if (selected && groups[selected]) selectGroup(selected);
+
+    document.querySelectorAll('[data-reveal]').forEach(btn => btn.addEventListener('click', () => {
+      document.getElementById(btn.dataset.reveal).classList.toggle('show');
+      btn.textContent = btn.textContent === 'Hide check' ? 'Check field data' : 'Hide check';
+      if (btn.dataset.reveal.startsWith('mixed')) btn.textContent = btn.textContent === 'Hide check' ? 'Check' : 'Hide check';
+    }));
+
+    const displayTimer = () => {
+      const min = String(Math.floor(remaining / 60)).padStart(2, '0');
+      const sec = String(remaining % 60).padStart(2, '0');
+      document.getElementById('timer-display').textContent = `${min}:${sec}`;
+    };
+    const unlockExpertChecks = () => {
+      document.querySelectorAll('.expert-check').forEach(btn => {
+        btn.disabled = false;
+        btn.textContent = 'Check field data';
+      });
+    };
+    document.getElementById('start-timer').addEventListener('click', () => {
+      if (interval || remaining === 0) return;
+      interval = setInterval(() => {
+        remaining--;
+        displayTimer();
+        if (remaining <= 8 * 60) unlockExpertChecks();
+        if (remaining <= 0) {
+          clearInterval(interval); interval = null;
+          document.getElementById('timer-display').textContent = 'TIME';
+          document.getElementById('start-timer').textContent = 'Expert time complete';
+        }
+      }, 1000);
+    });
+    document.getElementById('pause-timer').addEventListener('click', () => { clearInterval(interval); interval = null; });
+    document.getElementById('finish-expert').addEventListener('click', () => {
+      clearInterval(interval); interval = null;
+      unlockExpertChecks();
+      document.getElementById('field-manual').classList.remove('hidden');
+      document.getElementById('mixed-mission').classList.remove('hidden');
+      document.getElementById('exit-ticket').classList.remove('hidden');
+      document.getElementById('mixed-mission').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  </script>
+</body>
+</html>
