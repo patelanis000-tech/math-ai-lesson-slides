@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Unit 7 · From a Sector to a Cone</title>
+<style>
+    :root{
+      --ink:#12313c; --navy:#092d40; --teal:#147b70; --paper:#f8f6ef;
+      --line:#cbd8d7; --muted:#526970; --ice:#e8f5f1; --gold:#f1b84b;
+      --coral:#c55439; --white:#fff; --shadow:0 12px 35px rgba(9,45,64,.12);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;height:100%;overflow:hidden;background:var(--paper);color:var(--ink)}
+    body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:clamp(20px,2vw,29px)}
+    button,select,input{font:inherit}
+    button{cursor:pointer}
+    .topbar{position:fixed;z-index:20;top:0;left:0;right:0;height:56px;background:var(--navy);color:#fff;display:flex;align-items:center;gap:18px;padding:0 22px;box-shadow:0 3px 12px rgba(0,0,0,.2)}
+    .brand{font-family:Georgia,serif;font-weight:700;white-space:nowrap}
+    .section-name{font-size:.68em;color:#cbe2df;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+    .progress-track{height:7px;width:min(22vw,260px);background:rgba(255,255,255,.18);border-radius:99px;overflow:hidden}
+    .progress-fill{height:100%;background:var(--gold);width:0;transition:width .25s ease}
+    .count{font-variant-numeric:tabular-nums;font-size:.68em;min-width:74px;text-align:right}
+    main{height:100%}
+    .slide{display:none;position:absolute;inset:56px 0 60px;padding:clamp(28px,4vw,64px) clamp(28px,6vw,92px);overflow:auto;align-content:center}
+    .slide.active{display:grid;animation:fade .18s ease}
+    @keyframes fade{from{opacity:.25;transform:translateY(5px)}to{opacity:1;transform:none}}
+    .slide-inner{width:min(1420px,100%);margin:auto}
+    h1,h2,h3{font-family:Georgia,"Times New Roman",serif;color:var(--navy);margin:0 0 .45em;line-height:1.05}
+    h1{font-size:clamp(46px,6vw,88px)}
+    h2{font-size:clamp(38px,4.4vw,66px)}
+    h3{font-size:clamp(25px,2.4vw,38px)}
+    p{line-height:1.42;margin:.5em 0}
+    .eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.57em;font-weight:800;color:var(--teal);margin-bottom:14px}
+    .lead{font-size:1.25em;line-height:1.35;max-width:1000px}
+    .muted{color:var(--muted)}
+    .accent{color:var(--coral);font-weight:800}
+    .teal{color:var(--teal);font-weight:800}
+    .gold{color:#8a5a00;font-weight:800}
+    .grid2,.grid3,.grid4{display:grid;gap:clamp(16px,2vw,30px);align-items:stretch}
+    .grid2{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid3{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .grid4{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .card{background:rgba(255,255,255,.82);border:2px solid var(--line);border-radius:20px;padding:clamp(18px,2.2vw,34px);box-shadow:var(--shadow)}
+    .card.ice{background:var(--ice);border-color:#acd1ca}
+    .card.goldbox{background:#fff3d5;border-color:#e6c36e}
+    .card.coralbox{background:#fbe8e2;border-color:#e3a38e}
+    .big-math{font-family:Georgia,"Times New Roman",serif;font-size:clamp(31px,4vw,62px);line-height:1.25;text-align:center;margin:.45em 0}
+    .math{font-family:Georgia,"Times New Roman",serif;white-space:nowrap}
+    .frac{display:inline-grid;grid-template-rows:auto auto;vertical-align:middle;text-align:center;line-height:1.02;margin:0 .12em}
+    .frac>span:first-child{border-bottom:2px solid currentColor;padding:0 .12em .08em}
+    .frac>span:last-child{padding:.08em .12em 0}
+    ul,ol{margin:.5em 0;padding-left:1.35em;line-height:1.5}
+    li+li{margin-top:.32em}
+    table{width:100%;border-collapse:collapse;font-size:.86em;background:#fff;border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
+    th,td{border:1px solid var(--line);padding:.5em .65em;text-align:center}
+    th{background:var(--navy);color:#fff;font-weight:750}
+    td:first-child,th:first-child{text-align:left}
+    .prompt{border-left:8px solid var(--gold);background:#fff9e9;border-radius:12px;padding:.7em 1em;margin:.7em 0}
+    .answer{display:none;margin-top:18px;background:var(--ice);border:2px solid #9fcac2;border-radius:16px;padding:18px 24px}
+    .answer.show{display:block;animation:fade .18s ease}
+    .reveal{border:0;background:var(--teal);color:#fff;border-radius:999px;padding:.46em 1em;font-weight:800;box-shadow:0 5px 15px rgba(20,123,112,.25)}
+    .reveal:hover,.reveal:focus-visible{background:#0e655d;outline:4px solid #a4d8d2}
+    .tag{display:inline-block;background:var(--navy);color:#fff;border-radius:999px;padding:.28em .7em;font-size:.64em;font-weight:800;letter-spacing:.03em}
+    .time{background:var(--gold);color:#3f2a00}
+    .route{min-height:250px}
+    .route h3{display:flex;justify-content:space-between;gap:12px;align-items:center}
+    svg{max-width:100%;height:auto;display:block;margin:auto}
+    .diagram-label{font:700 18px Inter,system-ui,sans-serif;fill:var(--ink)}
+    .diagram-small{font:650 15px Inter,system-ui,sans-serif;fill:var(--muted)}
+    .slider-wrap{display:grid;grid-template-columns:minmax(280px,.85fr) minmax(420px,1.35fr);gap:32px;align-items:center}
+    input[type=range]{width:100%;accent-color:var(--coral);height:44px}
+    .readouts{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px}
+    .readout{background:#fff;border:2px solid var(--line);border-radius:13px;padding:12px;text-align:center}
+    .readout strong{display:block;font-family:Georgia,serif;font-size:1.25em;color:var(--navy)}
+    canvas{width:100%;height:360px;background:#fff;border:2px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}
+    .choice-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:24px}
+    .choice{background:#fff;border:3px solid var(--line);border-radius:16px;padding:.7em .9em;font-weight:750}
+    .choice b{color:var(--coral);font-size:1.25em;margin-right:.4em}
+    .working-lines{min-height:150px;background:repeating-linear-gradient(to bottom,transparent 0,transparent 38px,var(--line) 39px,var(--line) 40px);margin-top:20px}
+    .bottom{position:fixed;z-index:20;bottom:0;left:0;right:0;height:60px;background:#fff;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:center;gap:14px;padding:8px 18px}
+    .navbtn{width:48px;height:42px;border:2px solid var(--navy);color:var(--navy);background:#fff;border-radius:12px;font-weight:900}
+    .navbtn:hover,.navbtn:focus-visible{background:var(--ice);outline:3px solid #add8d2}
+    #jump{height:42px;border:2px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);padding:0 10px;font-size:.68em;max-width:340px}
+    .fullscreen{position:absolute;right:18px}
+    .hero{background:linear-gradient(130deg,var(--navy) 0 57%,var(--teal) 57% 100%);color:#fff}
+    .hero h1,.hero h2{color:#fff}
+    .hero .eyebrow{color:#f7cf75}
+    .hero .lead{color:#d8ebe8}
+    .center{text-align:center}
+    .small{font-size:.72em}
+    .nowrap{white-space:nowrap}
+    @media(max-width:900px){
+      body{font-size:19px}.slide{padding:24px 25px 76px;align-content:start}.grid2,.grid3,.grid4,.slider-wrap{grid-template-columns:1fr}.topbar{gap:8px;padding:0 12px}.brand{font-size:.8em}.progress-track{display:none}.section-name{display:none}.readouts{grid-template-columns:repeat(2,1fr)}canvas{height:280px}.choice-grid{grid-template-columns:1fr}.bottom{justify-content:flex-start}.fullscreen{right:10px}#jump{max-width:45vw}
+    }
+    @media print{html,body{height:auto;overflow:visible}.topbar,.bottom{display:none}.slide{display:block!important;position:relative;inset:auto;height:100vh;page-break-after:always;padding:40px}.answer{display:block}}
+  
+    .formula{font-family:Georgia,serif;font-size:1.14em;background:var(--ice);padding:18px;border-radius:12px;line-height:1.5}
+    details{margin:14px 0;background:#eef4f2;border-radius:12px;padding:12px 18px}summary{cursor:pointer;font-weight:700;color:var(--teal);min-height:32px}
+    .mapping{font-size:1.05em}.readout span{font-size:.62em}.readouts{grid-template-columns:repeat(2,1fr)}
+    .grid3 .big-math{font-size:clamp(28px,2.7vw,43px)}.grid4 .big-math{font-size:clamp(28px,2.5vw,40px)}
+    .slide{padding:24px 5vw;align-content:start}.slide-inner{margin:auto}.slide.hero{align-content:center}
+    .grid2 svg{max-height:290px}.slider-wrap{grid-template-columns:.9fr 1.3fr}.slider-wrap svg{max-height:240px}
+    @media(min-width:901px) and (max-height:850px){body{font-size:23px}h2{font-size:44px}.card{padding:18px}.slide{padding:22px 5vw}.big-math{font-size:36px}canvas{height:280px}.grid2 svg{max-height:240px}.route{min-height:0}}
+    @media(max-width:900px){.slider-wrap{grid-template-columns:1fr}.grid2 svg{max-height:240px}}
+
+.answer.grid2.show,.answer.grid3.show,.answer.grid4.show{display:grid}table.answer.show{display:table}.answer.grid2,.answer.grid3,.answer.grid4{margin-top:18px}
+</style>
+</head>
+<body>
+<header class="topbar">
+<div class="brand">IB Mathematics AI</div>
+<div class="section-name" id="sectionName">From a sector to a cone</div>
+<div aria-hidden="true" class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+<div class="count" id="count">1 / 34</div>
+</header>
+<main id="deck">
+<section class="slide hero active" data-title="From a sector to a cone">
+<div class="slide-inner">
+<div class="eyebrow">Unit 7 · Geometry and trigonometry</div>
+<h1>From a sector<br/>to a cone</h1>
+<p class="lead">Volume, surface area and container design</p>
+<p><span class="tag time">90 minutes · break · 45 minutes</span></p>
+</div>
+</section>
+<section class="slide" data-title="Today’s lesson">
+<div class="slide-inner"><div class="eyebrow">SL and HL · 135 minutes</div><h2>Today’s lesson</h2><div class="grid2"><div class="card"><h3>Before the break · 90 min</h3><p>Compare cones made from sectors. Use a calculator table or graph to choose a container design.</p><p>Then compare the volumes and surfaces of three solids.</p></div><div class="card ice"><h3>After the break · 45 min</h3><p>Calculate storage capacity, paint requirements and the mass of a wax display.</p><p>Finish with an individual exit ticket.</p></div></div><p>Have your GDC, notebook and a small paper slip ready. Work in pairs, then groups of three.</p><p class="small">All tasks are for SL and HL unless marked <strong>HL only</strong>.</p></div>
+</section>
+<section class="slide" data-title="Retrieval">
+<div class="slide-inner">
+<div class="eyebrow">0–8 min · 5 min alone, 3 min compare and correct</div>
+<h2>Start with these three questions</h2>
+<div class="grid2">
+<div class="card route">
+<h3>SL / common </h3>
+<ol>
+<li>A sector has radius 8 cm and angle 135°. Find its arc length.</li>
+<li>Write the perimeter of the sector.</li>
+<li>A right triangle has hypotenuse <span class="math">l = 13 cm</span> and one leg <span class="math">r = 5 cm</span>. Find the other leg <span class="math">h</span>.</li>
+</ol>
+</div>
+<div class="card route ice">
+<h3>HL only · Radians </h3>
+<ol>
+<li>Convert 135° to radians.</li>
+<li><span class="math">r = 8 cm</span> and <span class="math">s = 12 cm</span>. Find <span class="math">θ</span> in radians.</li>
+<li>Find the area of the same sector.</li>
+</ol>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" data-title="Retrieval check">
+<div class="slide-inner">
+<div class="eyebrow">Check · Correct in another colour</div>
+<h2>Answers</h2>
+<button class="reveal" data-target="check58">Check answers</button><div class="grid2 answer" id="check58">
+<div class="card">
+<h3>SL / common</h3>
+<p class="big-math">6π cm</p>
+<p class="big-math">16 + 6π cm</p>
+<p class="big-math">h = 12 cm</p>
+</div>
+<div class="card ice">
+<h3>HL only</h3>
+<p class="big-math"><span class="frac"><span>3π</span><span>4</span></span></p>
+<p class="big-math">θ = 1.5 rad</p>
+<p class="big-math">A = 48 cm²</p>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" data-title="Make a prediction">
+<div class="slide-inner">
+<div class="eyebrow">8–14 min · Predict alone, then compare in pairs</div>
+<h2>Three sectors. Three cones.</h2>
+<p class="lead">Every sector has radius <span class="math">12 cm</span>. Rank the cones from <strong>smallest</strong> to <strong>largest</strong> volume. Roll each sector so its straight edges meet, without overlap.</p>
+<div class="grid3 center">
+<div class="card"><h3>90°</h3><svg aria-label="90 degree sector" viewbox="0 0 220 160"><path d="M45 130 L45 25 A105 105 0 0 1 150 130 Z" fill="#f1b84b" stroke="#092d40" stroke-width="4"></path><text class="diagram-label" x="80" y="116">12 cm</text></svg></div>
+<div class="card"><h3>180°</h3><svg aria-label="180 degree sector" viewbox="0 0 220 160"><path d="M110 135 L5 135 A105 105 0 0 1 215 135 Z" fill="#74b9ad" stroke="#092d40" stroke-width="4"></path><text class="diagram-label" x="119" y="116">12 cm</text></svg></div>
+<div class="card"><h3>355°</h3><svg aria-label="355 degree sector" viewbox="0 0 220 160"><path d="M110 80 L110 8 A72 72 0 1 1 103.725 8.274 Z" fill="#dc8b73" stroke="#092d40" stroke-width="4"></path><text class="diagram-label" x="116" y="61">12 cm</text></svg></div>
+</div>
+<div class="prompt"><strong>Write first:</strong> write your ranking and one sentence of reasoning.</div>
+<p class="small">Diagrams are not drawn to a common scale. All three radii are 12 cm.</p></div>
+</section>
+<section class="slide" data-title="Sector and cone">
+<div class="slide-inner">
+<div class="eyebrow">14–19 min · Discuss in pairs</div>
+<h2>What becomes what?</h2>
+<div class="grid2">
+<div class="card center">
+<svg aria-label="Sector of radius l and arc length s" role="img" viewbox="0 0 430 330">
+<path d="M90 270 L90 45 A225 225 0 0 1 307.333 211.766 Z" fill="#f8d98d" stroke="#092d40" stroke-width="5"></path>
+<path d="M90 45 A225 225 0 0 1 307.333 211.766" fill="none" stroke="#c55439" stroke-width="10"></path>
+<line stroke="#147b70" stroke-width="8" x1="90" x2="90" y1="270" y2="45"></line>
+<text class="diagram-label" x="52" y="155">l</text><text class="diagram-label" x="222" y="82">arc s</text>
+</svg>
+</div>
+<div class="card ice center">
+<svg aria-label="Cone with radius r, height h, and slant height l" role="img" viewbox="0 0 430 330">
+<ellipse cx="215" cy="265" fill="#d7ece7" rx="120" ry="34" stroke="#092d40" stroke-width="5"></ellipse>
+<path d="M95 265 L215 38 L335 265" fill="#e8f5f1" stroke="#092d40" stroke-width="5"></path>
+<line stroke="#c55439" stroke-dasharray="9 8" stroke-width="5" x1="215" x2="215" y1="38" y2="265"></line>
+<line stroke="#147b70" stroke-width="6" x1="215" x2="335" y1="265" y2="265"></line>
+<text class="diagram-label" x="278" y="246">r</text><text class="diagram-label" x="225" y="155">h</text><text class="diagram-label" x="285" y="135">l</text>
+</svg>
+</div>
+</div>
+<p>Match the sector radius and arc to lengths on the cone. Which length is the vertical height?</p><button class="reveal" data-target="mapAnswer">Check the connections</button><div class="answer mapping" id="mapAnswer"><span class="accent">arc length</span> = base circumference   ·   sector radius = <span class="teal">slant height</span></div>
+</div>
+</section>
+<section class="slide" data-title="Build the model">
+<div class="slide-inner">
+<div class="eyebrow">19–34 min · Pairs</div>
+<h2>Build the model</h2>
+<p>Sector radius l = 12 cm. The straight edges meet without overlap. Find the cone radius r, vertical height h and volume V. Keep full calculator values.</p>
+<table>
+<thead><tr><th>Sector angle α</th><th>Arc length</th><th>Cone radius r</th><th>Height h</th><th>Volume V</th></tr></thead>
+<tbody><tr><td>90°</td><td></td><td></td><td></td><td></td></tr><tr><td>180°</td><td></td><td></td><td></td><td></td></tr><tr><td>270°</td><td></td><td></td><td></td><td></td></tr><tr><td>330°</td><td></td><td></td><td></td><td></td></tr></tbody>
+</table>
+<div class="prompt">One partner explains the geometry; the other calculates and checks units. Swap roles after two rows. Both record the table.</div>
+<details><summary>Need a starting point?</summary><p>s = (α/360) × 2πl; s = 2πr; h² + r² = l²; V = πr²h/3.</p></details>
+</div>
+</section>
+<section class="slide" data-title="Table checkpoint">
+<div class="slide-inner">
+<div class="eyebrow">34–41 min · Compare methods and write a model</div>
+<h2>Compare your results</h2>
+<button class="reveal" data-target="check710">Check answers</button><table class="answer" id="check710">
+<thead><tr><th>α</th><th>r (cm)</th><th>h (cm)</th><th>V (cm³)</th></tr></thead>
+<tbody><tr><td>90°</td><td>3</td><td>11.62</td><td>109.5</td></tr><tr><td>180°</td><td>6</td><td>10.39</td><td>391.8</td></tr><tr><td>270°</td><td>9</td><td>7.94</td><td>673.3</td></tr><tr><td>330°</td><td>11</td><td>4.80</td><td>607.7</td></tr></tbody>
+</table>
+<div class="grid2" style="margin-top:22px">
+<div class="card ice"><h3>As α increases…</h3><p>the base radius <strong>increases</strong>.</p></div>
+<div class="card coralbox"><h3>But also…</h3><p>the vertical height <strong>decreases</strong>.</p></div>
+</div>
+</div>
+</section>
+<section class="slide" data-title="Generalise">
+<div class="slide-inner">
+<div class="eyebrow">SL and HL · α is measured in degrees</div>
+<h2>Can one rule replace four calculations?</h2>
+<div class="big-math">
+          2πr = <span class="frac"><span>α</span><span>360</span></span>(2πl)
+        </div>
+<div class="center"><button class="reveal" data-target="genAnswer">Reveal the relationship</button></div>
+<div class="answer center" id="genAnswer">
+<div class="big-math">r = <span class="frac"><span>αl</span><span>360</span></span></div>
+<p>When <span class="math">l = 12</span>, this becomes <span class="math accent">r = α ÷ 30</span>.</p>
+</div>
+</div>
+</section>
+<section class="slide" data-title="The volume model">
+<div class="slide-inner">
+<div class="eyebrow">SL and HL · Cone model</div>
+<h2>The volume model</h2>
+<div class="grid3">
+<div class="card"><h3>Radius</h3><div class="big-math">r = <span class="frac"><span>α</span><span>30</span></span></div></div>
+<div class="card ice"><h3>Height</h3><div class="big-math">h = √(144 − r²)</div></div>
+<div class="card goldbox"><h3>Volume</h3><div class="big-math">V = <span class="frac"><span>1</span><span>3</span></span>πr²h</div></div>
+</div>
+<div class="prompt"><strong>Domain:</strong> what values of <span class="math">α</span> make a real, non-flat cone? Explain both endpoints.<details><summary>Check the domain</summary><p>0° &lt; α &lt; 360°. At 0° there is no base; at 360° the height is zero. Neither endpoint gives a usable cone.</p></details></div>
+</div>
+</section>
+<section class="slide" data-title="Calculator investigation"><div class="slide-inner"><div class="eyebrow">41–53 min · Pairs · GDC</div><h2>Find the greatest capacity</h2><p>Let x be the sector angle in degrees. Enter:</p><div class="formula">Y₁ = (π/3)(x/30)²√(144 − (x/30)²)</div><ol><li>Use a graph window 0 ≤ x ≤ 360, 0 ≤ y ≤ 750. Explain why only 0 &lt; x &lt; 360 represents a cone.</li><li>Locate the maximum numerically. Check nearby angles with a table.</li><li>Record the angle, radius, height and capacity. Explain why volume falls near 360°.</li></ol><p class="small">Use your GDC’s maximum tool or narrow the table step from 10° to 1° to 0.1°. No differentiation is needed. The next slide offers a slider check.</p></div></section><section class="slide" data-title="Explore the cone">
+<div class="slide-inner">
+<div class="eyebrow">SL and HL · Check with the slider</div>
+<h2>Where is the greatest volume?</h2>
+<div class="slider-wrap">
+<div>
+<label for="angleSlider"><strong>Sector angle α</strong></label>
+<input aria-label="Sector angle in degrees" id="angleSlider" max="359.9" min="0.1" step="0.1" type="range" value="270"/>
+<div class="readouts">
+<div class="readout"><span>α (degrees)</span><strong id="angleOut">270°</strong></div>
+<div class="readout"><span>r (cm)</span><strong id="radiusOut">9.00</strong></div>
+<div class="readout"><span>h (cm)</span><strong id="heightOut">7.94</strong></div>
+<div class="readout"><span>V (cm³)</span><strong id="volumeOut">673.3</strong></div>
+</div>
+<div class="prompt small">Record your best angle, radius, height and volume. Then explain the shape of the graph.</div>
+</div>
+<div class="grid2">
+<div class="card center"><h3>Sector</h3><svg id="sectorSvg" viewbox="0 0 320 320"><path fill="#f1b84b" id="sectorPath" stroke="#092d40" stroke-width="5"></path><text class="diagram-label" x="145" y="167">12</text></svg></div>
+<div class="card ice center"><h3>Cone cross-section</h3><svg viewbox="0 0 320 320"><line id="coneLeft" stroke="#092d40" stroke-width="6" x1="160" x2="60" y1="40" y2="260"></line><line id="coneRight" stroke="#092d40" stroke-width="6" x1="160" x2="260" y1="40" y2="260"></line><line id="coneBase" stroke="#147b70" stroke-width="7" x1="60" x2="260" y1="260" y2="260"></line><line id="coneHeight" stroke="#c55439" stroke-dasharray="9 8" stroke-width="5" x1="160" x2="160" y1="40" y2="260"></line><text class="diagram-label" x="171" y="148">h</text><text class="diagram-label" x="210" y="282">r</text><circle cx="160" cy="260" fill="#092d40" r="4"></circle><text class="diagram-small" text-anchor="middle" x="160" y="308">base width = 2r</text></svg></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" data-title="Read the graph">
+<div class="slide-inner">
+<div class="eyebrow">Table + graph</div>
+<h2>Compare your maximum</h2>
+<canvas aria-label="Graph of cone volume against sector angle" height="430" id="volumeGraph" width="1100"></canvas>
+<button class="reveal" data-target="check811">Check answers</button><div class="grid3 answer" id="check811" style="margin-top:18px">
+<div class="card center"><h3>α</h3><p class="big-math">≈ 293.9°</p></div>
+<div class="card center ice"><h3>r and h</h3><p class="big-math">9.80 cm, 6.93 cm</p></div>
+<div class="card center goldbox"><h3>V<sub>max</sub></h3><p class="big-math">≈ 696.5 cm³</p></div>
+</div>
+</div>
+</section>
+<section class="slide" data-title="Explain the maximum">
+<div class="slide-inner">
+<div class="eyebrow">Pairs · Explain your graph</div>
+<h2>Why does the graph rise, then fall?</h2>
+<div class="grid2">
+<div class="card ice"><h3>At first</h3><p>The increasing <span class="math">r²</span> has the stronger effect.</p><p>The base grows quickly while the cone is still tall.</p></div>
+<div class="card coralbox"><h3>Near 360°</h3><p>The cone becomes very wide but almost flat.</p><p>The shrinking <span class="math">h</span> drives the volume back towards zero.</p></div>
+</div>
+<div class="prompt"><strong>Return to your prediction.</strong> What did you track? What did you overlook?<details><summary>Check the opening ranking</summary><p>90°: 109.5 cm³; 180°: 391.8 cm³; 355°: 292.3 cm³. Smallest to largest: 90°, 355°, 180°.</p></details></div>
+</div>
+</section>
+<section class="slide" data-title="Which height?">
+<div class="slide-inner">
+<div class="eyebrow">53–58 min · Heights and surfaces</div>
+<h2>Which height belongs where?</h2>
+<div class="grid2">
+<div class="card center">
+<svg viewbox="0 0 430 330"><path d="M90 275 L215 35 L340 275 Z" fill="#e8f5f1" stroke="#092d40" stroke-width="6"></path><line stroke="#c55439" stroke-dasharray="10 8" stroke-width="6" x1="215" x2="215" y1="35" y2="275"></line><line stroke="#147b70" stroke-width="7" x1="215" x2="340" y1="275" y2="275"></line><text class="diagram-label" x="229" y="160">h</text><text class="diagram-label" x="292" y="142">l</text><text class="diagram-label" x="276" y="298">r</text></svg>
+</div>
+<div>
+<div class="card coralbox"><h3>Volume</h3><p>Use the <strong>perpendicular vertical height</strong> <span class="math">h</span>.</p></div>
+<div class="card ice" style="margin-top:18px"><h3>Curved surface</h3><p>Use the <strong>slant height</strong> <span class="math">l</span>.</p></div>
+<p class="big-math">h² + r² = l²</p>
+</div>
+</div>
+</div>
+</section><section class="slide" data-title="Curved surface area">
+<div class="slide-inner">
+<div class="eyebrow">53–58 min · How much card is used?</div>
+<h2>The sector becomes the curved surface</h2>
+<div class="grid2">
+<div class="card"><div class="big-math">A<sub>sector</sub> = <span class="frac"><span>1</span><span>2</span></span>ls</div></div>
+<div class="card ice"><div class="big-math">s = 2πr</div></div>
+</div>
+<div class="center" style="margin-top:22px"><button class="reveal" data-target="csaAnswer">Combine them</button></div>
+<div class="answer center" id="csaAnswer"><div class="big-math">A<sub>curved cone</sub> = πrl</div><p>The base is extra only when it is present and exposed.</p></div>
+</div>
+</section><section class="slide" data-title="Choose a 600 mL container"><div class="slide-inner"><div class="eyebrow">58–69 min · Two pairs join</div><h2>A cone must hold 600 mL</h2><p>Keep the sector radius at 12 cm. The open cone must hold <strong>at least 600 mL</strong>. Use as little card as possible.</p><ol><li>Use the graph or table to find two sector angles with capacity about 600 cm³. Compare their curved areas.</li><li>Choose a whole-degree angle that meets the capacity requirement. Check it and the next smaller whole-degree angle.</li><li>Give your recommendation with capacity, card area and one limitation of the model.</li></ol><p class="formula">V = (π/3)(α/30)²√(144 − (α/30)²)   ·   A = 0.4πα</p><p class="small">1 mL = 1 cm³. Ignore thickness and overlap initially. Rotate calculator, diagram, recording and checking roles.</p></div></section><section class="slide" data-title="Compare container designs"><div class="slide-inner"><div class="eyebrow">SL and HL · Compare recommendations</div><h2>Which design uses less card?</h2><button class="reveal" data-target="designAnswer">Check after comparing groups</button><div class="answer" id="designAnswer"><p>The 600 cm³ intersections are approximately <strong>240.2° and 331.2°</strong>. The smaller angle uses less card.</p><p>Choose <strong>241°</strong>: V ≈ 602.4 cm³ and A ≈ 302.8 cm². At 240°, V ≈ 599.5 cm³, so it is too small.</p><p>Real seams and card thickness reduce capacity. A practical design needs extra allowance and a physical fill test.</p></div><p>Would the greatest-volume cone also use the least card? Explain using your results.</p></div></section>
+<section class="slide hero" data-title="Hinge ticket">
+<div class="slide-inner center">
+<div class="eyebrow">5-minute hinge ticket</div>
+<h2>Record both answers</h2>
+<p class="lead" style="margin-inline:auto">On one small slip, write your class identifier and two letters: <strong>H1</strong> and <strong>H2</strong>.</p>
+<p>Work alone. Show the slip together on the signal. Hand it in.</p>
+</div>
+</section>
+<section class="slide" data-title="Hinge question 1">
+<div class="slide-inner">
+<div class="eyebrow">69–74 min · Individual check · H1</div>
+<h2>The sector radius stays 12 cm while its angle increases.</h2>
+<p class="lead">Once rolled into a cone, what <strong>must</strong> happen?</p>
+<div class="choice-grid">
+<div class="choice"><b>A</b> r increases and h increases</div>
+<div class="choice"><b>B</b> r increases and h decreases</div>
+<div class="choice"><b>C</b> r decreases and h increases</div>
+<div class="choice"><b>D</b> r and h are unchanged</div>
+</div>
+<p class="small">On a paper slip, write your usual class identifier and H1/H2 choices. Show together when asked; hand in before checking.</p></div>
+</section>
+<section class="slide" data-title="Hinge question 2">
+<div class="slide-inner">
+<div class="eyebrow">H2 · Record one letter</div>
+<h2>A cone has r = 5 cm and l = 13 cm.</h2>
+<p class="lead">Only its curved surface is made from card. What area is required?</p>
+<div class="choice-grid">
+<div class="choice"><b>A</b> 60π cm²</div>
+<div class="choice"><b>B</b> 65π cm²</div>
+<div class="choice"><b>C</b> 90π cm²</div>
+<div class="choice"><b>D</b> 100π cm²</div>
+</div>
+</div>
+</section>
+<section class="slide" data-title="Check and respond">
+<div class="slide-inner">
+<div class="eyebrow">Check · Then follow the instruction</div>
+<h2>Check H1 and H2</h2>
+<details><summary>Show answers</summary><p>H1: B. With fixed l, r increases and h = √(l² − r²) decreases.</p><p>H2: B. Curved area = πrl = 65π cm²; the base is not included.</p></details>
+<p>Explain one correction to a partner. If both were correct, explain why option C in H2 includes too much card.</p></div>
+</section>
+<section class="slide" data-title="Formula toolkit">
+<div class="slide-inner">
+<div class="eyebrow">74–77 min · SL and HL · Formula reference</div>
+<h2>Formula toolkit</h2>
+<div class="grid4">
+<div class="card"><h3>Cone</h3><p class="math">V = ⅓πr²h</p><p class="math">CSA = πrl</p></div>
+<div class="card ice"><h3>Pyramid</h3><p class="math">V = ⅓Bh</p><p>Faces: triangles</p></div>
+<div class="card goldbox"><h3>Sphere</h3><p class="math">V = ⁴⁄₃πr³</p><p class="math">SA = 4πr²</p></div>
+<div class="card coralbox"><h3>Hemisphere</h3><p class="math">V = ⅔πr³</p><p class="math">curved SA = 2πr²</p></div>
+</div>
+<div class="prompt"><strong>Before substituting:</strong> vertical or slant height? curved or total area? exposed or hidden surface?<p class="small">B = base area. h = perpendicular height. l = cone slant height. Cylinder: V = πr²h; curved area = 2πrh.</p></div>
+</div>
+</section><section class="slide" data-title="Practice A">
+<div class="slide-inner">
+<div class="eyebrow">77–90 min · Groups of three</div>
+<h2>Calculate, then teach your group</h2>
+<ol>
+<li>A solid cone has <span class="math">r = 5 cm</span> and <span class="math">l = 13 cm</span>. Find its vertical height, volume, curved area and total area.</li>
+<li>An open hemispherical bowl has internal radius 6 cm. Find its capacity and inner curved area. Express the capacity in mL.</li>
+<li>A right square pyramid has base side 10 cm and vertical height 12 cm. Find its volume and total surface area. Distinguish the triangular face height from the edge joining the apex to a corner.</li>
+</ol>
+<div class="prompt">Take one problem each (5 min). Teach your method to the group (6 min), then check together (2 min). Everyone records all three methods.</div>
+</div>
+</section>
+<section class="slide" data-title="Practice A answers">
+<div class="slide-inner">
+<div class="eyebrow">Group check · Before the break</div>
+<h2>Answers</h2>
+<button class="reveal" data-target="check1013">Check answers</button><div class="grid3 answer" id="check1013">
+<div class="card"><h3>1 · Cone</h3><p>h = 12 cm</p><p><span class="math">V = 100π cm³</span></p><p><span class="math">CSA = 65π cm²</span></p><p><span class="math">TSA = 90π cm²</span></p></div>
+<div class="card ice"><h3>2 · Bowl</h3><p><span class="math">V = 144π cm³</span></p><p><span class="math">CSA = 72π cm²</span></p><p>Capacity ≈ 452 mL</p></div>
+<div class="card goldbox"><h3>3 · Pyramid</h3><p>face slant height <span class="math">= 13 cm</span></p><p><span class="math">V = 400 cm³</span></p><p><span class="math">TSA = 360 cm²</span></p></div>
+</div>
+</div>
+</section><section class="slide" data-title="Break"><div class="slide-inner"><div class="eyebrow">90 minutes completed</div><h1>Break</h1><p class="lead">Keep your group’s three worked solutions. After the break, start with the silo problem.</p></div></section>
+<section class="slide" data-title="Composite solids">
+<div class="slide-inner">
+<div class="eyebrow">After break · 0–14 min · Groups of three</div>
+<h2>A silo</h2>
+<div class="grid2">
+<div class="card center">
+<svg viewbox="0 0 400 450"><path d="M90 135 A110 110 0 0 1 310 135" fill="#cfe8e3" stroke="#092d40" stroke-width="6"></path><rect fill="#e8f5f1" height="235" stroke="#092d40" stroke-width="6" width="220" x="90" y="135"></rect><ellipse cx="200" cy="370" fill="#beded8" rx="110" ry="28" stroke="#092d40" stroke-width="6"></ellipse><line stroke="#147b70" stroke-width="6" x1="200" x2="310" y1="245" y2="245"></line><text class="diagram-label" x="242" y="232">3 m</text><text class="diagram-label" x="320" y="260">8 m</text></svg>
+</div>
+<div>
+<p>A silo is a cylinder of radius 3 m and height 8 m, topped by a hemisphere of radius 3 m. Model the walls as having negligible thickness.</p><ol>
+<li>Find the internal volume.</li>
+<li>Find the external area painted <strong>above ground</strong>.</li>
+<li>Paint covers 12 m² per litre per coat. For two coats, how many 5 L tins must be bought? Assume no wastage.</li></ol>
+<div class="prompt">Sketch and shade only the painted surfaces. Explain whether the shared circle or floor belongs in your calculation.</div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" data-title="Silo solution">
+<div class="slide-inner">
+<div class="eyebrow">Compare expressions</div>
+<h2>Silo solution</h2>
+<button class="reveal" data-target="ansSilosolution">Check your solution</button><div class="answer" id="ansSilosolution"><div class="card">
+<h3>Volume</h3>
+<div class="big-math">π(3²)(8) + <span class="frac"><span>2</span><span>3</span></span>π(3³) = 90π ≈ 282.7 m³</div>
+</div><div class="card ice" style="margin-top:18px">
+<h3>Painted area</h3>
+<div class="big-math">2π(3)(8) + 2π(3²) = 66π ≈ 207.3 m²</div>
+</div><p class="center accent">Shared and hidden circles are not exposed surfaces.</p><details><summary>Check the purchase</summary><p>2 × 66π ÷ 12 ≈ 34.6 L. Buy 7 tins (35 L). Rounding down to 6 tins leaves too little paint.</p></details></div></div>
+</section>
+<section class="slide" data-title="IB-style application">
+<div class="slide-inner">
+<div class="eyebrow">After break · 14–29 min · Pairs</div>
+<h2>A solid wax display</h2>
+<div class="grid2">
+<div class="card center">
+<svg viewbox="0 0 430 430"><path d="M95 145 A120 120 0 0 1 335 145" fill="#f7cf75" stroke="#092d40" stroke-width="6"></path><path d="M95 145 L215 375 L335 145" fill="#f5dd9f" stroke="#092d40" stroke-width="6"></path><line stroke="#147b70" stroke-width="6" x1="215" x2="335" y1="145" y2="145"></line><line stroke="#c55439" stroke-dasharray="9 8" stroke-width="5" x1="215" x2="215" y1="145" y2="375"></line><text class="diagram-label" x="267" y="134">6 cm</text><text class="diagram-label" x="228" y="270">8 cm</text><text class="diagram-label" x="298" y="285">10 cm</text></svg>
+</div>
+<div>
+<p>A cone is joined to a hemisphere of the same radius. The shared circle is internal.</p>
+<p>Wax density: <span class="math">0.90 g cm<sup>−3</sup></span></p>
+<ol>
+<li>Find the total volume.</li>
+<li>Find the mass.</li>
+<li>There are 700 g of wax available. Is that enough for one display?</li></ol>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" data-title="Application continued">
+<div class="slide-inner">
+<div class="eyebrow">Same display · Part of the 15-minute pair task</div>
+<h2>Surface and sector</h2><p>Cone: r = 6 cm, h = 8 cm, l = 10 cm. Hemisphere: r = 6 cm.</p>
+<ol start="4">
+<li>Find the external surface area to be coated.</li>
+<li>A thin paper wrap covers only the cone’s curved surface. It is cut from a sector of radius 10 cm. Find the sector angle. Ignore overlap.</li>
+</ol>
+<div class="grid2" style="margin-top:22px">
+<div class="card ice"><h3>Surface check</h3><p>Which circle is shared?</p><p>Which surfaces can the coating touch?</p></div>
+<div class="card goldbox"><h3>Sector check</h3><p>What is the sector’s arc length after rolling?</p></div>
+</div>
+</div>
+</section>
+<section class="slide" data-title="Application answers">
+<div class="slide-inner">
+<div class="eyebrow">Application · Verify</div>
+<h2>Answers</h2>
+<button class="reveal" data-target="ansApplicationanswers">Check your solution</button><div class="answer" id="ansApplicationanswers"><div class="grid4">
+<div class="card"><h3>Volume</h3><p class="big-math">240π</p><p>≈ 754.0 cm³</p></div>
+<div class="card ice"><h3>Mass</h3><p class="big-math">216π</p><p>≈ 678.6 g</p></div>
+<div class="card goldbox"><h3>External area</h3><p class="big-math">132π</p><p>≈ 414.7 cm²</p></div>
+<div class="card coralbox"><h3>Sector angle</h3><p class="big-math">216°</p></div>
+</div><div class="prompt"><strong>Check your working:</strong> point to the exact place where you excluded the shared circle.</div><p>700 g is enough: about 21.4 g remains, assuming no wax is lost.</p></div></div>
+</section>
+<section class="slide" data-title="SL comparison / HL only radians">
+<div class="slide-inner">
+<div class="eyebrow">After break · 29–37 min · Compare and extend</div>
+<div class="grid2">
+<div class="card route">
+<h3>SL · Same capacity</h3>
+<p>A cylinder has the same radius (6 cm) and volume (240π cm³) as the wax display. Find its height.</p>
+<p>If its top and bottom are both exposed, compare its total area with 132π cm². Which needs less coating?</p>
+</div>
+<div class="card route ice">
+<h3>HL only · Radians</h3>
+<p>Convert <span class="math">216°</span> to radians.</p>
+<p>Verify <span class="math">s = lθ = 2πr</span>.</p>
+<p>For fixed <span class="math">l</span>, complete:</p>
+<div class="big-math">r = ______ ,   0 &lt; θ &lt; ______</div>
+</div>
+</div>
+<button class="reveal" data-target="hlAnswer">Check HL</button>
+<div class="answer" id="hlAnswer"><p class="big-math">θ = <span class="frac"><span>6π</span><span>5</span></span>,   r = <span class="frac"><span>lθ</span><span>2π</span></span>,   0 &lt; θ &lt; 2π</p></div>
+<details><summary>Check SL</summary><p>h = 240π/(36π) = 20/3 ≈ 6.67 cm. Total area = 2π(6)(20/3) + 2π(6²) = 152π cm². The original display needs 20π ≈ 62.8 cm² less coating.</p></details></div>
+</section>
+<section class="slide" data-title="Closing check">
+<div class="slide-inner">
+<div class="eyebrow">After break · 37–45 min · Work alone and hand in</div>
+<h2>Exit ticket</h2>
+<ol>
+<li>A cone has r = 6 cm, h = 8 cm and l = 10 cm. State its volume and curved surface area.</li>
+<li>A student adds the total surface areas of a cone and a hemisphere joined at their circular bases. Explain the error and state what must be subtracted.</li>
+<li><strong>HL only:</strong> give the sector angle that forms this cone in radians.</li>
+</ol>
+<div class="center"><button class="reveal" data-target="exitAnswer">Check after time is called</button></div>
+<div class="answer center" id="exitAnswer"><p class="big-math">V = 96π cm³; curved area = 60π cm²; HL only: θ = 6π/5 rad.</p><p>Subtract both copies of the shared circular face: 2πr².</p></div>
+</div>
+</section>
+<section class="slide" data-title="Textbook connections"><div class="slide-inner"><div class="eyebrow">Reference</div><h2>Textbook connections</h2><p>Hodder AI SL, §5A: volumes and surface areas of solids.</p><p>Oxford AI SL, §2.3: solids, nets, surface area and volume.</p><p>Haese Core Topics SL, Chapter 6: measurement, volume, capacity and density.</p><p class="small">The tasks here use original contexts and values. Common solids work applies to both levels; radian tasks are marked HL only.</p><details><summary>Source links</summary><p class="small"><a href="https://studylib.net/doc/26004841/mathematics---applications-and-interpretation-sl---hodder...">Hodder AI SL section</a> · <a href="https://studylib.net/doc/27657338/ai-sl-oxford-chapter-2">Oxford AI SL section</a> · <a href="https://www.haesemathematics.com/books/mathematics-core-topics-sl">Haese book and chapter resources</a></p><p class="small">Haese alignment was checked against the publisher’s chapter summary, rather than the full chapter. A Haese MYP measurement sample was also consulted for the net diagram.</p></details></div></section></main>
+<footer class="bottom">
+<button aria-label="Previous slide" class="navbtn" id="prev">←</button>
+<select aria-label="Jump to slide" id="jump"></select>
+<button aria-label="Next slide" class="navbtn" id="next">→</button>
+<button aria-label="Toggle full screen" class="navbtn fullscreen" id="full">⛶</button>
+</footer>
+<script>
+    (() => {
+      const slides = [...document.querySelectorAll('.slide')];
+      const count = document.getElementById('count');
+      const fill = document.getElementById('progressFill');
+      const title = document.getElementById('sectionName');
+      const jump = document.getElementById('jump');
+      let index = 0;
+
+      slides.forEach((slide, i) => {
+        const option = document.createElement('option');
+        option.value = i;
+        option.textContent = `${i + 1}. ${slide.dataset.title || 'Slide'}`;
+        jump.appendChild(option);
+      });
+
+      function show(next) {
+        index = Math.max(0, Math.min(slides.length - 1, next));
+        slides.forEach((s, i) => s.classList.toggle('active', i === index));
+        count.textContent = `${index + 1} / ${slides.length}`;
+        fill.style.width = `${((index + 1) / slides.length) * 100}%`;
+        title.textContent = slides[index].dataset.title || '';
+        jump.value = index;
+        document.getElementById('prev').disabled = index === 0;
+        document.getElementById('next').disabled = index === slides.length - 1;
+        slides[index].scrollTop = 0;
+        history.replaceState(null, '', `#slide-${index + 1}`);
+      }
+
+      document.getElementById('prev').addEventListener('click', () => show(index - 1));
+      document.getElementById('next').addEventListener('click', () => show(index + 1));
+      jump.addEventListener('change', e => show(Number(e.target.value)));
+      document.getElementById('full').addEventListener('click', () => {
+        if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+        else document.exitFullscreen?.();
+      });
+      document.addEventListener('keydown', e => {
+        if (['INPUT','SELECT','BUTTON','SUMMARY','TEXTAREA'].includes(document.activeElement.tagName) && !['Escape'].includes(e.key)) return;
+        if (['ArrowRight','PageDown',' '].includes(e.key)) { e.preventDefault(); show(index + 1); }
+        if (['ArrowLeft','PageUp'].includes(e.key)) { e.preventDefault(); show(index - 1); }
+        if (e.key === 'Home') show(0);
+        if (e.key === 'End') show(slides.length - 1);
+        if (e.key.toLowerCase() === 'f') document.getElementById('full').click();
+      });
+
+      let x0 = null;
+      document.addEventListener('pointerdown', e => { x0 = e.target.closest('input,button,select,summary,details') ? null : e.clientX; });
+      document.addEventListener('pointerup', e => {
+        if (x0 === null) return;
+        const dx = e.clientX - x0; x0 = null;
+        if (Math.abs(dx) > 90 && !e.target.closest('input,button,select')) show(index + (dx < 0 ? 1 : -1));
+      });
+
+      document.querySelectorAll('.reveal').forEach(button => {
+        button.dataset.original = button.textContent;
+        button.addEventListener('click', () => {
+          const target = document.getElementById(button.dataset.target);
+          const visible = target.classList.toggle('show');
+          button.textContent = visible ? 'Hide' : button.dataset.original;
+        });
+      });
+
+      const slider = document.getElementById('angleSlider');
+      const angleOut = document.getElementById('angleOut');
+      const radiusOut = document.getElementById('radiusOut');
+      const heightOut = document.getElementById('heightOut');
+      const volumeOut = document.getElementById('volumeOut');
+      const sectorPath = document.getElementById('sectorPath');
+      const coneLeft = document.getElementById('coneLeft');
+      const coneRight = document.getElementById('coneRight');
+      const coneBase = document.getElementById('coneBase');
+      const graph = document.getElementById('volumeGraph');
+
+      function values(alpha) {
+        const r = alpha / 30;
+        const h = Math.sqrt(Math.max(0, 144 - r * r));
+        const v = Math.PI * r * r * h / 3;
+        return {r,h,v};
+      }
+      function polar(cx, cy, rad, deg) {
+        const a = (deg - 90) * Math.PI / 180;
+        return {x: cx + rad * Math.cos(a), y: cy + rad * Math.sin(a)};
+      }
+      function sectorD(alpha) {
+        const start = polar(160,160,120,0), end = polar(160,160,120,alpha);
+        return `M160 160 L${start.x} ${start.y} A120 120 0 ${alpha > 180 ? 1 : 0} 1 ${end.x} ${end.y} Z`;
+      }
+      function updateInteractive() {
+        const alpha = Number(slider.value), {r,h,v} = values(alpha);
+        angleOut.textContent = `${alpha}°`; radiusOut.textContent = r.toFixed(2);
+        heightOut.textContent = h.toFixed(2); volumeOut.textContent = v.toFixed(1);
+        sectorPath.setAttribute('d', sectorD(alpha));
+        const halfBase = 120 * r / 12;
+        const topY = 260 - 120 * h / 12;
+        coneLeft.setAttribute('x1',160); coneLeft.setAttribute('y1',topY); coneLeft.setAttribute('x2',160-halfBase);
+        coneRight.setAttribute('x1',160); coneRight.setAttribute('y1',topY); coneRight.setAttribute('x2',160+halfBase);
+        coneBase.setAttribute('x1',160-halfBase); coneBase.setAttribute('x2',160+halfBase);
+        document.getElementById('coneHeight').setAttribute('y1',topY);
+        drawGraph(alpha);
+      }
+      function drawGraph(markerAlpha=294) {
+        const ctx = graph.getContext('2d');
+        const W = graph.width, H = graph.height, pad = {l:78,r:35,t:25,b:60};
+        const x = a => pad.l + a/360*(W-pad.l-pad.r);
+        const y = v => H-pad.b - v/730*(H-pad.t-pad.b);
+        ctx.clearRect(0,0,W,H); ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,H);
+        ctx.strokeStyle='#d8e2e1'; ctx.lineWidth=1; ctx.fillStyle='#526970'; ctx.font='18px Inter, sans-serif';
+        for(let a=0;a<=360;a+=60){ctx.beginPath();ctx.moveTo(x(a),pad.t);ctx.lineTo(x(a),H-pad.b);ctx.stroke();ctx.fillText(`${a}°`,x(a)-18,H-25)}
+        for(let v=0;v<=700;v+=100){ctx.beginPath();ctx.moveTo(pad.l,y(v));ctx.lineTo(W-pad.r,y(v));ctx.stroke();ctx.fillText(v,pad.l-55,y(v)+6)}
+        ctx.strokeStyle='#092d40';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(pad.l,pad.t);ctx.lineTo(pad.l,H-pad.b);ctx.lineTo(W-pad.r,H-pad.b);ctx.stroke();
+        ctx.fillStyle='#092d40';ctx.font='700 20px Inter, sans-serif';ctx.fillText('sector angle α',W/2-60,H-7);ctx.save();ctx.translate(22,H/2+35);ctx.rotate(-Math.PI/2);ctx.fillText('volume (cm³)',0,0);ctx.restore();
+        ctx.strokeStyle='#147b70';ctx.lineWidth=6;ctx.beginPath();
+        for(let a=1;a<360;a++){const p=values(a); if(a===1)ctx.moveTo(x(a),y(p.v));else ctx.lineTo(x(a),y(p.v));}ctx.stroke();
+        const mv=values(markerAlpha);ctx.fillStyle='#c55439';ctx.beginPath();ctx.arc(x(markerAlpha),y(mv.v),10,0,Math.PI*2);ctx.fill();
+      }
+      slider.addEventListener('input', updateInteractive);
+      window.addEventListener('resize', () => drawGraph(Number(slider.value)));
+      const hash = Number(location.hash.replace(/^#(?:slide-)?/,''));
+      show(Number.isFinite(hash) && hash > 0 ? hash - 1 : 0);
+      updateInteractive();
+    })();
+  </script>
+</body>
+</html>
