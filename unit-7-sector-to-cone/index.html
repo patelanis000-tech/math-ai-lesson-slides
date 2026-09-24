@@ -106,6 +106,8 @@
     @media(max-width:900px){.slider-wrap{grid-template-columns:1fr}.grid2 svg{max-height:240px}}
 
 .answer.grid2.show,.answer.grid3.show,.answer.grid4.show{display:grid}table.answer.show{display:table}.answer.grid2,.answer.grid3,.answer.grid4{margin-top:18px}
+
+.answer.grid2.show,.answer.grid3.show,.answer.grid4.show{display:grid}table.answer.show{display:table}.answer.grid2,.answer.grid3,.answer.grid4{margin-top:18px}
 </style>
 </head>
 <body>
@@ -629,17 +631,21 @@
       }
       function drawGraph(markerAlpha=294) {
         const ctx = graph.getContext('2d');
-        const W = graph.width, H = graph.height, pad = {l:78,r:35,t:25,b:60};
+        const W = graph.width, H = graph.height, pad = {l:115,r:35,t:25,b:60};
         const x = a => pad.l + a/360*(W-pad.l-pad.r);
         const y = v => H-pad.b - v/730*(H-pad.t-pad.b);
         ctx.clearRect(0,0,W,H); ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,H);
         ctx.strokeStyle='#d8e2e1'; ctx.lineWidth=1; ctx.fillStyle='#526970'; ctx.font='18px Inter, sans-serif';
         for(let a=0;a<=360;a+=60){ctx.beginPath();ctx.moveTo(x(a),pad.t);ctx.lineTo(x(a),H-pad.b);ctx.stroke();ctx.fillText(`${a}°`,x(a)-18,H-25)}
-        for(let v=0;v<=700;v+=100){ctx.beginPath();ctx.moveTo(pad.l,y(v));ctx.lineTo(W-pad.r,y(v));ctx.stroke();ctx.fillText(v,pad.l-55,y(v)+6)}
+        for(let v=0;v<=700;v+=100){ctx.beginPath();ctx.moveTo(pad.l,y(v));ctx.lineTo(W-pad.r,y(v));ctx.stroke();ctx.fillText(v,pad.l-65,y(v)+6)}
         ctx.strokeStyle='#092d40';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(pad.l,pad.t);ctx.lineTo(pad.l,H-pad.b);ctx.lineTo(W-pad.r,H-pad.b);ctx.stroke();
-        ctx.fillStyle='#092d40';ctx.font='700 20px Inter, sans-serif';ctx.fillText('sector angle α',W/2-60,H-7);ctx.save();ctx.translate(22,H/2+35);ctx.rotate(-Math.PI/2);ctx.fillText('volume (cm³)',0,0);ctx.restore();
+        ctx.fillStyle='#092d40';ctx.font='700 20px Inter, sans-serif';ctx.fillText('sector angle α',W/2-60,H-7);ctx.save();ctx.translate(21,H/2+63);ctx.rotate(-Math.PI/2);ctx.fillText('volume (cm³)',0,0);ctx.restore();
         ctx.strokeStyle='#147b70';ctx.lineWidth=6;ctx.beginPath();
-        for(let a=1;a<360;a++){const p=values(a); if(a===1)ctx.moveTo(x(a),y(p.v));else ctx.lineTo(x(a),y(p.v));}ctx.stroke();
+        ctx.moveTo(x(0),y(0));
+        for(let a=1;a<=360;a++){ctx.lineTo(x(a),y(values(a).v));}ctx.stroke();
+        // The endpoint values are limits: a flat sector is not a usable cone.
+        ctx.fillStyle='#fff';ctx.strokeStyle='#147b70';ctx.lineWidth=3;
+        for(const a of [0,360]){ctx.beginPath();ctx.arc(x(a),y(0),7,0,Math.PI*2);ctx.fill();ctx.stroke();}
         const mv=values(markerAlpha);ctx.fillStyle='#c55439';ctx.beginPath();ctx.arc(x(markerAlpha),y(mv.v),10,0,Math.PI*2);ctx.fill();
       }
       slider.addEventListener('input', updateInteractive);
