@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#153638">
+  <title>Writing a Math IA | Hershey’s Kiss worked example</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f6f4e9;
+      --ink: #182c2d;
+      --muted: #455b56;
+      --deep: #153638;
+      --line: #aab9ac;
+      --accent: #e2f281;
+      --teal: #165e50;
+      --rust: #8b3e23;
+      --measure: 64rem;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      font-size: clamp(16px, 1.47vw, 23px);
+      color: var(--ink);
+      background: var(--paper);
+      scroll-padding-top: 4.5rem;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; line-height: 1.5; }
+    .wrap { width: min(var(--measure), calc(100% - 2 * clamp(1.15rem, 5vw, 4rem))); margin-inline: auto; }
+    h1, h2, h3, p, figure, blockquote, ol { margin: 0; }
+    h1, h2 { font-weight: 760; letter-spacing: -.045em; line-height: 1.06; text-wrap: balance; }
+    h1 { font-size: clamp(3rem, 7vw, 6rem); }
+    h2 { font-size: clamp(2rem, 4vw, 3.45rem); }
+    h3 { font-size: 1.05rem; line-height: 1.2; }
+    p + p { margin-top: .7em; }
+    a { color: var(--teal); text-underline-offset: .2em; }
+    a:hover { text-decoration-thickness: .14em; }
+    :focus-visible { outline: 3px solid var(--rust); outline-offset: 4px; }
+    .masthead { position: sticky; top: 0; z-index: 3; color: var(--paper); background: var(--deep); border-bottom: 1px solid #5c7871; }
+    .masthead .wrap { display: flex; align-items: center; justify-content: space-between; gap: .55rem 1rem; min-height: 2.85rem; padding-block: .3rem; }
+    .masthead a { display: inline-flex; min-height: 38px; align-items: center; color: #f1f8d2; }
+    .masthead strong, .mast-link { font-size: .8rem; }
+    .mast-links { display: flex; gap: .2rem 1rem; flex-wrap: wrap; align-items: center; justify-content: end; }
+    .masthead :focus-visible, .hero :focus-visible { outline-color: var(--accent); }
+    .skip { position: fixed; top: .4rem; left: 1rem; transform: translateY(-200%); background: var(--paper); color: var(--deep); padding: .5rem; z-index: 4; }
+    .skip:focus { transform: none; }
+    .hero { color: var(--paper); background: var(--deep); padding-block: clamp(2.6rem, 7vh, 5rem); }
+    .hero .question { color: var(--accent); font-size: clamp(1.28rem, 2.65vw, 2.2rem); line-height: 1.25; margin-top: .5rem; }
+    .hero .about { max-width: 42rem; margin-top: 1rem; color: #e1ece3; }
+    .contents { padding-block: clamp(1.35rem, 4vh, 2.5rem); border-bottom: 1px solid var(--line); }
+    .contents h2 { font-size: 1.55rem; letter-spacing: -.025em; }
+    .contents ol { display: grid; grid-template-columns: 1fr 1fr; gap: .4rem 2rem; padding-left: 1.32rem; margin-top: .62rem; }
+    .contents li { padding-left: .18rem; }
+    .contents li::marker { color: var(--muted); }
+    .contents a { font-weight: 650; }
+    .section { padding-block: clamp(2.15rem, 6vh, 4rem); border-bottom: 1px solid var(--line); }
+    .section .wrap { display: grid; gap: .9rem; }
+    .section h2 { max-width: 30ch; }
+    .section > .wrap > .guidance { max-width: 52rem; }
+    .guidance strong, .reader strong { color: var(--teal); }
+    .reader { padding-top: .7rem; border-top: 1px solid var(--line); max-width: 52rem; }
+    .worked { padding: clamp(.85rem, 2.5vw, 1.45rem); background: #ebece0; border-left: .22rem solid var(--teal); }
+    .worked h3 { margin-bottom: .45rem; color: var(--deep); }
+    .worked .calculation + p { margin-top: .6em; }
+    .worked > :last-child { margin-bottom: 0; }
+    .two { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(.85rem, 2.7vw, 2.6rem); align-items: start; }
+    .two > * { min-width: 0; }
+    .photo-pair { grid-template-columns: minmax(0, .77fr) minmax(0, 1.23fr); max-width: 46rem; }
+    .chocolate-photo-frame { overflow: hidden; background: #f0e1cc; }
+    .chocolate-photo img { display: block; width: 100%; height: clamp(150px, 29vw, 290px); object-fit: cover; transform: scale(1.32); transform-origin: 51% 47%; }
+    .plot svg { display: block; width: 100%; height: clamp(165px, 28vw, 290px); background: #fffaf0; border: 1px solid var(--line); }
+    .plot figcaption, figcaption { margin-top: .4rem; font-size: .8rem; color: var(--muted); }
+    .annotation { font-size: .85rem; color: var(--muted); }
+    table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: .86rem; }
+    caption { text-align: left; font-weight: 750; margin-bottom: .3rem; }
+    th, td { padding: .34rem .52rem; border-bottom: 1px solid var(--line); text-align: right; vertical-align: top; }
+    th:first-child, td:first-child { text-align: left; }
+    thead th { background: #e3e9db; line-height: 1.2; }
+    tfoot th, tfoot td { border-top: 2px solid var(--line); font-weight: 760; }
+    .measurements { max-width: 35rem; }
+    .stack-table { max-width: 38rem; }
+    .calculation { font-variant-numeric: lining-nums tabular-nums; color: var(--deep); line-height: 1.45; }
+    .calculation div + div { margin-top: .24em; }
+    .calculation sub, .calculation sup { line-height: 0; }
+    .sl-table thead th, .hl-table thead th { vertical-align: bottom; }
+    .sources { margin-top: .35rem; }
+    .sources p + p { margin-top: .55em; }
+    .guide-foot { background: var(--deep); color: var(--paper); padding-block: 1.65rem; }
+    .guide-foot a { color: var(--accent); }
+    .guide-foot p + p { margin-top: .55rem; }
+    @media (max-width: 700px) {
+      .contents ol, .two { grid-template-columns: 1fr; }
+      .contents ol { gap: .28rem; }
+      .mast-links { gap: .15rem .65rem; }
+      .masthead strong, .mast-link { font-size: .72rem; }
+      .photo-pair { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: .55rem; }
+      .photo-pair :is(img, svg) { height: 178px; }
+      th, td { padding: .3rem .32rem; }
+    }
+    @media (max-width: 380px) {
+      .mast-links { gap: .1rem .43rem; }
+      .masthead strong, .mast-link { font-size: .68rem; }
+      .sl-table, .hl-table { font-size: .76rem; }
+      .photo-pair :is(img, svg) { height: 138px; }
+    }
+    @media print {
+      :root { font-size: 12pt; }
+      .masthead { position: static; }
+      .wrap { width: 100%; }
+      .hero, .worked, thead th { print-color-adjust: exact; }
+      .section { padding-block: 1.1rem; }
+      .worked, figure, table { break-inside: avoid; }
+      h2 { break-after: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#question">Skip to the worked example</a>
+  <header class="masthead">
+    <div class="wrap">
+      <strong>IB Math AI SL/HL</strong>
+      <div class="mast-links">
+        <a class="mast-link" href="#contents">Contents</a>
+        <a class="mast-link" href="Introducing%20the%20Mathematical%20Exploration%20-%20SIS%20Student%20AI%20Guide.html" target="_blank" rel="noopener">SIS Student AI Guide</a>
+      </div>
+    </div>
+  </header>
+  <main>
+    <div class="hero">
+      <div class="wrap">
+        <h1>Writing a Math IA</h1>
+        <p class="question">Is a Hershey’s Kiss actually a cone?</p>
+        <p class="about">Follow one Mathematical Exploration from a first question to a conclusion. Each part shows what to put on the page and why it helps a reader follow your thinking. Use the example to make decisions about your own write-up.</p>
+      </div>
+    </div>
+
+    <nav class="contents" id="contents" aria-labelledby="contents-title">
+      <div class="wrap">
+        <h2 id="contents-title">Contents</h2>
+        <ol>
+          <li><a href="#question">Question and scope</a></li>
+          <li><a href="#measurements">Diagram, measurements and assumptions</a></li>
+          <li><a href="#first-cone">One cone as a first model</a></li>
+          <li><a href="#mismatch">Where the cone misses</a></li>
+          <li><a href="#stacked">Stacked truncated cones</a></li>
+          <li><a href="#conclusion">Comparison, conclusion and limitations</a></li>
+          <li><a href="#hl">Optional HL curve and integral</a></li>
+        </ol>
+      </div>
+    </nav>
+
+    <section class="section" id="question" aria-labelledby="question-title">
+      <div class="wrap">
+        <h2 id="question-title">Question and scope</h2>
+        <p class="guidance"><strong>In your write-up</strong> Give the reader a focused question and say what evidence you’ll use to answer it. Explain what you mean by a better fit.</p>
+        <blockquote class="worked">
+          <h3>Example passage</h3>
+          <p>The side of a Hershey’s Kiss looks rounded, even though it tapers to a tip. I wanted to see how closely a straight-sided cone would match it. Using a normalized practice outline, I ask how a cone and a stack of truncated cones compare in side-outline fit and estimated volume. I’ll judge fit by comparing radii at heights I leave out of the models.</p>
+        </blockquote>
+        <p class="reader"><strong>Why it helps</strong> The reader knows what you’re testing and where the evidence comes from. A focused question and a clear order support <b>Presentation</b>.</p>
+      </div>
+    </section>
+
+    <section class="section" id="measurements" aria-labelledby="measurements-title">
+      <div class="wrap">
+        <h2 id="measurements-title">Diagram, measurements and assumptions</h2>
+        <p class="guidance"><strong>In your write-up</strong> Show where your readings come from. Define your variables, give the units and explain the assumption that lets you go from a flat outline to a volume.</p>
+        <div class="two photo-pair">
+          <figure class="chocolate-photo"><div class="chocolate-photo-frame"><img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/2020-03-04_22_03_24_A_Hershey_Kiss_with_its_wrapper_removed_in_the_Dulles_section_of_Sterling%2C_Loudoun_County%2C_Virginia.jpg" alt="A slightly angled side photograph of an unwrapped Hershey’s Kiss. Its skirt is rounded and its tip is narrow."></div><figcaption class="source">Photo by <a href="https://commons.wikimedia.org/wiki/File:2020-03-04_22_03_24_A_Hershey_Kiss_with_its_wrapper_removed_in_the_Dulles_section_of_Sterling,_Loudoun_County,_Virginia.jpg" target="_blank" rel="noopener">Famartin, Wikimedia Commons</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>. Cropped view. Slightly angled, without a scale.</figcaption></figure>
+          <figure class="plot"><svg viewBox="0 0 500 303" role="img" aria-labelledby="plot-methods-title" aria-describedby="plot-methods-desc"><title id="plot-methods-title">Practice side outline with the halfway width marked</title><desc id="plot-methods-desc">Width 0.70 spans the brown outline at height 0.50. The dashed vertical line is the assumed axis.</desc><g font-family="Segoe UI, sans-serif" font-size="18" fill="#334b44"><polygon points="358.00,264.00 355.84,237.00 349.36,210.00 338.99,183.00 332.94,169.50 325.60,156.00 310.05,129.00 300.98,115.50 291.04,102.00 270.74,75.00 250.00,48.00 250.00,48.00 229.26,75.00 208.96,102.00 199.02,115.50 189.95,129.00 174.40,156.00 167.06,169.50 161.01,183.00 150.64,210.00 144.16,237.00 142.00,264.00" fill="#e8cebc" stroke="#68412f" stroke-width="3" stroke-linejoin="round"/><line x1="250" x2="250" y1="48" y2="264" stroke="#9b7663" stroke-dasharray="5 5"/><line x1="103" y1="48" x2="103" y2="264" stroke="#52675e" stroke-width="1"/><text x="103" y="28" text-anchor="middle">Height z</text><text x="96" y="269" text-anchor="end">0.00</text><text x="96" y="161" text-anchor="end">0.50</text><text x="96" y="53" text-anchor="end">1.00</text><text x="250" y="288" text-anchor="middle">Base</text><line x1="174.4" y1="156" x2="325.6" y2="156" stroke="#8b3e23" stroke-width="3"/><line x1="174.4" y1="149" x2="174.4" y2="163" stroke="#8b3e23" stroke-width="3"/><line x1="325.6" y1="149" x2="325.6" y2="163" stroke="#8b3e23" stroke-width="3"/><text x="250" y="145" text-anchor="middle" fill="#7f321b" font-weight="700">w = 0.70</text></g></svg><figcaption>The marked width comes from the practice outline. The photo shows the chocolate’s shape from a slightly angled view.</figcaption></figure>
+        </div>
+        <blockquote class="worked">
+          <h3>Example methods passage</h3>
+          <p>In the practice diagram, <i>z</i> is the height above the base. I set the full height to 1 and use that same length unit for horizontal widths. I call the width <i>w</i> and use <i>r</i> = <i>w</i>/2 as the radius. At <i>z</i> = 0.50, a width of 0.70 gives a radius of 0.35. For the volume models I assume each horizontal slice is a circle centred on the same vertical axis.</p>
+        </blockquote>
+        <table class="measurements">
+          <caption>Initial readings from the practice outline</caption>
+          <thead><tr><th scope="col">Height <i>z</i></th><th scope="col">Width <i>w</i></th><th scope="col">Radius <i>r</i></th></tr></thead>
+          <tbody><tr><th scope="row">0.00</th><td>1.00</td><td>0.50</td></tr>
+<tr><th scope="row">0.25</th><td>0.92</td><td>0.46</td></tr>
+<tr><th scope="row">0.50</th><td>0.70</td><td>0.35</td></tr>
+<tr><th scope="row">0.75</th><td>0.38</td><td>0.19</td></tr>
+<tr><th scope="row">1.00</th><td>0.00</td><td>0.00</td></tr></tbody>
+        </table>
+        <p class="reader"><strong>Why it helps</strong> Readers can use the figure and table to reproduce your readings and see which parts are assumptions. Clear labels, units and definitions support <b>Mathematical communication</b>.</p>
+      </div>
+    </section>
+
+    <section class="section" id="first-cone" aria-labelledby="first-cone-title">
+      <div class="wrap">
+        <h2 id="first-cone-title">One cone as a first model</h2>
+        <p class="guidance"><strong>In your write-up</strong> Explain why the first model makes sense. Say which readings set it and show how you used them.</p>
+        <blockquote class="worked">
+          <h3>Example model passage</h3>
+          <p>I start with a cone because it connects the base edge and tip with a straight line. It uses a base radius of 0.50 and a height of 1. Its radius shrinks at a constant rate, so <i>r</i><sub>cone</sub>(<i>z</i>) = 0.50(1 − <i>z</i>).</p>
+          <p class="calculation"><i>V</i><sub>cone</sub> = π<i>r</i>²<i>h</i>/3 = π(0.50)²(1)/3 = π/12 ≈ <strong>0.2618 cubic height units</strong>.</p>
+        </blockquote>
+        <p class="reader"><strong>Why it helps</strong> The reader can see why a cone is a reasonable starting point and check how the estimate follows from the inputs. This is evidence for <b>Use of mathematics</b>.</p>
+      </div>
+    </section>
+
+    <section class="section" id="mismatch" aria-labelledby="mismatch-title">
+      <div class="wrap">
+        <h2 id="mismatch-title">Where the cone misses</h2>
+        <p class="guidance"><strong>In your write-up</strong> Point to a specific mismatch. Explain what it tells you about the first model and how it shaped your next measurement.</p>
+        <div class="two">
+          <blockquote class="worked">
+            <h3>Example reflection passage</h3>
+            <p>Halfway up, the cone gives a radius of 0.25. The practice outline gives 0.35, so the cone is 0.10 height units too narrow on each side there. From the base to halfway, the cone narrows faster than the outline.</p>
+            <p>I chose an extra width at <i>z</i> = 0.375, halfway between two readings on the lower middle flank. The gap in the diagram made this a useful place to see whether one more width could help the stack follow the outline. I left <i>z</i> = 0.4375 out so I could test the updated edge nearby.</p>
+          </blockquote>
+          <figure class="plot"><svg viewBox="0 0 500 303" role="img" aria-labelledby="plot-miss-title" aria-describedby="plot-miss-desc"><title id="plot-miss-title">The cone falls inside the practice outline</title><desc id="plot-miss-desc">The dashed cone edge is inside the brown outline. At height 0.50 the radius gap on either side is 0.10.</desc><g font-family="Segoe UI, sans-serif" font-size="18" fill="#334b44"><polygon points="358.00,264.00 355.84,237.00 349.36,210.00 338.99,183.00 332.94,169.50 325.60,156.00 310.05,129.00 300.98,115.50 291.04,102.00 270.74,75.00 250.00,48.00 250.00,48.00 229.26,75.00 208.96,102.00 199.02,115.50 189.95,129.00 174.40,156.00 167.06,169.50 161.01,183.00 150.64,210.00 144.16,237.00 142.00,264.00" fill="#e8cebc" stroke="#68412f" stroke-width="3" stroke-linejoin="round"/><line x1="250" x2="250" y1="48" y2="264" stroke="#9b7663" stroke-dasharray="5 5"/><line x1="103" y1="48" x2="103" y2="264" stroke="#52675e" stroke-width="1"/><text x="103" y="28" text-anchor="middle">Height z</text><text x="96" y="269" text-anchor="end">0.00</text><text x="96" y="161" text-anchor="end">0.50</text><text x="96" y="53" text-anchor="end">1.00</text><text x="250" y="288" text-anchor="middle">Base</text><polyline points="142.00,264.00 250.00,48.00" fill="none" stroke="#24454c" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5"/><polyline points="358.00,264.00 250.00,48.00" fill="none" stroke="#24454c" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5"/><line x1="304" y1="156" x2="325.6" y2="156" stroke="#8b3e23" stroke-width="3"/><line x1="304" y1="151" x2="304" y2="161" stroke="#8b3e23" stroke-width="2"/><line x1="325.6" y1="151" x2="325.6" y2="161" stroke="#8b3e23" stroke-width="2"/><text x="338.6" y="162" fill="#7f321b" font-weight="700">0.10 gap</text></g></svg><figcaption>The dashed cone edge misses the rounded outline. The line marks the radius gap halfway up.</figcaption></figure>
+        </div>
+        <p class="reader"><strong>Why it helps</strong> Diagnosing the gap and planning another check show <b>Reflection</b>. Explaining why you chose that particular measurement shows <b>Personal engagement</b> through a mathematical decision.</p>
+      </div>
+    </section>
+
+    <section class="section" id="stacked" aria-labelledby="stacked-title">
+      <div class="wrap">
+        <h2 id="stacked-title">Stacked truncated cones</h2>
+        <p class="guidance"><strong>In your write-up</strong> Explain how the new model works and what changed. Show one calculation in full, then use a table for the repeated pieces.</p>
+        <blockquote class="worked">
+          <h3>Example methods passage and calculation</h3>
+          <p>I connect consecutive radii with straight segments. Rotating each segment around the vertical axis gives a truncated cone. The top piece is a cone with an upper radius of zero. The extra width at <i>z</i> = 0.375 is 0.824, so its radius is 0.412. This splits one piece of the original stack into two.</p>
+          <div class="calculation" role="group" aria-label="Full calculation for the bottom piece of the stack">
+            <div>For the bottom piece, the height Δ<i>z</i> is 0.25, the lower radius <i>R</i> is 0.50 and the upper radius <i>r</i> is 0.46.</div>
+            <div><i>V</i><sub>1</sub> = πΔ<i>z</i>(<i>R</i>² + <i>Rr</i> + <i>r</i>²)/3</div>
+            <div>= π(0.25)[(0.50)² + (0.50)(0.46) + (0.46)²]/3</div>
+            <div>= π(0.25)(0.2500 + 0.2300 + 0.2116)/3</div>
+            <div>≈ <strong>0.1811 cubic height units</strong>.</div>
+          </div>
+        </blockquote>
+        <table class="stack-table">
+          <caption>Volume calculations for the stack with the extra width</caption>
+          <thead><tr><th scope="col">Height range</th><th scope="col">Lower radius</th><th scope="col">Upper radius</th><th scope="col">Volume</th></tr></thead>
+          <tbody><tr><th scope="row">0–0.25</th><td>0.50</td><td>0.46</td><td>0.1811</td></tr>
+<tr><th scope="row">0.25–0.375</th><td>0.46</td><td>0.412</td><td>0.0747</td></tr>
+<tr><th scope="row">0.375–0.5</th><td>0.412</td><td>0.35</td><td>0.0571</td></tr>
+<tr><th scope="row">0.5–0.75</th><td>0.35</td><td>0.19</td><td>0.0589</td></tr>
+<tr><th scope="row">0.75–1</th><td>0.19</td><td>0.00</td><td>0.0095</td></tr></tbody>
+          <tfoot><tr><th scope="row" colspan="3">Total</th><td>0.3813</td></tr></tfoot>
+        </table>
+        <p class="annotation">Volumes are in cubic height units. The total uses the unrounded piece volumes.</p>
+        <p class="reader"><strong>Why it helps</strong> The full calculation makes your method checkable. The table shows how you applied it consistently and keeps the repeated arithmetic easy to scan.</p>
+      </div>
+    </section>
+
+    <section class="section" id="conclusion" aria-labelledby="conclusion-title">
+      <div class="wrap">
+        <h2 id="conclusion-title">Comparison, conclusion and limitations</h2>
+        <p class="guidance"><strong>In your write-up</strong> Test the models on the same unused readings. Say what changed, answer your question and explain what you’d need to test real volume.</p>
+        <div class="two">
+          <figure class="plot"><svg viewBox="0 0 500 303" role="img" aria-labelledby="plot-stack-title" aria-describedby="plot-stack-desc"><title id="plot-stack-title">The cone and the revised stack on the practice outline</title><desc id="plot-stack-desc">Dashed lines show the cone. A teal line follows the revised stack on the right.</desc><g font-family="Segoe UI, sans-serif" font-size="18" fill="#334b44"><polygon points="358.00,264.00 355.84,237.00 349.36,210.00 338.99,183.00 332.94,169.50 325.60,156.00 310.05,129.00 300.98,115.50 291.04,102.00 270.74,75.00 250.00,48.00 250.00,48.00 229.26,75.00 208.96,102.00 199.02,115.50 189.95,129.00 174.40,156.00 167.06,169.50 161.01,183.00 150.64,210.00 144.16,237.00 142.00,264.00" fill="#e8cebc" stroke="#68412f" stroke-width="3" stroke-linejoin="round"/><line x1="250" x2="250" y1="48" y2="264" stroke="#9b7663" stroke-dasharray="5 5"/><line x1="103" y1="48" x2="103" y2="264" stroke="#52675e" stroke-width="1"/><text x="103" y="28" text-anchor="middle">Height z</text><text x="96" y="269" text-anchor="end">0.00</text><text x="96" y="161" text-anchor="end">0.50</text><text x="96" y="53" text-anchor="end">1.00</text><text x="250" y="288" text-anchor="middle">Base</text><polyline points="142.00,264.00 250.00,48.00" fill="none" stroke="#24454c" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5"/><polyline points="358.00,264.00 250.00,48.00" fill="none" stroke="#24454c" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5"/><polyline points="358.00,264.00 349.36,210.00 338.99,183.00 325.60,156.00 291.04,102.00 250.00,48.00" fill="none" stroke="#125e50" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray=""/></g></svg><figcaption>The solid teal edge shows the revised stack. The dashed edge shows the cone.</figcaption></figure>
+          <blockquote class="worked">
+            <h3>Example results passage</h3>
+            <p>The cone estimates 0.2618 cubic height units. The original stack estimates 0.3791, and the stack with the extra width estimates 0.3813. To check the fit, I compare their radii at four practice heights that I left out of all three models.</p>
+            <p>At <i>z</i> = 0.4375, the original stack’s radius error is 0.0065 and the revised stack’s is 0.0030. The new width helped at that nearby height. Checking at <i>z</i> = 0.375 would only show that the revised stack passes through a point I used to build it.</p>
+          </blockquote>
+        </div>
+        <table class="sl-table">
+          <caption>Radius predictions at the same four unused heights</caption>
+          <thead><tr><th scope="col">Height</th><th scope="col">Outline radius</th><th scope="col">Cone</th><th scope="col">Original stack</th><th scope="col">Revised stack</th></tr></thead>
+          <tbody><tr><th scope="row">0.125</th><td>0.490</td><td>0.43750</td><td>0.48000</td><td>0.48000</td></tr>
+<tr><th scope="row">0.4375</th><td>0.384</td><td>0.28125</td><td>0.37750</td><td>0.38100</td></tr>
+<tr><th scope="row">0.625</th><td>0.278</td><td>0.18750</td><td>0.27000</td><td>0.27000</td></tr>
+<tr><th scope="row">0.875</th><td>0.096</td><td>0.06250</td><td>0.09500</td><td>0.09500</td></tr></tbody>
+          <tfoot><tr><th scope="row" colspan="2">Mean absolute radius error</th><td>0.0698</td><td>0.0064</td><td>0.0055</td></tr></tfoot>
+        </table>
+        <p class="annotation">For each model, take the absolute difference from the outline radius at each height and average those four errors. All radii and errors are in height units.</p>
+        <blockquote class="worked">
+          <h3>Example conclusion and limitations</h3>
+          <p>The revised stack follows this practice outline more closely than the cone at the heights I checked. The estimates describe the models. A better side-outline fit alone can’t establish which estimate is closer to a real chocolate’s volume.</p>
+          <p>To test real volume, I’d measure the same chocolate’s actual height, use a calibrated side view and check the circular-slice assumption using a top view or side views taken as I turn it. I’d then compare the scaled estimate with an independent volume measurement, such as water displacement, and report the uncertainty in that measurement.</p>
+        </blockquote>
+        <p class="reader"><strong>Why it helps</strong> Readers can see the difference between fitting the picture, estimating a volume and checking that estimate against a real object. Connecting the limitation to a specific new measurement makes the <b>Reflection</b> useful.</p>
+      </div>
+    </section>
+
+    <section class="section" id="hl" aria-labelledby="hl-title">
+      <div class="wrap">
+        <h2 id="hl-title">Optional HL curve and integral</h2>
+        <p class="guidance"><strong>In your write-up</strong> Name the fitting points, explain why the area expression works and check the smooth curve on readings it didn’t use.</p>
+        <div class="two">
+          <blockquote class="worked">
+            <h3>Example HL methods passage</h3>
+            <p>I fit a quadratic radius to the practice outline at <i>z</i> = 0, 0.50 and 1, with radii 0.50, 0.35 and 0. This gives <i>r</i>(<i>z</i>) = 0.50 − 0.10<i>z</i> − 0.40<i>z</i>². With circular slices, each cross-sectional area is π[<i>r</i>(<i>z</i>)]².</p>
+            <p class="calculation"><i>V</i><sub>curve</sub> = π∫<sub>0</sub><sup>1</sup> (0.50 − 0.10<i>z</i> − 0.40<i>z</i>²)² d<i>z</i> = 0.122π ≈ <strong>0.3833 cubic height units</strong>.</p>
+          </blockquote>
+          <figure class="plot"><svg viewBox="0 0 500 303" role="img" aria-labelledby="plot-hl-title" aria-describedby="plot-hl-desc"><title id="plot-hl-title">The quadratic and four unused outline points</title><desc id="plot-hl-desc">A teal curve shows the quadratic. Four orange points show the outline radii used to check it.</desc><g font-family="Segoe UI, sans-serif" font-size="18" fill="#334b44"><polygon points="358.00,264.00 355.84,237.00 349.36,210.00 338.99,183.00 332.94,169.50 325.60,156.00 310.05,129.00 300.98,115.50 291.04,102.00 270.74,75.00 250.00,48.00 250.00,48.00 229.26,75.00 208.96,102.00 199.02,115.50 189.95,129.00 174.40,156.00 167.06,169.50 161.01,183.00 150.64,210.00 144.16,237.00 142.00,264.00" fill="#e8cebc" stroke="#68412f" stroke-width="3" stroke-linejoin="round"/><line x1="250" x2="250" y1="48" y2="264" stroke="#9b7663" stroke-dasharray="5 5"/><line x1="103" y1="48" x2="103" y2="264" stroke="#52675e" stroke-width="1"/><text x="103" y="28" text-anchor="middle">Height z</text><text x="96" y="269" text-anchor="end">0.00</text><text x="96" y="161" text-anchor="end">0.50</text><text x="96" y="53" text-anchor="end">1.00</text><text x="250" y="288" text-anchor="middle">Base</text><polyline points="358.00,264.00 357.51,259.50 356.95,255.00 356.31,250.50 355.60,246.00 354.81,241.50 353.95,237.00 353.01,232.50 352.00,228.00 350.91,223.50 349.75,219.00 348.51,214.50 347.20,210.00 345.81,205.50 344.35,201.00 342.81,196.50 341.20,192.00 339.51,187.50 337.75,183.00 335.91,178.50 334.00,174.00 332.01,169.50 329.95,165.00 327.81,160.50 325.60,156.00 323.31,151.50 320.95,147.00 318.51,142.50 316.00,138.00 313.41,133.50 310.75,129.00 308.01,124.50 305.20,120.00 302.31,115.50 299.35,111.00 296.31,106.50 293.20,102.00 290.01,97.50 286.75,93.00 283.41,88.50 280.00,84.00 276.51,79.50 272.95,75.00 269.31,70.50 265.60,66.00 261.81,61.50 257.95,57.00 254.01,52.50 250.00,48.00" fill="none" stroke="#125e50" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray=""/><circle cx="355.84000000000003" cy="237" r="4.8" fill="#9c371b" stroke="#fffaf0" stroke-width="1.3"/><circle cx="332.944" cy="169.5" r="4.8" fill="#9c371b" stroke="#fffaf0" stroke-width="1.3"/><circle cx="310.048" cy="129" r="4.8" fill="#9c371b" stroke="#fffaf0" stroke-width="1.3"/><circle cx="270.736" cy="75" r="4.8" fill="#9c371b" stroke="#fffaf0" stroke-width="1.3"/></g></svg><figcaption>The solid teal edge is the quadratic. The dots are the four readings left out of the fit.</figcaption></figure>
+        </div>
+        <table class="hl-table">
+          <caption>Curve check at the same unused heights</caption>
+          <thead><tr><th scope="col">Height</th><th scope="col">Outline radius</th><th scope="col">Curve radius</th><th scope="col">Absolute error</th></tr></thead>
+          <tbody><tr><th scope="row">0.125</th><td>0.490</td><td>0.48125</td><td>0.00875</td></tr>
+<tr><th scope="row">0.4375</th><td>0.384</td><td>0.37969</td><td>0.00431</td></tr>
+<tr><th scope="row">0.625</th><td>0.278</td><td>0.28125</td><td>0.00325</td></tr>
+<tr><th scope="row">0.875</th><td>0.096</td><td>0.10625</td><td>0.01025</td></tr></tbody>
+          <tfoot><tr><th scope="row" colspan="3">Mean absolute radius error</th><td>0.0066</td></tr></tfoot>
+        </table>
+        <blockquote class="worked">
+          <h3>Example HL reflection passage</h3>
+          <p>The smooth curve’s mean error of 0.0066 is slightly larger than the revised stack’s 0.0055 on these readings. The curve used three fitting points and the revised stack used six. To compare the modelling methods more fairly, I’d fit both using the same readings and check them on a separate set. A smooth fit still tells me only about this side view.</p>
+        </blockquote>
+        <p class="reader"><strong>Why it helps</strong> The integral follows from a stated assumption, and the test gives the reader a way to judge what the extra math added.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="guide-foot">
+    <div class="wrap">
+      <p>Choose section names and an order that suit your own question. The IB criteria describe evidence a reader should be able to find across your work.</p>
+      <p>The IB guide suggests about 12–20 double-spaced pages, including graphs and diagrams. The bibliography is separate.</p>
+      <p><a href="https://ibo.org/globalassets/new-structure/university-admission/pdfs/dp-mathematics-applications-and-interpretation-guide-en.pdf" target="_blank" rel="noopener">IB Mathematics AI guide, exploration and criteria</a> · <a href="Introducing%20the%20Mathematical%20Exploration%20-%20SIS%20Student%20AI%20Guide.html" target="_blank" rel="noopener">SIS Student AI Guide</a></p>
+      <p><a href="#contents">Back to contents</a></p>
+    </div>
+  </footer>
+</body>
+</html>

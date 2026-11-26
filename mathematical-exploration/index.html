@@ -1,0 +1,933 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#153638">
+<title>Introducing the Mathematical Exploration</title>
+<style>
+  :root {
+    color-scheme: light;
+    --paper: #f6f4e9;
+    --ink: #182c2d;
+    --deep: #153638;
+    --muted: #455b56;
+    --line: #aab9ac;
+    --accent: #e2f281;
+    --teal: #165e50;
+    --rust: #9c371b;
+    --white: #fffcf1;
+    --measure: 68rem;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: clamp(16px, 1.45vw, 24px);
+    background: var(--paper);
+    color: var(--ink);
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; }
+  a { color: var(--teal); text-underline-offset: .2em; }
+  button, summary, .route { cursor: pointer; }
+  button { font: inherit; }
+  :focus-visible { outline: 3px solid #bc481d; outline-offset: 4px; }
+  .dark :focus-visible, .toolbar :focus-visible { outline-color: var(--accent); }
+  h1, h2, h3, p, ol, ul, figure { margin: 0; }
+  h1, h2 { font-weight: 750; line-height: 1.02; letter-spacing: -.047em; text-wrap: balance; }
+  h1 { font-size: clamp(3rem, 6.1vw, 6.5rem); }
+  h2 { font-size: clamp(2.05rem, 4.35vw, 4.55rem); }
+  h3 { font-size: 1.13rem; line-height: 1.15; }
+  p, li, dd { line-height: 1.44; }
+  p + p { margin-top: .62em; }
+  strong { font-weight: 750; }
+  .small { font-size: .82rem; }
+  .lead { font-size: 1.28rem; line-height: 1.38; max-width: 43rem; }
+  .muted { color: var(--muted); }
+  .dark { background: var(--deep); color: var(--white); }
+  .dark .muted { color: #daebe2; }
+  .dark a { color: var(--accent); }
+  .dark .tag { color: var(--accent); }
+  .tag { color: var(--teal); font-size: .76rem; font-weight: 750; letter-spacing: .09em; text-transform: uppercase; }
+  .slide { padding: clamp(1.9rem, 4.5vh, 4rem) clamp(1.15rem, 5vw, 5rem); border-bottom: 1px solid var(--line); }
+  .slide-inner { max-width: var(--measure); margin: auto; display: grid; gap: clamp(.8rem, 2.65vh, 1.7rem); }
+  .slide[hidden] { display: none; }
+  .stage { min-height: 0; }
+  .enhanced:not(.reading) .stage { flex: 1; overflow-y: auto; scroll-behavior: auto; }
+  .enhanced:not(.reading) .slide { display: flex; min-height: 100%; }
+  .enhanced:not(.reading) .slide[hidden] { display: none; }
+  .enhanced:not(.reading) .slide-inner { width: 100%; }
+  .enhanced:not(.reading) .shell { min-height: 100svh; height: 100svh; display: flex; flex-direction: column; }
+  .enhanced.reading .toolbar, .enhanced.reading .controls { position: sticky; z-index: 2; }
+  .enhanced.reading .toolbar { top: 0; }
+  .enhanced.reading .controls { bottom: 0; }
+  .reading .slide { scroll-margin-top: 4rem; min-height: 0; }
+  .toolbar, .controls { display: none; }
+  .enhanced .toolbar, .enhanced .controls { display: flex; justify-content: space-between; align-items: center; flex: none; gap: .55rem; padding: .42rem clamp(.7rem, 3vw, 3rem); min-height: 3.1rem; }
+  .toolbar { background: var(--deep); color: var(--white); border-bottom: 1px solid #4c6864; }
+  .toolbar-group, .control-group { display: flex; gap: .4rem; align-items: center; }
+  .toolbar button, .controls button, .dialog-head button { border: 1px solid currentColor; border-radius: .35rem; padding: .38rem .63rem; min-height: 44px; font-size: .76rem; font-weight: 700; }
+  .toolbar button { color: var(--white); background: transparent; }
+  .toolbar button:hover, .toolbar button[aria-pressed="true"] { background: var(--white); color: var(--deep); }
+  .course-mark { font-weight: 750; font-size: .82rem; white-space: nowrap; }
+  .controls { background: var(--paper); color: var(--deep); border-top: 1px solid var(--line); }
+  .controls button, .dialog-head button { color: var(--deep); background: var(--paper); }
+  .controls button:hover, .dialog-head button:hover { background: #e2e9d9; }
+  .controls button:disabled { opacity: .44; cursor: default; }
+  .controls .next { background: var(--deep); color: var(--white); border-color: var(--deep); }
+  .controls .next:hover:not(:disabled) { background: var(--teal); }
+  .counter { min-width: 3.8em; text-align: center; font-variant-numeric: tabular-nums; font-size: .78rem; font-weight: 700; }
+  .progress { display: flex; flex: 1; max-width: 22rem; margin-inline: .6rem; height: .28rem; border-radius: 1rem; background: #d7ded0; overflow: hidden; }
+  .progress span { background: var(--teal); }
+  .reading .controls { justify-content: flex-end; }
+  .reading .control-group, .reading .progress { display: none; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; align-items: start; gap: clamp(1rem, 4vw, 3.75rem); min-width: 0; }
+  .two > * { min-width: 0; }
+  .cover-grid { grid-template-columns: 1.45fr 1fr; align-items: end; }
+  .cover-copy { display: grid; gap: .8rem; }
+  .cover-copy .lead { max-width: 26em; }
+  .cover-routes { display: grid; gap: .65rem; }
+  .route { display: flex; justify-content: space-between; align-items: center; gap: .9rem; width: 100%; border-top: 1px solid #799087; padding-top: .6rem; text-decoration: none; }
+  .route[href]:hover { text-decoration: underline; }
+  .route strong { color: var(--white); }
+  .route b { font-size: 1.32rem; line-height: 1; }
+  .cover-routes details { border-top: 1px solid #799087; padding-top: .6rem; }
+  .cover-routes details p { margin-top: .6rem; }
+  .large-number { font-size: clamp(4.25rem, 13vw, 11rem); line-height: .85; letter-spacing: -.08em; color: var(--teal); font-variant-numeric: tabular-nums; font-weight: 780; }
+  .weight { align-self: center; justify-self: center; }
+  .weight p { margin-top: .65rem; font-weight: 700; }
+  .plain-list, .steps, .prompts { margin: 0; padding-left: 1.35em; }
+  .plain-list li + li, .steps li + li, .prompts li + li { margin-top: .47em; }
+  .criteria { margin: 0; }
+  .criteria div { display: grid; grid-template-columns: minmax(13rem, .48fr) 1fr; align-items: baseline; gap: .75rem; padding: .42rem 0; border-top: 1px solid var(--line); }
+  .criteria dt { font-weight: 750; }
+  .criteria dd { margin: 0; }
+  .criteria b { display: inline-block; width: 1.6em; color: var(--teal); }
+  .source { font-size: .75rem; }
+  .source a + a { margin-left: .65em; }
+  table { border-collapse: collapse; text-align: left; }
+  th, td { padding: .28rem .55rem; border-bottom: 1px solid var(--line); }
+  thead th { background: #e4eadc; color: var(--deep); }
+  figcaption { margin-top: .4rem; }
+  details > summary { width: fit-content; font-weight: 750; }
+  .demo-slide .slide-inner { gap: clamp(.55rem, 1.8vh, 1.15rem); }
+  .demo-slide h2 { font-size: clamp(2.05rem, 3.9vw, 4rem); }
+  .demo-slide .two { gap: clamp(.85rem, 2.6vw, 2.1rem); }
+  .demo-data, .comparison-table { width: 100%; font-variant-numeric: tabular-nums; }
+  .demo-data th, .demo-data td, .comparison-table th, .comparison-table td { padding: .28rem .35rem; }
+  .demo-data td, .demo-data th:not(:first-child), .comparison-table td, .comparison-table th:not(:first-child) { text-align: center; }
+  .demo-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .55rem; margin-block: .62rem; }
+  .demo-button { border: 1px solid var(--deep); border-radius: .3rem; padding: .4rem .7rem; background: var(--deep); color: var(--white); font-size: .9rem; font-weight: 750; min-height: 44px; }
+  .demo-button:hover { background: var(--teal); }
+  .demo-button.secondary { color: var(--deep); background: var(--accent); }
+  .demo-button:disabled { color: var(--muted); background: #ebeee4; border-color: var(--line); cursor: default; }
+  .demo-output[hidden], .demo-result[hidden] { display: none; }
+  .demo-output { min-width: 0; }
+  .demo-output p + p { margin-top: .35em; }
+  .demo-result { margin-block-start: .5rem; padding: .56rem .7rem; background: #e4eadc; border-left: .23rem solid var(--teal); }
+  .demo-result p + p { margin-top: .33em; }
+  .demo-prompt { margin-top: .55rem; }
+  .demo-chart canvas, .demo-chart svg, svg.demo-chart { display: block; width: 100%; height: auto; background: #fcfaf0; border: 1px solid var(--line); }
+  .chart-wrap { margin-top: .46rem; }
+  .demo-data + .source { margin-top: .4rem; }
+  .numbers { font-variant-numeric: tabular-nums; }
+  .comparison-table { margin-block: .15rem .48rem; }
+  .comparison-table :is(th, td) { padding-block: .19rem; }
+  .comparison-table tfoot { font-weight: 750; }
+  .comparison-table tfoot th, .comparison-table tfoot td { border-top: 2px solid var(--line); }
+  .page-shape { margin: 0; }
+  .page-shape div { display: flex; gap: .7rem; justify-content: space-between; padding: .32rem 0; border-bottom: 1px solid var(--line); }
+  .page-shape dd { margin: 0; color: var(--teal); font-weight: 750; }
+  .callout { padding: .74rem 1rem; border-left: .25rem solid var(--teal); background: #e7ecdf; }
+  .dark .callout { border-left-color: var(--accent); background: #224648; }
+  .branch { border-top: 2px solid var(--teal); padding-top: .6rem; }
+  .branch h3 + p, .branch h3 + ol { margin-top: .45rem; }
+  .branch ol { padding-left: 1.25em; }
+  .branch li + li { margin-top: .3rem; }
+  .branch li::marker { color: var(--teal); font-weight: 750; }
+  .choices { padding: 0; list-style: none; margin: 0; }
+  .choices li { display: grid; grid-template-columns: minmax(11rem, .5fr) 1fr; gap: .6rem 1rem; padding: .58rem 0; border-top: 1px solid var(--line); }
+  .choices strong { color: var(--teal); }
+  .quote { margin-top: .6rem; padding-left: .7rem; border-left: 2px solid var(--line); }
+  .logbook { width: 100%; table-layout: fixed; font-size: .91rem; }
+  .logbook th:nth-child(1) { width: 15%; }
+  .logbook th:nth-child(2) { width: 17%; }
+  .logbook td { vertical-align: top; overflow-wrap: anywhere; }
+  .logbook .blank td { height: 1.8rem; }
+  .logbook .blank td + td { border-left: 1px solid var(--line); }
+  .field-label { display: none; }
+  .blank-label { margin-bottom: .35rem; }
+  .paper-note { padding: .9rem 1rem; background: var(--white); color: var(--ink); border-top: .19rem solid #789384; }
+  .paper-note h3 + p { margin-top: .55rem; }
+  .paper-note .small { margin-top: .68rem; }
+  .time { display: inline-block; letter-spacing: -.04em; font-size: clamp(1.65rem, 3.8vw, 3.35rem); color: var(--accent); font-weight: 750; line-height: .95; }
+  .exit-line { color: var(--deep); background: var(--accent); padding: .85rem 1rem; font-size: clamp(1.16rem, 2.55vw, 2.05rem); max-width: 43rem; font-weight: 750; line-height: 1.23; }
+  .close-list { font-size: clamp(1.18rem, 2.3vw, 1.85rem); }
+  dialog { width: min(39rem, calc(100vw - 1.4rem)); max-height: calc(100svh - 2rem); padding: 1.25rem; color: var(--ink); background: var(--paper); border: 2px solid var(--teal); border-radius: .4rem; }
+  dialog::backdrop { background: #142e30bf; }
+  .dialog-head { display: flex; align-items: start; justify-content: space-between; gap: 1rem; margin-bottom: .7rem; }
+  .dialog-head h2 { font-size: 1.8rem; }
+  .dialog-body { display: grid; gap: .7rem; }
+  .dialog-body h3 { margin-bottom: .28rem; }
+  .dialog-body .steps { font-size: .89rem; }
+  .dialog-body .steps li + li { margin-top: .24rem; }
+  @media (min-width: 750px) and (max-height: 670px) {
+    :root { font-size: clamp(15px, min(1.28vw, 2.6vh), 20px); }
+    .slide { padding-block: 1.1rem; }
+    .slide-inner { gap: .7rem; }
+    h2 { font-size: min(4.35vw, 7.2vh); }
+    .demo-slide h2 { font-size: min(3.9vw, 6.45vh); }
+    .demo-chart canvas, .demo-chart svg, svg.demo-chart { max-height: 182px; object-fit: contain; }
+    h1 { font-size: min(7.2vw, 11.3vh); }
+  }
+  @media (max-width: 749px) {
+    .toolbar, .controls { column-gap: .38rem; }
+    .toolbar-group, .control-group { gap: .3rem; }
+    .toolbar button, .controls button { padding-inline: .48rem; }
+    .slide { padding-block: 1.65rem; }
+    .slide-inner { align-content: start; }
+    .enhanced:not(.reading) .slide-inner { margin-block: 0 auto; }
+    .two, .cover-grid { grid-template-columns: 1fr; gap: 1rem; }
+    .weight { justify-self: start; }
+    .weight .large-number { font-size: 4.75rem; }
+    .criteria div, .choices li { grid-template-columns: 1fr; gap: .24rem; }
+    .cover-routes { margin-top: .4rem; }
+    .progress { margin-inline: .2rem; }
+  }
+  @media (max-width: 540px) {
+    .comparison-table { font-size: .83rem; }
+    .comparison-table th, .comparison-table td { padding-inline: .24rem; overflow-wrap: break-word; }
+    .logbook { display: block; font-size: .92rem; }
+    .logbook thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+    .logbook tbody, .logbook tr { display: grid; }
+    .logbook tr { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: .35rem 0; border-block-start: 1px solid var(--line); }
+    .logbook td { display: block; padding: .32rem .3rem; border: 0; }
+    .logbook .blank td { height: auto; min-height: 2.85rem; }
+    .logbook .blank td + td { border-left: 0; }
+    .logbook .blank td::after { content: ''; display: block; margin-top: .4rem; border-bottom: 1px dotted var(--line); }
+    .field-label { display: block; color: var(--deep); font-weight: 750; font-size: .8rem; margin-bottom: .15rem; }
+  }
+  @media (max-width: 360px) {
+    .course-mark { font-size: .72rem; }
+    .toolbar button { padding-inline: .32rem; }
+    .counter { min-width: 3em; }
+  }
+  @media print {
+    :root { font-size: 14pt; }
+    .enhanced .toolbar, .enhanced .controls, dialog { display: none !important; }
+    .enhanced:not(.reading) .shell, .enhanced:not(.reading) .stage { height: auto; display: block; overflow: visible; }
+    .enhanced .slide, .enhanced:not(.reading) .slide[hidden] { display: block; min-height: 0; break-after: page; padding: 1rem 0; }
+    .slide { print-color-adjust: exact; }
+    details:not([open])::details-content { content-visibility: visible; }
+    .demo-actions { display: none; }
+  }
+  .chocolate-intro, .chocolate-lab { align-items: start; }
+  .chocolate-intro .steps { margin-top: .65rem; }
+  .chocolate-note { margin-top: .7rem; }
+  .chocolate-figure { width: 100%; }
+  .chocolate-figure svg { display: block; width: 100%; height: clamp(142px, 34vh, 310px); background: #fcfaf0; border: 1px solid var(--line); }
+  .chocolate-readings { margin: .55rem 0; }
+  .chocolate-readings th, .chocolate-readings td { padding-inline: .22rem; }
+  .chocolate-side { display: grid; gap: .25rem; }
+  .demo-button[aria-pressed="true"] { background: var(--accent); color: var(--deep); }
+  .chocolate-values { font-variant-numeric: tabular-nums; }
+  .chocolate-values strong { white-space: nowrap; }
+  .chocolate-photo { min-width: 0; }
+  .chocolate-photo-frame { overflow: hidden; background: #f5e9d5; }
+  .chocolate-photo img { display: block; width: 100%; height: clamp(105px, 31vh, 270px); object-fit: cover; transform: scale(1.45); transform-origin: 51% 47%; }
+  .chocolate-photo figcaption { margin-top: .25rem; }
+  .chocolate-reference { display: grid; grid-template-columns: .85fr 1fr; gap: .8rem; align-items: start; }
+  #hl-check-result .comparison-table { margin-bottom: .25rem; }
+  #hl-check-result { margin: 0; }
+  @media (min-width: 750px) {
+    #start:has(.cover-routes details[open]) h1 { font-size: clamp(3rem, min(5.3vw, 10vh), 6rem); }
+    #chocolate, #chocolate-sl, #width-check, #hl-chocolate { padding-block: .85rem; }
+    #chocolate-sl .slide-inner, #hl-chocolate .slide-inner { gap: .53rem; }
+    #chocolate-sl:has(#sl-result:not([hidden])) .chocolate-figure svg { height: clamp(130px, 26vh, 235px); }
+    #hl-chocolate:has(#hl-check-result:not([hidden])) .chocolate-figure svg { height: clamp(130px, 25vh, 225px); }
+    #chocolate-sl .demo-actions, #hl-chocolate .demo-actions, #width-check .demo-actions { margin-block: .45rem; }
+  }
+  @media (max-width: 450px) {
+    .chocolate-reference { gap: .45rem; }
+    .chocolate-reference :is(img, svg) { height: 155px; }
+    .chocolate-readings { font-size: .76rem; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="toolbar" aria-label="Deck controls">
+    <span class="course-mark">IB Math AI</span>
+    <div class="toolbar-group">
+      
+      <button type="button" id="view-button" aria-pressed="false">Read all</button>
+      <button type="button" id="screen-button" hidden>Full screen</button>
+    </div>
+  </header>
+
+  <main class="stage" id="slides" aria-label="Introducing the Mathematical Exploration slides">
+    <section class="slide dark" id="start" aria-labelledby="start-title">
+      <div class="slide-inner">
+        <p class="tag">Grade 11 · Mathematics Applications and Interpretation SL/HL</p>
+        <h1 id="start-title">Introducing the<br>Mathematical<br>Exploration</h1>
+        <div class="two cover-grid">
+          <div class="cover-copy">
+            <p class="lead">Run a small test before you invest time in an idea.</p>
+            <p>Bring an idea you could try, a few possibilities, or just a starting point. It’s useful to find out early why an idea won’t work. You can leave with a stronger idea or a few you still want to try.</p>
+          </div>
+          <div class="cover-routes">
+            <a class="route" href="#exploration"><strong>Start the lesson</strong><b aria-hidden="true">→</b></a>
+            <details>
+              <summary>Independent catch-up · about 45 min</summary>
+              <p class="small">Grab paper or open a notes file. Read <a href="#exploration">the IA basics</a> (5 min). In <a href="#chocolate">the chocolate example</a> (10 min), sketch a cone and mark where it might miss. Choose an extra width, predict which volume will be larger, then reveal the estimates and check a new height. Read <a href="#criteria-in-work">how the work grows</a> (5 min), then use the <a href="#mind-map">mind map and AI guidance</a> (5 min) to pick a test. <a href="#first-test">Try it</a> (16 min) and <a href="#bring-notes">finish your notes</a> (4 min). You can do it all on your own without an AI account.</p>
+            </details>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="exploration" aria-labelledby="exploration-title">
+      <div class="slide-inner">
+        <h2 id="exploration-title">The Mathematical Exploration</h2>
+        <div class="two">
+          <div>
+            <p class="lead">An individual written investigation of mathematics around a topic you choose.</p>
+            <p>You pose a question or set an aim, use mathematics to investigate it, and explain what your results tell you.</p>
+            <p>Your teacher assesses the report. The IB moderates the assessment.</p>
+          </div>
+          <div class="weight">
+            <div class="large-number">20%</div>
+            <p>of your final Mathematics AI grade at both SL and HL</p>
+          </div>
+        </div>
+        <p class="source"><a href="https://ibo.org/globalassets/new-structure/university-admission/pdfs/dp-mathematics-applications-and-interpretation-guide-en.pdf" target="_blank" rel="noopener">IB Mathematics AI guide, pp. 74–75 and 84</a></p>
+      </div>
+    </section>
+
+    <section class="slide" id="criteria" aria-labelledby="criteria-title">
+      <div class="slide-inner">
+        <h2 id="criteria-title">What the IB assesses</h2>
+        <dl class="criteria">
+          <div><dt><b>A</b> Presentation</dt><dd>Organize the report so a reader can follow the investigation from aim to conclusion.</dd></div>
+          <div><dt><b>B</b> Mathematical communication</dt><dd>Define symbols and variables. Use clear notation, units and labelled tables or graphs.</dd></div>
+          <div><dt><b>C</b> Personal engagement</dt><dd>Show your own mathematical choices, such as making a prediction or trying a different approach.</dd></div>
+          <div><dt><b>D</b> Reflection</dt><dd>Explain what your results mean, what limits them and what you would investigate next.</dd></div>
+          <div><dt><b>E</b> Use of mathematics</dt><dd>Use math that fits your question and course level. Show how it works and why you used it.</dd></div>
+        </dl>
+        <p class="source"><a href="https://ibo.org/globalassets/new-structure/university-admission/pdfs/dp-mathematics-applications-and-interpretation-guide-en.pdf" target="_blank" rel="noopener">IB Mathematics AI guide, criteria A–E, pp. 85–89</a></p>
+      </div>
+    </section>
+
+    <section class="slide demo-slide" id="chocolate" aria-labelledby="chocolate-title">
+      <div class="slide-inner">
+        <h2 id="chocolate-title">Is a Hershey’s Kiss actually a cone?</h2>
+        <div class="two chocolate-intro">
+          <div>
+            <p class="lead">Look at the side view. Where would your cone miss the outline?</p>
+            <ol class="steps">
+              <li>Sketch the side view and draw the cone you’d use. Mark its base and tip.</li>
+              <li>Mark where your cone would sit inside or outside the chocolate outline.</li>
+              <li>Pick one height where a width would help you check your guess. Write why.</li>
+            </ol>
+            <p class="small chocolate-note">Keep your sketch. On the next slide we’ll use widths from the practice outline.</p>
+          </div>
+          <div class="chocolate-reference">
+            <figure class="chocolate-photo"><div class="chocolate-photo-frame"><img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/2020-03-04_22_03_24_A_Hershey_Kiss_with_its_wrapper_removed_in_the_Dulles_section_of_Sterling%2C_Loudoun_County%2C_Virginia.jpg" alt="A slightly angled side photograph of an unwrapped Hershey’s Kiss. Its skirt is rounded and its tip is narrow."></div><figcaption class="source">Photo by <a href="https://commons.wikimedia.org/wiki/File:2020-03-04_22_03_24_A_Hershey_Kiss_with_its_wrapper_removed_in_the_Dulles_section_of_Sterling,_Loudoun_County,_Virginia.jpg" target="_blank" rel="noopener">Famartin, Wikimedia Commons</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>. Cropped view. Slightly angled, without a scale.</figcaption></figure>
+            <figure class="chocolate-figure">
+            <div class="outline-plot" id="intro-outline"></div>
+            <figcaption class="small"><strong>Practice side view.</strong> Use it for the sketch and width readings. Its full height is 1 unit.</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide demo-slide" id="chocolate-sl" aria-labelledby="chocolate-sl-title">
+      <div class="slide-inner">
+        <h2 id="chocolate-sl-title">One cone or a stack of pieces?</h2>
+        <div class="two chocolate-lab">
+          <div>
+            <p class="small">Use the same side outline. <i>z</i> is height from the base. We measure heights and widths in the same unit, with the full height set to 1. Take half of each width to get its radius.</p>
+            <table class="demo-data chocolate-readings small" aria-label="Initial height and width readings from the normalized practice outline">
+              <thead><tr><th scope="col">Height <i>z</i></th><th scope="col">0</th><th scope="col">0.25</th><th scope="col">0.50</th><th scope="col">0.75</th><th scope="col">1.00</th></tr></thead>
+              <tbody><tr><th scope="row">Width</th><td>1.00</td><td>0.92</td><td>0.70</td><td>0.38</td><td>0</td></tr></tbody>
+            </table>
+            <p class="small">The cone connects the base and tip with a straight edge. The stack connects consecutive widths to make truncated cones, with a cone at the tip.</p>
+            <div class="demo-actions" role="group" aria-label="Choose one extra width">
+              <button type="button" class="demo-button" data-width-spot="0.375" aria-pressed="false">Width at 0.375</button>
+              <button type="button" class="demo-button" data-width-spot="0.625" aria-pressed="false">Width at 0.625</button>
+            </div>
+            <p class="small" id="sl-choice" aria-live="polite">Pick one extra width and explain why. Which model do you think will give the larger volume?</p>
+            <div class="demo-actions">
+              <button type="button" id="sl-reveal" class="demo-button secondary" aria-controls="sl-result" aria-expanded="false" disabled>Reveal volume estimates</button>
+            </div>
+          </div>
+          <div class="chocolate-side">
+            <figure class="chocolate-figure">
+              <div class="outline-plot" id="sl-outline"></div>
+              <figcaption class="small" id="sl-legend">Brown edge shows the practice outline. Select an extra width to mark it.</figcaption>
+            </figure>
+            <div class="demo-result small" id="sl-result" tabindex="-1" hidden></div>
+          </div>
+        </div>
+        <noscript><p class="small">Open this file in a JavaScript-enabled browser to see the outline and reveal the estimates. The activity runs offline.</p></noscript>
+      </div>
+    </section>
+
+    <section class="slide" id="criteria-in-work" aria-labelledby="criteria-work-title">
+      <div class="slide-inner">
+        <h2 id="criteria-work-title">What the IA criteria look like in this example</h2>
+        <dl class="criteria">
+          <div><dt><b>A</b> Presentation</dt><dd>State the cone question. Show the outline and width readings, then the models, a check and your next step.</dd></div>
+          <div><dt><b>B</b> Mathematical communication</dt><dd>Label height and width on the diagram. Show that a width of 0.92 gives a radius of 0.46. Give volumes in cubic height units.</dd></div>
+          <div><dt><b>C</b> Personal engagement</dt><dd>Explain why you chose an extra width where a model seemed to miss. Show what changed when you added it.</dd></div>
+          <div><dt><b>D</b> Reflection</dt><dd>Use an unused width to check the outline. Explain what a side view leaves open and what you’d measure next.</dd></div>
+          <div><dt><b>E</b> Use of mathematics</dt><dd>Show a cone or truncated-cone calculation and explain how adding the pieces estimates the whole volume.</dd></div>
+        </dl>
+        <p>Show this kind of evidence in your own words, wherever it fits in your investigation.</p>
+      </div>
+    </section>
+
+    <section class="slide demo-slide" id="width-check" aria-labelledby="width-check-title">
+      <div class="slide-inner">
+        <h2 id="width-check-title">Did the extra width help?</h2>
+        <div class="two">
+          <div class="branch">
+            <h3>Try a new check</h3>
+            <p>Halfway up, the cone gives a radius of 0.25 and the outline gives 0.35. The stack uses that width. It also matches the extra width you chose, so test at a different height.</p>
+            <p class="small">Use the choice you made on <a href="#chocolate-sl">the volume slide</a>, then compare the two errors here.</p>
+            <div class="demo-actions"><button type="button" class="demo-button secondary" id="width-check-reveal" aria-controls="width-check-result" aria-expanded="false" disabled>Reveal the new outline check</button></div>
+            <div id="width-check-result" class="demo-result small" tabindex="-1" hidden></div>
+          </div>
+          <div class="branch">
+            <h3>What would check the volume?</h3>
+            <p>The side outline helps us judge where each edge fits. The volume estimates also assume circular slices.</p>
+            <p>Measure the real chocolate’s full height to set the scale. Then measure its displaced volume independently, for example by fully submerging it in a graduated cylinder and reading the rise in water level.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="full-exploration" aria-labelledby="full-exploration-title">
+      <div class="slide-inner">
+        <h2 id="full-exploration-title">From one test to a full exploration</h2>
+        <div class="two">
+          <div>
+            <p>The IB guide suggests about <strong>12–20 double-spaced pages</strong>, including graphs and diagrams. The bibliography is separate. Start with a cone and mark where it misses. Measure one extra width there and rebuild the stack. Check at another height you haven’t used, then plan a physical check of the volume.</p>
+            <p>Use a graph, table or explanation when it helps readers see how you made a decision or what your result means.</p>
+          </div>
+          <div>
+            <h3>One possible 14-page outline</h3>
+            <dl class="page-shape small">
+              <div><dt>Question and sketch</dt><dd>1</dd></div>
+              <div><dt>Outline and width choices</dt><dd>2</dd></div>
+              <div><dt>Cone and stacked-piece models</dt><dd>3</dd></div>
+              <div><dt>Volume estimates and outline checks</dt><dd>4</dd></div>
+              <div><dt>Extra-width and physical follow-up</dt><dd>3</dd></div>
+              <div><dt>What the models can tell us</dt><dd>1</dd></div>
+            </dl>
+          </div>
+        </div>
+        <p>Those page counts are examples. Let your own question and results guide the structure and length.</p>
+        <p class="source"><a href="https://ibo.org/globalassets/new-structure/university-admission/pdfs/dp-mathematics-applications-and-interpretation-guide-en.pdf" target="_blank" rel="noopener">IB Mathematics AI guide, p. 84</a></p>
+      </div>
+    </section>
+
+    <section class="slide" id="mind-map" aria-labelledby="map-title">
+      <div class="slide-inner">
+        <h2 id="map-title">Two ways into a mind map</h2>
+        <p class="lead">Put either starting point in the middle. Draw branches for questions, possible data or models, and math you could try.</p>
+        <div class="two">
+          <div class="branch">
+            <h3>Start with something you’re curious about</h3>
+            <ol>
+              <li>The shape of a Hershey’s Kiss</li>
+              <li>Is a Hershey’s Kiss actually a cone?</li>
+              <li>A side view, width readings and volume models</li>
+            </ol>
+          </div>
+          <div class="branch">
+            <h3>Start with math you’d like to use</h3>
+            <ol>
+              <li>Functions and graphs</li>
+              <li>Where does changing one quantity affect another?</li>
+              <li>Rectangle width and area with a fixed perimeter</li>
+            </ol>
+          </div>
+        </div>
+        <p>Add as many branches as are useful to you. If you already have a topic, map the assumptions it depends on.</p>
+      </div>
+    </section>
+
+    <section class="slide" id="workable" aria-labelledby="workable-title">
+      <div class="slide-inner">
+        <h2 id="workable-title">What makes an idea workable?</h2>
+        <dl class="criteria">
+          <div><dt>A focused question</dt><dd>Can you say what you’ll measure, compare or model? Name the relevant variables or conditions.</dd></div>
+          <div><dt>Data or a model you can access</dt><dd>Can you get a few relevant values today? If you’re building a model, can you generate its first outputs?</dd></div>
+          <div><dt>Math you can explain</dt><dd>Can you show what the math does and why it helps answer your question?</dd></div>
+          <div><dt>Room for interpretation</dt><dd>What would the result mean? What might limit it or change your decision?</dd></div>
+        </dl>
+        <p class="callout">Pick the uncertainty that matters most. Build your small test around it.</p>
+      </div>
+    </section>
+
+    <section class="slide" id="test-choices" aria-labelledby="choices-title">
+      <div class="slide-inner">
+        <h2 id="choices-title">A small test for your idea</h2>
+        <ul class="choices">
+          <li><strong>Explore a branch</strong><span>Collect or generate a few values. Make a quick graph, table or calculation and see what it reveals about your question.</span></li>
+          <li><strong>Compare promising ideas</strong><span>Try the same small check on each idea you’re comparing. For example, find a usable sample and calculate one quantity for each.</span></li>
+          <li><strong>Stress-test an assumption</strong><span>Pick the assumption most likely to make your topic unworkable. Say what would change your mind, then vary an input, try a measurement or check a prediction.</span></li>
+        </ul>
+        <p>Choose a route that fits where you are. A sketch of a plan is a start. Go far enough to record a result today.</p>
+      </div>
+    </section>
+
+    <section class="slide" id="ai" aria-labelledby="ai-title">
+      <div class="slide-inner">
+        <h2 id="ai-title">AI in this lesson</h2>
+        <p class="lead"><strong>Think independently first.</strong> Write your own idea and the assumption you want to check.</p>
+        <div class="two">
+          <div class="branch">
+            <h3>With AI · optional</h3>
+            <p>Ask AI for questions that help you stress-test the idea you already have.</p>
+            <p class="quote">“I want to model a chocolate from a side view. Ask me questions that would help me check my assumption that the slices are circular.”</p>
+          </div>
+          <div class="branch">
+            <h3>Without AI</h3>
+            <p>Ask yourself the same questions. Which assumption is most fragile? What would change my mind? What can I measure or calculate now?</p>
+          </div>
+        </div>
+        <div class="callout">
+          <p><strong>You choose the final question, do the analysis and write the reflection.</strong> Keep AI out of those three tasks. Verify any sources and claims independently.</p>
+        </div>
+        <p class="source"><a href="Introducing%20the%20Mathematical%20Exploration%20-%20SIS%20Student%20AI%20Guide.html" target="_blank" rel="noopener">SIS student AI guide</a> <a href="https://www.ibo.org/programmes/artificial-intelligence-ai-in-learning-teaching-and-assessment" target="_blank" rel="noopener">IB AI guidance</a></p>
+      </div>
+    </section>
+
+    <section class="slide" id="logbook" aria-labelledby="logbook-title">
+      <div class="slide-inner">
+        <h2 id="logbook-title">The AI logbook and declaration</h2>
+        <p>If you use AI, log each use as it happens, even if you reject the output. Keep your prompt and output history where available.</p>
+        <div>
+          <p class="blank-label small muted">Blank row to copy, then a fictional example from this lesson.</p>
+          <table class="logbook" role="table" aria-label="Blank AI logbook row and a filled example">
+            <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Date</th><th scope="col" role="columnheader">Tool used</th><th scope="col" role="columnheader">What you asked AI to do</th><th scope="col" role="columnheader">What you did with the output</th></tr></thead>
+            <tbody role="rowgroup">
+              <tr class="blank" role="row">
+                <td role="cell" aria-label="Blank date"><span class="field-label" aria-hidden="true">Date</span></td>
+                <td role="cell" aria-label="Blank tool"><span class="field-label" aria-hidden="true">Tool used</span></td>
+                <td role="cell" aria-label="Blank request"><span class="field-label" aria-hidden="true">What you asked AI to do</span></td>
+                <td role="cell" aria-label="Blank response to output"><span class="field-label" aria-hidden="true">What you did with the output</span></td>
+              </tr>
+              <tr role="row">
+                <td role="cell"><span class="field-label" aria-hidden="true">Date</span>26 Nov 2026</td>
+                <td role="cell"><span class="field-label" aria-hidden="true">Tool used</span>ChatGPT</td>
+                <td role="cell"><span class="field-label" aria-hidden="true">What you asked AI to do</span>Ask questions that help me check whether a side view is enough to assume circular slices.</td>
+                <td role="cell"><span class="field-label" aria-hidden="true">What you did with the output</span>I picked a width to check where the cone missed. I saved a top-view check for later.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p><strong>Everyone completes the final declaration for the assessed exploration.</strong> The logbook is for students who use AI. If you include permitted AI-generated material, cite it where you use it and in your reference list.</p>
+        <p class="source"><a href="Introducing%20the%20Mathematical%20Exploration%20-%20SIS%20Student%20AI%20Guide.html" target="_blank" rel="noopener">SIS student AI guide</a> <a href="https://www.ibo.org/programmes/artificial-intelligence-ai-in-learning-teaching-and-assessment" target="_blank" rel="noopener">IB AI guidance</a></p>
+      </div>
+    </section>
+
+    <section class="slide dark" id="first-test" aria-labelledby="first-test-title">
+      <div class="slide-inner">
+        <p class="time">48 min live · 16 min solo</p>
+        <h2 id="first-test-title">Your first independent test</h2>
+        <div class="two">
+          <ol class="steps">
+            <li><strong>Write</strong> a first version of your question or the assumption you want to check.</li>
+            <li><strong>Try it now.</strong> Measure, use a small data sample or generate model outputs. Label where the values came from and include units.</li>
+            <li><strong>Show one piece of math.</strong> Make a table or graph, calculate a value or compare two results.</li>
+            <li><strong>Record what happened.</strong> What did the result tell you? If you hit a barrier, record what you tried and what you could test instead.</li>
+          </ol>
+          <aside class="paper-note" aria-label="Paper and pencil starter test">
+            <h3>A paper-and-pencil starting point</h3>
+            <p>How does width affect the area of a rectangle with a 20 cm perimeter?</p>
+            <p>Sketch rectangles with widths 1 cm, 3 cm and 5 cm. Use 2(length + width) = 20 to find each length. Calculate and compare their areas.</p>
+            <p class="small">What pattern do you see? What width would you try next to investigate it?</p>
+          </aside>
+        </div>
+        <p>Keep the calculation, graph or attempted check in your rough notes. If you’re catching up solo, go straight to <a href="#bring-notes">the closing questions</a>.</p>
+      </div>
+    </section>
+
+    <section class="slide demo-slide" id="hl-chocolate" aria-labelledby="hl-chocolate-title">
+      <div class="slide-inner">
+        <p class="tag">Optional HL · about 5 min</p>
+        <h2 id="hl-chocolate-title">Would a smooth curve do better?</h2>
+        <div class="two chocolate-lab">
+          <div>
+            <p class="small">Use the same side view. Fit a quadratic radius to just three heights: base, halfway and tip. Their radii are 0.50, 0.35 and 0.</p>
+            <p class="small" id="hl-curve-prompt">Predict whether the curve will beat the original stack at points held out of both fits. What would count as a better fit?</p>
+            <div class="demo-actions">
+              <button type="button" class="demo-button" id="hl-curve-run" aria-controls="hl-curve-output" aria-expanded="false">Show the fit and integral</button>
+              <button type="button" class="demo-button secondary" id="hl-check-reveal" aria-controls="hl-check-result" aria-expanded="false" disabled>Reveal held-out points</button>
+            </div>
+            <div id="hl-curve-output" class="demo-result small" tabindex="-1" hidden></div>
+          </div>
+          <div class="chocolate-side">
+            <figure class="chocolate-figure">
+              <div class="outline-plot" id="hl-outline"></div>
+              <figcaption id="hl-legend" class="small">Brown edge shows the same practice outline.</figcaption>
+            </figure>
+          </div>
+        </div>
+        <div id="hl-check-result" class="demo-result small" tabindex="-1" hidden></div>
+      </div>
+    </section>
+
+    <section class="slide" id="follow-up" aria-labelledby="follow-title">
+      <div class="slide-inner">
+        <p class="tag">Second live block · 45 min</p>
+        <h2 id="follow-title">A follow-up test or a change of direction</h2>
+        <ol class="steps">
+          <li><strong>5 min.</strong> Reopen your notes and pick one thing the first check left uncertain, or try the <a href="#hl-chocolate">optional HL example</a>.</li>
+          <li><strong>34 min.</strong> Work on your own. Repeat a measurement, change an input, narrow the question and test it, or try a different idea. Keep the new evidence next to the first result.</li>
+          <li><strong>6 min.</strong> Use the <a href="#bring-notes">closing questions</a> to decide what you might do next.</li>
+        </ol>
+        <p class="callout">Continue on your own while others talk. Discussion or teacher feedback can help if available.</p>
+      </div>
+    </section>
+
+    <section class="slide dark" id="bring-notes" aria-labelledby="closing-title">
+      <div class="slide-inner">
+        <h2 id="closing-title">Your rough notes</h2>
+        <p>Keep the evidence beside your answers in your rough notes. It’s fine to have a few ideas you’re still weighing up.</p>
+        <ol class="prompts close-list">
+          <li>What did you try?</li>
+          <li>What did it tell you?</li>
+          <li>Will you keep going, narrow it, or try something else?</li>
+        </ol>
+        <p class="exit-line">Bring your rough notes to the next math class. Be ready to tell me what you tried, what you found, and what you might do next.</p>
+      </div>
+    </section>
+  </main>
+
+  <nav class="controls" aria-label="Slide navigation">
+    <div class="control-group">
+      <button type="button" id="previous">← Previous</button>
+      <output class="counter" id="counter" aria-live="polite"></output>
+      <button type="button" class="next" id="next">Next →</button>
+    </div>
+    <div class="progress" aria-hidden="true"><span id="bar"></span></div>
+    <button type="button" id="contents-button" aria-haspopup="dialog">Contents</button>
+  </nav>
+</div>
+
+
+
+<dialog id="contents" aria-labelledby="contents-title">
+  <div class="dialog-head">
+    <h2 id="contents-title">Contents</h2>
+    <form method="dialog"><button type="submit">Close</button></form>
+  </div>
+  <ol class="steps" id="slide-links"></ol>
+</dialog>
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const stage = document.getElementById('slides');
+  const previous = document.getElementById('previous');
+  const next = document.getElementById('next');
+  const counter = document.getElementById('counter');
+  const bar = document.getElementById('bar');
+  const view = document.getElementById('view-button');
+  const screen = document.getElementById('screen-button');
+  const contents = document.getElementById('contents');
+  
+  let active = 0;
+  let reading = false;
+
+  function slideNumber() {
+    const fromHash = slides.findIndex(slide => `#${slide.id}` === location.hash);
+    return Math.max(0, fromHash);
+  }
+
+  function render(index, { scroll = true, focus = false } = {}) {
+    active = index;
+    slides.forEach((slide, position) => { slide.hidden = !reading && position !== index; });
+    previous.disabled = index === 0;
+    next.disabled = index === slides.length - 1;
+    counter.textContent = `${index + 1} / ${slides.length}`;
+    bar.style.width = `${(index + 1) / slides.length * 100}%`;
+    if (scroll) {
+      if (reading) slides[index].scrollIntoView({ block: 'start' });
+      else stage.scrollTop = 0;
+    }
+    if (focus) {
+      const heading = slides[index].querySelector('h1, h2');
+      heading.tabIndex = -1;
+      heading.focus({ preventScroll: true });
+    }
+  }
+
+  function go(index, focus = false) {
+    if (index < 0 || index >= slides.length) return;
+    const hash = `#${slides[index].id}`;
+    if (location.hash !== hash) history.pushState(null, '', hash);
+    render(index, { focus });
+  }
+
+  
+  document.getElementById('contents-button').addEventListener('click', () => contents.showModal());
+  const slideLinks = document.getElementById('slide-links');
+  slides.forEach(slide => {
+    const item = document.createElement('li');
+    const link = document.createElement('a');
+    const heading = slide.querySelector('h1, h2');
+    link.textContent = Array.from(heading.childNodes).map(node => node.nodeName === 'BR' ? ' ' : node.textContent).join('');
+    link.href = `#${slide.id}`;
+    item.append(link);
+    slideLinks.append(item);
+  });
+
+  previous.addEventListener('click', () => go(active - 1));
+  next.addEventListener('click', () => go(active + 1));
+  view.addEventListener('click', () => {
+    const readingPosition = reading
+      ? slides.findIndex(slide => slide.getBoundingClientRect().bottom > document.querySelector('.toolbar').offsetHeight + 20)
+      : active;
+    reading = !reading;
+    document.documentElement.classList.toggle('reading', reading);
+    view.setAttribute('aria-pressed', String(reading));
+    view.textContent = reading ? 'Slide view' : 'Read all';
+    go(readingPosition >= 0 ? readingPosition : active);
+  });
+
+  if (document.fullscreenEnabled && document.documentElement.requestFullscreen) {
+    screen.hidden = false;
+    screen.addEventListener('click', async () => {
+      try {
+        if (document.fullscreenElement) await document.exitFullscreen();
+        else await document.documentElement.requestFullscreen();
+      } catch {
+        screen.textContent = 'Full screen unavailable';
+      }
+    });
+    document.addEventListener('fullscreenchange', () => {
+      screen.textContent = document.fullscreenElement ? 'Exit full screen' : 'Full screen';
+    });
+  }
+
+  document.addEventListener('click', event => {
+    const link = event.target.closest('a[href^="#"]');
+    if (!link || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const index = slides.findIndex(slide => `#${slide.id}` === link.getAttribute('href'));
+    if (index < 0) return;
+    event.preventDefault();
+    link.closest('dialog')?.close();
+    go(index, true);
+  });
+
+  document.addEventListener('keydown', event => {
+    if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey || reading || contents.open) return;
+    const target = { ArrowRight: active + 1, ArrowLeft: active - 1, Home: 0, End: slides.length - 1 }[event.key];
+    if (target === undefined) return;
+    event.preventDefault();
+    go(target, true);
+  });
+  window.addEventListener('hashchange', () => render(slideNumber()));
+
+
+  function initChocolateExample() {
+    // This side view is a practice diagram. Heights and radii use the same unit.
+    const outline = [
+      [0, .5], [.125, .490], [.25, .46], [.375, .412], [.4375, .384],
+      [.5, .35], [.625, .278], [.6875, .236], [.75, .19], [.875, .096], [1, 0]
+    ];
+    const practiceRadius = new Map(outline);
+    const originalHeights = [0, .25, .5, .75, 1];
+    const originalStack = originalHeights.map(z => [z, practiceRadius.get(z)]);
+    const cone = [originalStack[0], originalStack.at(-1)];
+    const heldOut = [.125, .375, .625, .875];
+    const nextCheck = new Map([[.375, .4375], [.625, .6875]]);
+    const byId = id => document.getElementById(id);
+    const widthButtons = [...document.querySelectorAll('[data-width-spot]')];
+    const slButton = byId('sl-reveal');
+    const slResult = byId('sl-result');
+    const checkButton = byId('width-check-reveal');
+    const checkResult = byId('width-check-result');
+    let chosenHeight;
+
+    const segments = vertices => vertices.slice(1).map((point, index) => [vertices[index], point]);
+    const radiusBetween = (vertices, z) => {
+      const [[leftZ, leftR], [rightZ, rightR]] = segments(vertices).find(([, point]) => point[0] >= z);
+      return leftR + (rightR - leftR) * (z - leftZ) / (rightZ - leftZ);
+    };
+    const pieceVolume = (depth, a, b) => Math.PI * depth / 3 * (a ** 2 + a * b + b ** 2);
+    const stackVolume = vertices => segments(vertices).reduce(
+      (total, [[lo, rLo], [hi, rHi]]) => total + pieceVolume(hi - lo, rLo, rHi), 0
+    );
+    const updatedStack = () => [...originalStack, [chosenHeight, practiceRadius.get(chosenHeight)]]
+      .sort(([left], [right]) => left - right);
+    const error = (a, b) => Math.abs(a - b);
+    const fixed = (value, precision = 4) => value.toFixed(precision);
+
+    function showResult(button, box) {
+      button.setAttribute('aria-expanded', 'true');
+      box.hidden = false;
+      box.focus({ preventScroll: true });
+      box.scrollIntoView({ block: 'nearest' });
+    }
+
+    function renderOutline(id, { measuring = false, chosen, coneLine = false, stack, curve, checks = [] } = {}) {
+      const unit = 218, middle = 225, base = 255;
+      const x = r => middle + unit * r;
+      const y = z => base - unit * z;
+      const point = (z, r, side) => x(side * r).toFixed(2) + ',' + y(z).toFixed(2);
+      const profile = (vertices, side) => vertices.map(([z, r]) => point(z, r, side)).join(' ');
+      const shape = profile(outline, 1) + ' ' + profile([...outline].reverse(), -1);
+      const guides = measuring ? originalHeights : [0, 1];
+      const guideMarkup = guides.map(z => {
+        const line = measuring ? '<line x1="' + x(-practiceRadius.get(z)) + '" y1="' + y(z) + '" x2="' +
+          x(practiceRadius.get(z)) + '" y2="' + y(z) + '" stroke="#9b7663" stroke-dasharray="4 5"/>' : '';
+        return '<text x="75" y="' + (y(z) + 6) + '" text-anchor="end">' + z.toFixed(2) + '</text>' + line;
+      }).join('');
+      const viewTitle = measuring ? 'Practice outline with normalized height markings' : 'Practice side view with full height 1';
+      const desc = 'Height runs from zero at the base to one at the tip. ' +
+        (chosen === undefined ? '' : 'A horizontal arrow marks the selected extra width. ') +
+        (coneLine ? 'A dashed straight line shows the cone edge. ' : '') +
+        (stack ? 'A solid teal line shows the stack edge. ' : '') +
+        (curve ? 'A solid teal line shows the fitted curve. ' : '') +
+        (checks.length ? 'Dots mark the held-out outline readings.' : '');
+      const markWidth = chosen === undefined ? '' : '<line x1="' + x(-practiceRadius.get(chosen)) + '" x2="' +
+        x(practiceRadius.get(chosen)) + '" y1="' + y(chosen) + '" y2="' + y(chosen) +
+        '" stroke="#9c371b" stroke-width="3" marker-start="url(#' + id + '-arrow)" marker-end="url(#' + id + '-arrow)"/>' +
+        '<text font-weight="700" x="346" y="' + (y(chosen) + 5) + '" style="fill:#8f321a">z = ' + chosen + '</text>';
+      const line = (vertices, colour, dash = '') => '<polyline points="' + profile(vertices, 1) + '" fill="none" stroke="' +
+        colour + '" stroke-width="3.5" stroke-linejoin="round" stroke-dasharray="' + dash + '"/>';
+      const points = checks.map(z => '<circle cx="' + x(practiceRadius.get(z)) + '" cy="' + y(z) +
+        '" r="4.6" fill="#853815" stroke="#fcfaf0" stroke-width="1.3"/>').join('');
+      const container = byId(id);
+      container.innerHTML =
+        '<svg viewBox="0 0 450 294" role="img" aria-labelledby="' + id + '-title' + '" aria-describedby="' + id + '-desc">' +
+        '<title id="' + id + '-title">' + viewTitle + '</title><desc id="' + id + '-desc">' + desc + '</desc>' +
+        '<defs><marker id="' + id + '-arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto-start-reverse" markerUnits="userSpaceOnUse">' +
+        '<path d="M0 0 L6 3 L0 6 Z" fill="#9c371b"/></marker></defs>' +
+        '<g font-family="Segoe UI, sans-serif" font-size="17" fill="#334b44">' +
+        '<polygon points="' + shape + '" fill="#e8cebc" stroke="#68412f" stroke-width="3" stroke-linejoin="round"/>' +
+        '<line x1="83" y1="37" x2="83" y2="255" stroke="#52675e" />' + guideMarkup +
+        '<text x="83" y="22" text-anchor="middle">Height z</text>' +
+        '<line x1="' + middle + '" y1="37" x2="' + middle + '" y2="255" stroke="#9b7663" stroke-dasharray="4 5"/>' +
+        '<text text-anchor="middle" x="' + middle + '" y="279">Base</text>' +
+        markWidth + (coneLine ? line(cone, '#24454c', '7 5') : '') +
+        (stack ? line(stack, '#125e50') : '') + (curve ? line(curve, '#125e50') : '') + points +
+        '</g></svg>';
+    }
+
+    renderOutline('intro-outline');
+    renderOutline('sl-outline', { measuring: true });
+    renderOutline('hl-outline', { measuring: true });
+
+    widthButtons.forEach(button => button.addEventListener('click', () => {
+      chosenHeight = Number(button.dataset.widthSpot);
+      widthButtons.forEach(option => option.setAttribute('aria-pressed', String(option === button)));
+      slResult.hidden = true;
+      slResult.replaceChildren();
+      checkResult.hidden = true;
+      checkResult.replaceChildren();
+      checkButton.disabled = true;
+      checkButton.setAttribute('aria-expanded', 'false');
+      slButton.setAttribute('aria-expanded', 'false');
+      slButton.disabled = false;
+      byId('sl-choice').textContent = 'Width at ' + chosenHeight + ' is ' + fixed(2 * practiceRadius.get(chosenHeight), 3) +
+        '. Why did you choose that spot? Predict which model gives the larger volume.';
+      renderOutline('sl-outline', { measuring: true, chosen: chosenHeight });
+      byId('sl-legend').textContent = 'The orange arrow shows the new width on the same practice outline.';
+    }));
+
+    slButton.addEventListener('click', () => {
+      const refined = updatedStack();
+      const coneVolume = stackVolume(cone);
+      const originalVolume = stackVolume(originalStack);
+      const refinedVolume = stackVolume(refined);
+      slResult.innerHTML =
+        '<p class="chocolate-values"><strong>One cone ' + fixed(coneVolume) + '</strong> · <strong>Original stack ' +
+        fixed(originalVolume) + '</strong> · <strong>With your width ' + fixed(refinedVolume) +
+        '</strong> cubic height units.</p>' +
+        '<p>Each piece has volume πΔz(R² + Rr + r²)/3, where Δz is its height and R and r are its end radii. ' +
+        'The bottom piece gives π(0.25)(0.50² + 0.50 × 0.46 + 0.46²)/3 ≈ ' +
+        fixed(pieceVolume(.25, .50, .46)) + '.</p>' +
+        '<p>Use one piece with tip radius 0 for the single cone. For the stack, add the piece volumes. ' +
+        'Which edge follows the outline more closely?</p>';
+      renderOutline('sl-outline', { measuring: true, chosen: chosenHeight, coneLine: true, stack: refined });
+      byId('sl-legend').textContent = 'Dashed edge is the cone. Solid teal edge is the stack with your extra width.';
+      slButton.disabled = true;
+      checkButton.disabled = false;
+      showResult(slButton, slResult);
+    });
+
+    checkButton.addEventListener('click', () => {
+      const z = nextCheck.get(chosenHeight);
+      const observed = practiceRadius.get(z);
+      const before = radiusBetween(originalStack, z);
+      const after = radiusBetween(updatedStack(), z);
+      checkResult.innerHTML =
+        '<p><strong>Fresh check at z = ' + z + '</strong>. Outline radius ' + fixed(observed, 3) + '.</p>' +
+        '<p>Original stack predicts ' + fixed(before) + ', an error of ' + fixed(error(before, observed)) +
+        '. Your stack predicts ' + fixed(after) + ', an error of ' + fixed(error(after, observed)) + '.</p>' +
+        '<p>The extra width helped here. Where else would you check before trusting this change?</p>';
+      checkButton.disabled = true;
+      showResult(checkButton, checkResult);
+    });
+
+    const fitButton = byId('hl-curve-run');
+    const holdoutButton = byId('hl-check-reveal');
+    const fitResult = byId('hl-curve-output');
+    const holdoutResult = byId('hl-check-result');
+    // Interpolate r(z) = a + bz + cz² through z = 0, 0.5 and 1.
+    const a = practiceRadius.get(0);
+    const c = 2 * (a - 2 * practiceRadius.get(.5) + practiceRadius.get(1));
+    const b = practiceRadius.get(1) - a - c;
+    const fittedRadius = z => a + b * z + c * z ** 2;
+
+    fitButton.addEventListener('click', () => {
+      const squaredCoefficients = [a * a, 2 * a * b, b * b + 2 * a * c, 2 * b * c, c * c];
+      const integral = squaredCoefficients.reduce((sum, coefficient, power) => sum + coefficient / (power + 1), 0);
+      fitResult.innerHTML =
+        '<p><strong>Radius fit</strong> &nbsp; r(z) = ' + fixed(a, 2) + ' − ' + fixed(-b, 2) + 'z − ' + fixed(-c, 2) + 'z². ' +
+        'It matches the base, midpoint and tip by construction.</p>' +
+        '<p>Assume a circular slice at each height. Its area is π[r(z)]², so ' +
+        'V = π∫₀¹ (' + fixed(a, 2) + ' − ' + fixed(-b, 2) + 'z − ' + fixed(-c, 2) +
+        'z²)² dz = ' + fixed(integral, 3) + 'π ≈ <strong>' + fixed(Math.PI * integral) + '</strong> cubic height units.</p>';
+      const plottedCurve = Array.from({ length: 41 }, (_, index) => [index / 40, fittedRadius(index / 40)]);
+      renderOutline('hl-outline', { measuring: true, curve: plottedCurve });
+      byId('hl-legend').textContent = 'The solid teal edge is the fitted radius curve.';
+      byId('hl-curve-prompt').hidden = true;
+      fitButton.disabled = true;
+      holdoutButton.disabled = false;
+      showResult(fitButton, fitResult);
+
+      holdoutButton.addEventListener('click', () => {
+        const meanError = predict => heldOut.reduce((sum, z) => sum + error(predict(z), practiceRadius.get(z)), 0) / heldOut.length;
+        const rows = heldOut.map(z => {
+          const observed = practiceRadius.get(z);
+          return '<tr><th scope="row">' + z + '</th><td>' + fixed(observed, 3) + '</td><td>' + fixed(fittedRadius(z), 5) +
+            '</td><td>' + fixed(error(fittedRadius(z), observed), 5) + '</td></tr>';
+        }).join('');
+        holdoutResult.innerHTML =
+          '<div class="two"><div><table class="comparison-table" aria-label="Held-out height, observed and fitted radii, and absolute curve error">' +
+          '<thead><tr><th scope="col">Height</th><th scope="col">Outline radius</th><th scope="col">Curve radius</th>' +
+          '<th scope="col">Curve error</th></tr></thead><tbody>' + rows + '</tbody></table></div>' +
+          '<div><p><strong>Mean absolute radius error</strong><br>Cone ' + fixed(meanError(z => radiusBetween(cone, z))) +
+          ' · Original stack ' + fixed(meanError(z => radiusBetween(originalStack, z))) +
+          ' · Curve ' + fixed(meanError(fittedRadius)) + '.</p>' +
+          '<p>The original stack came slightly closer at these four heights. It used five fitting points and the curve used three. What if you fitted both to the same points?</p>' +
+          '<p>Could the slices be oval? A top view and side views after turning the chocolate could help check symmetry.</p></div></div>';
+        renderOutline('hl-outline', { measuring: true, curve: plottedCurve, checks: heldOut });
+        byId('hl-legend').textContent = 'The four orange dots are outline readings held out of both fits.';
+        holdoutButton.disabled = true;
+        showResult(holdoutButton, holdoutResult);
+      }, { once: true });
+    }, { once: true });
+  }
+
+  initChocolateExample();
+  document.documentElement.classList.add('enhanced');
+  render(slideNumber(), { scroll: false });
+</script>
+</body>
+</html>
